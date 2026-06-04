@@ -12,11 +12,11 @@ Base de datos PostgreSQL gestionada por Supabase. RLS habilitado en todas las ta
 
 ## ESTADO ACTUAL
 
-- 🔄 En progreso — Diseño del esquema
-- ⬜ Pendiente — Migraciones creadas en `/supabase/migrations/`
-- ⬜ Pendiente — RLS activado y políticas definidas
-- ⬜ Pendiente — Seed de los 4 apartamentos
-- ⬜ Pendiente — Tipos TypeScript generados
+- ✅ Completado — Diseño del esquema
+- ✅ Completado — Migraciones creadas en `/supabase/migrations/`
+- ✅ Completado — RLS activado y políticas definidas (8 tablas)
+- ✅ Completado — Seed de los 4 apartamentos insertado
+- ✅ Completado — Tipos TypeScript generados (`types/supabase.ts`)
 
 ---
 

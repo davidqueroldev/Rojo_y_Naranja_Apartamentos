@@ -1,7 +1,7 @@
 # 🗺️ ROADMAP GENERAL — Apartamentos Rojo y Naranja
 > **Repositorio:** https://github.com/davidqueroldev/Rojo_y_Naranja_Apartamentos  
 > **Stack:** Next.js 14 · Tailwind CSS · Supabase · Stripe · Vercel · Claude API  
-> **Última actualización:** Junio 2025
+> **Última actualización:** Junio 2026
 
 ---
 
@@ -41,13 +41,13 @@ Estado actual del programa y mapeo con los módulos técnicos.
 |----|--------|-------|------|--------|----------------|
 | 1 | S1 · Planificación | Definir idea y alcance | Diseño | ✅ Completada | M1 |
 | 2 | S1 · Planificación | Configurar repo GitHub | Setup | ✅ Completada | M1 |
-| 3 | S1 · Planificación | Crear backlog en GitHub Projects | Setup | ✅ Pendiente | M1 |
+| 3 | S1 · Planificación | Crear backlog en GitHub Projects | Setup | ✅ Completada | M1 |
 | 4 | S1 · Planificación | Definir stack, DB, deploy | Diseño | ✅ Completada | M1 |
 | 5 | S1 · Planificación | Completar módulo Full Stack con IA | Formación | ✅ Completada | — |
 | 6 | S1 · Planificación | Primer commit con README y estructura | Código | ✅ Completada | M1 |
-| 7 | S2 · Core | Diseñar y crear BD / modelos | Backend | 🔄 En progreso | **M2** |
+| 7 | S2 · Core | Diseñar y crear BD / modelos | Backend | ✅ Completada | **M2** |
 | 8 | S2 · Core | API REST: endpoints CRUD principales | Backend | 🔄 En progreso | **M2 / M5** |
-| 9 | S2 · Core | Configurar variables de entorno (.env) | Backend | 🔄 En progreso | **M1** |
+| 9 | S2 · Core | Configurar variables de entorno (.env) | Backend | ✅ Completada | **M1** |
 | 10 | S2 · Core | Tests endpoints Postman/ThunderClient | QA | 🚫 Bloqueada | M13 |
 | 11 | S2 · Core | Documentar rutas API en README | Docs | 🚫 Bloqueada | M13 |
 | 12 | S2 · Core | Demo mentoría S2 | Scrum | ✅ Completada | — |
@@ -80,8 +80,8 @@ Estado actual del programa y mapeo con los módulos técnicos.
 
 | # | Módulo | Estado | Sprint programa | Prioridad |
 |---|--------|--------|-----------------|-----------|
-| M1 | Setup & Arquitectura | 🔄 En progreso | S1 | 🔴 Crítico |
-| M2 | Base de datos (Supabase) | 🔄 En progreso | S2 | 🔴 Crítico |
+| M1 | Setup & Arquitectura | ✅ Completada | S1 | 🔴 Crítico |
+| M2 | Base de datos (Supabase) | ✅ Completada | S2 | 🔴 Crítico |
 | M3 | Autenticación & Roles | ⬜ Pendiente | S3 | 🔴 Crítico |
 | M4 | Landing Page | ⬜ Pendiente | S2/S4 | 🔴 Crítico |
 | M5 | Reservas & Disponibilidad | ⬜ Pendiente | S2/S4 | 🔴 Crítico |
@@ -102,7 +102,7 @@ M1 (Setup)
   └─► M2 (Base de datos)
         └─► M3 (Auth & Roles)
               ├─► M4 (Landing)
-              ├─► M5 (Reservas)  ◄── S2 en progreso
+              ├─► M5 (Reservas)  ◄── siguiente
               │     └─► M6 (Stripe)
               │           ├─► M7 (Panel usuario)
               │           └─► M8 (Dashboard propietario)
@@ -120,7 +120,7 @@ M14 (Deploy) ────────────► Todos completados
 ## 📅 TIMELINE ESTIMADO
 
 ```
-Semana 1  │ M1 completo · M2 completo · inicio M3         │ S1 ✅ · S2 🔄
+Semana 1  │ M1 completo · M2 completo · inicio M3         │ S1 ✅ · S2 ✅
 Semana 2  │ M3 completo · M4 visible · inicio M5          │ S3
 Semana 3  │ M5 + M6 completos · inicio M7/M8              │ S4
 Semana 4  │ M7 + M8 completos · M9 (chat IA)              │ S4
@@ -148,11 +148,11 @@ Semana 6  │ M13 + M14 · go-live · Demo Day                │ S5 · S6
 
 | Recurso | URL |
 |---------|-----|
-| Repositorio GitHub | https://github.com/davidqueroldev/WEB_ROJO_Y_NARANJA |
+| Repositorio GitHub | https://github.com/davidqueroldev/Rojo_y_Naranja_Apartamentos |
 | Web de referencia | https://www.escapadarural.com/casa-rural/castellon/apartamentos-rojo-y-naranja |
-| Supabase Dashboard | — (añadir al crear proyecto) |
-| Vercel Dashboard | — (añadir al crear proyecto) |
-| Stripe Dashboard | — (añadir al crear cuenta) |
+| Supabase Dashboard | https://app.supabase.com/project/jwbetwmhwdgbazrqiaqy |
+| Vercel Dashboard | — (pendiente de configurar) |
+| Stripe Dashboard | — (pendiente de configurar) |
 | Docs Next.js | https://nextjs.org/docs |
 | Docs Supabase | https://supabase.com/docs |
 | Docs Stripe | https://docs.stripe.com |
