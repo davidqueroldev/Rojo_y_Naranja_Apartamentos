@@ -45,7 +45,7 @@ Estado actual del programa y mapeo con los módulos técnicos.
 | 4 | S1 · Planificación | Definir stack, DB, deploy | Diseño | ✅ Completada | M1 |
 | 5 | S1 · Planificación | Completar módulo Full Stack con IA | Formación | ✅ Completada | — |
 | 6 | S1 · Planificación | Primer commit con README y estructura | Código | ✅ Completada | M1 |
-| 7 | S2 · Core | Diseñar y crear BD / modelos | Backend | 🔄 En progreso | **M2** |
+| 7 | S2 · Core | Diseñar y crear BD / modelos | Backend | ✅ Completada | **M2** |
 | 8 | S2 · Core | API REST: endpoints CRUD principales | Backend | 🔄 En progreso | **M2 / M5** |
 | 9 | S2 · Core | Configurar variables de entorno (.env) | Backend | 🔄 En progreso | **M1** |
 | 10 | S2 · Core | Tests endpoints Postman/ThunderClient | QA | 🚫 Bloqueada | M13 |
@@ -81,7 +81,7 @@ Estado actual del programa y mapeo con los módulos técnicos.
 | # | Módulo | Estado | Sprint programa | Prioridad |
 |---|--------|--------|-----------------|-----------|
 | M1 | Setup & Arquitectura | 🔄 En progreso | S1 | 🔴 Crítico |
-| M2 | Base de datos (Supabase) | 🔄 En progreso | S2 | 🔴 Crítico |
+| M2 | Base de datos (Supabase) | ✅ Completada | S2 | 🔴 Crítico |
 | M3 | Autenticación & Roles | ⬜ Pendiente | S3 | 🔴 Crítico |
 | M4 | Landing Page | ⬜ Pendiente | S2/S4 | 🔴 Crítico |
 | M5 | Reservas & Disponibilidad | ⬜ Pendiente | S2/S4 | 🔴 Crítico |
