@@ -1,6 +1,6 @@
 # M3 — AUTENTICACIÓN & ROLES
 > Proyecto: Apartamentos Rojo y Naranja  
-> Sprint programa: S3 · Estado: ⬜ Pendiente
+> Sprint programa: S3 · Estado: ✅ Completado
 
 ---
 
@@ -11,11 +11,15 @@ Registro, login, confirmación por email y control de acceso por rol (Invitado /
 
 | Tarea | Estado |
 |-------|--------|
-| Registro e inicio de sesión | ⬜ Pendiente |
-| Confirmación por email | ⬜ Pendiente |
-| Middleware de rutas | ⬜ Pendiente |
-| Vistas React: Login y Register | ⬜ Pendiente |
-| Gestión estado global (Context) | ⬜ Pendiente |
+| Supabase Auth configurado (email provider) | ✅ Completada |
+| Trigger `on_auth_user_created` → `profiles` | ✅ Completada |
+| Registro e inicio de sesión | ✅ Completada |
+| Confirmación por email | ✅ Completada |
+| Recuperación de contraseña | ✅ Completada |
+| Middleware de rutas (user + owner) | ✅ Completada |
+| Vistas React: `/login`, `/register`, `/confirm`, `/reset-password` | ✅ Completada |
+| Gestión estado global (Zustand `useAuthStore`) | ✅ Completada |
+| Redirección post-login según rol | ✅ Completada |
 
 ---
 
@@ -184,24 +188,25 @@ export const useAuthStore = create<AuthStore>((set) => ({
 
 ## ✅ Checklist del módulo
 
-- [ ] Supabase Auth configurado (proveedor email habilitado)
-- [ ] Plantilla de email de confirmación personalizada (branding rojo/naranja)
-- [ ] Trigger `on_auth_user_created` activo (ver M2)
-- [ ] `/register` implementado y funcional
-- [ ] `/login` implementado y funcional
-- [ ] `/confirm` implementado y funcional
-- [ ] `/reset-password` implementado y funcional
-- [ ] Middleware Next.js protegiendo rutas /user/* y /owner/*
-- [ ] Hook `useAuthStore` con Zustand
-- [ ] Hook `useUser()` disponible en componentes
-- [ ] Redireccionamiento correcto según rol post-login
-- [ ] Prueba manual: registro → confirm email → login → dashboard
+- [x] Supabase Auth configurado (proveedor email habilitado)
+- [x] Plantilla de email de confirmación personalizada (branding rojo/naranja)
+- [x] Trigger `on_auth_user_created` activo (ver M2)
+- [x] `/register` implementado y funcional
+- [x] `/login` implementado y funcional
+- [x] `/confirm` implementado y funcional
+- [x] `/reset-password` implementado y funcional
+- [x] Middleware Next.js protegiendo rutas /user/* y /owner/*
+- [x] Hook `useAuthStore` con Zustand
+- [x] Hook `useUser()` disponible en componentes
+- [x] Redireccionamiento correcto según rol post-login
+- [x] Prueba manual: registro → confirm email → login → dashboard
 
 ---
 
 ## 🐛 Problemas conocidos / Notas
 
-> *(Añadir aquí durante el desarrollo)*
+- El middleware usa `getSession()` (desde cookies) para leer el rol — correcto para SSR.
+- Las rutas `(auth)/` son públicas; `(user)/` y `(owner)/` están protegidas por rol.
 
 ---
 

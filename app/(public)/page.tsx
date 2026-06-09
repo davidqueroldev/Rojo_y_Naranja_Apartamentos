@@ -1,10 +1,31 @@
+import { Navbar } from '@/components/landing/Navbar'
+import { Hero } from '@/components/landing/Hero'
+import { ApartmentsSection } from '@/components/landing/ApartmentsSection'
+import { WhySection } from '@/components/landing/WhySection'
+import { ExperienciasSection } from '@/components/landing/ExperienciasSection'
+import { GallerySection } from '@/components/landing/GallerySection'
+import { ReviewsSection } from '@/components/landing/ReviewsSection'
+import { MapSection } from '@/components/landing/MapSection'
+import { CtaBanner } from '@/components/landing/CtaBanner'
+import { Footer } from '@/components/landing/Footer'
+import { MobileCta } from '@/components/landing/MobileCta'
+
 export default function LandingPage() {
   return (
-    <main className="min-h-screen">
-      <h1 className="text-4xl font-bold text-center py-16">
-        Apartamentos Rojo y Naranja
-      </h1>
-      <p className="text-center text-gray-600">Morella, España</p>
-    </main>
+    <>
+      <Navbar />
+      <main>
+        <Hero />
+        <ApartmentsSection />
+        <WhySection />
+        <ExperienciasSection />
+        <GallerySection />
+        <ReviewsSection />
+        <MapSection />
+        <CtaBanner />
+      </main>
+      <Footer />
+      <MobileCta />
+    </>
   )
 }

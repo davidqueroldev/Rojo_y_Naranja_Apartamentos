@@ -1,7 +1,7 @@
 # M1 — SETUP & ARQUITECTURA
 > Proyecto: Apartamentos Rojo y Naranja  
-> Repo: https://github.com/davidqueroldev/WEB_ROJO_Y_NARANJA  
-> Sprint programa: S1 (✅ mayormente completado) · S2 (variables de entorno 🔄)
+> Repo: https://github.com/davidqueroldev/Rojo_y_Naranja_Apartamentos
+> Sprint programa: S1 ✅ · S2 ✅ · Estado: ✅ Completado
 
 ---
 
@@ -16,8 +16,14 @@ Estructura del proyecto lista, entorno de desarrollo configurado, todas las inte
 | Repositorio GitHub configurado | ✅ Completada |
 | Stack y deploy target definidos | ✅ Completada |
 | Primer commit con README y estructura | ✅ Completada |
-| Variables de entorno (.env) | 🔄 En progreso |
-| Backlog en GitHub Projects | ⬜ Pendiente |
+| Variables de entorno (.env) | ✅ Completada |
+| Backlog en GitHub Projects | ✅ Completada |
+| Next.js 14 App Router instalado y funcionando | ✅ Completada |
+| Tailwind CSS + design system tokens | ✅ Completada |
+| Fuentes Lora + Montserrat (next/font) | ✅ Completada |
+| Supabase clients (browser + server) | ✅ Completada |
+| Middleware de rutas por rol | ✅ Completada |
+| Cloudinary integrado (next/image + helper) | ✅ Completada |
 
 ---
 
@@ -204,9 +210,25 @@ export const config = {
 
 ---
 
+## 📦 Dependencias instaladas (real)
+
+```
+next@14, react@18, tailwindcss@3, typescript
+@supabase/ssr, @supabase/supabase-js
+lucide-react
+next/font (Lora + Montserrat via Google Fonts)
+yet-another-react-lightbox
+leaflet + react-leaflet (mapa dinámico, SSR false)
+```
+
+---
+
 ## 🐛 Problemas conocidos / Notas
 
-> *(Añadir aquí durante el desarrollo)*
+- **Node 20 obligatorio:** PowerShell del sistema usa Node 16 (incompatible con Next.js 14). Usar siempre Bash/terminal con miniconda3 que expone Node 20.17.0.
+- **Grids responsivos:** Usan clases CSS propias `ryn-*` con `@media` explícitas en `globals.css`, NO Tailwind JIT responsive utilities. Esto evita problemas de caché `.next`.
+- **Cloudinary `public_id`:** El path de carpeta NO forma parte del `public_id` en URLs. La carpeta (`Rojo_y_Naranja/Rojo`) es solo metadato de la UI de Cloudinary.
+- **Leaflet z-index:** El contenedor del mapa necesita `isolation: 'isolate'` para evitar que los panes internos de Leaflet (z-index hasta 700) se superpongan al navbar (z-index: 50).
 
 ---
 

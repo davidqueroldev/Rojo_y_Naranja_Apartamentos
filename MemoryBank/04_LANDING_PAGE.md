@@ -1,6 +1,6 @@
 # M4 — LANDING PAGE PÚBLICA
 > Proyecto: Apartamentos Rojo y Naranja  
-> Sprint programa: S2/S4 · Estado: ⬜ Pendiente
+> Sprint programa: S2/S4 · Estado: ✅ En producción (fotos reales integradas)
 
 ---
 
@@ -11,160 +11,121 @@ Landing de alto impacto visual que convierta visitantes en reservas directas. Ce
 
 | Tarea | Estado |
 |-------|--------|
-| Sistema de colores Tailwind | ⬜ Pendiente |
-| Sección Hero + Buscador | ⬜ Pendiente |
-| Cards de los 4 apartamentos | ⬜ Pendiente |
-| Galería con lightbox | ⬜ Pendiente |
-| Sección reseñas | ⬜ Pendiente |
-| Mapa de ubicación | ⬜ Pendiente |
-| Página detalle apartamento | ⬜ Pendiente |
-| Navbar sticky | ⬜ Pendiente |
+| Sistema de tokens CSS (design system real) | ✅ Completado |
+| Fuentes Lora + Montserrat (next/font) | ✅ Completado |
+| Navbar sticky dark con versalita + mobile drawer | ✅ Completado |
+| Hero con foto real Cloudinary + buscador inline | ✅ Completado |
+| Cards de los 4 apartamentos (fotos reales) | ✅ Completado |
+| Sección WhySection (ink dark) | ✅ Completado |
+| Galería con filtros por tono + lightbox | ✅ Completado |
+| Sección reseñas | ✅ Completado |
+| Mapa Leaflet (C/ San Nicolás, 11) | ✅ Completado |
+| CTA banner final + CTA flotante mobile | ✅ Completado |
+| Footer con contacto y registros | ✅ Completado |
+| Página detalle `/apartamentos/[slug]` | ✅ Completado |
+| Responsive (mobile/tablet/desktop) | ✅ Completado |
+| Fotos reales Cloudinary en todos los componentes | ✅ Completado |
 
 ---
 
-## 🎨 Sistema de diseño (Tailwind)
+## 📸 Integración Cloudinary
 
-```javascript
-// tailwind.config.ts
-theme: {
-  extend: {
-    colors: {
-      rojo:    { DEFAULT: '#C0392B', dark: '#962d22', light: '#e74c3c' },
-      naranja: { DEFAULT: '#E67E22', dark: '#ca6f1e', light: '#f0a500' },
-      crema:   { DEFAULT: '#FDF6EC' },
-      piedra:  { DEFAULT: '#8D8078' },
-    },
-    fontFamily: {
-      serif:  ['Playfair Display', 'serif'],
-      sans:   ['Inter', 'sans-serif'],
-    }
-  }
-}
+### Configuración
+- **Cloud name:** `dssnptdcf`
+- **Credenciales:** en `.env.local` (`CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET`)
+- **`next.config.mjs`:** `images.remotePatterns` configurado para `res.cloudinary.com/dssnptdcf/**`
+- **Helper:** `lib/cloudinary.ts` → `cldUrl(publicId, transforms?)` y `cldHero(publicId)`
+
+### Inventario de fotos por carpeta
+| Carpeta Cloudinary | Fotos | Uso |
+|-------------------|-------|-----|
+| `Rojo_y_Naranja/Rojo` | 11 | Apartamento Rojo — card, detalle, galería |
+| `Rojo_y_Naranja/Naranja` | 10 | Apartamento Naranja — card, detalle, galería |
+| `Rojo_y_Naranja/Plata` | 8 | Apartamento Plata — card, detalle, galería |
+| `Rojo_y_Naranja/Oro` | 25 | Ático Oro — card, detalle, galería + **hero landing** |
+| `Rojo_y_Naranja/Morella` | 2 | Sección Experiencias (foto Morella) |
+
+> **Nota técnica:** Los `public_id` en Cloudinary NO incluyen el path de la carpeta en la URL.
+> La carpeta es solo metadato de organización. La URL base es:
+> `https://res.cloudinary.com/dssnptdcf/image/upload/{transforms}/{public_id}`
+
+### Fotos usadas como hero/principal por apartamento
+| Apartamento | public_id principal |
+|-------------|---------------------|
+| Hero landing (Oro) | `53089ab83c023_v5rjfc` |
+| Rojo | `60a54435cf19a_qb71bd` |
+| Naranja | `530899d541be5_va2iha` |
+| Plata | `53089a1e5845d_aquji0` |
+| Oro | `53089ab83c023_v5rjfc` |
+| Morella | `5f4c2c4626fa8_zpv2q4` |
+
+---
+
+## 🎨 Design System implementado
+
+El design system real ("Rojo y Naranja Design System v1") se implementó como skill de Claude Code
+en `.claude/skills/rojo-y-naranja-design/`. Los tokens CSS están en `app/globals.css`.
+
+### Paleta real (del PDF de identidad corporativa)
+- Rojo: `#AF2C0E` · Naranja: `#C25437` · Plata: `#CB9E78` · Oro: `#D5C4B0`
+- Fuentes: **Lora** (display serif) + **Montserrat** (UI/body sans)
+
+### Enfoque de layout
+Todos los grids responsivos usan clases CSS propias con media queries en `globals.css`
+(prefijo `ryn-`), NO clases Tailwind JIT. Esto evita problemas de caché `.next`.
+Las clases Tailwind se usan solo para utilidades simples no responsivas.
+
+---
+
+## 🏗️ Secciones implementadas
+
+### Componentes en `components/landing/`
+| Componente | Descripción |
+|-----------|-------------|
+| `Navbar.tsx` | Sticky dark, versalita links, mobile drawer, logo Cloudinary |
+| `Hero.tsx` | Foto real Oro como fondo, scrim izquierdo, buscador inline |
+| `ApartmentsSection.tsx` | Grid 1→2→4 cols, ApartmentCard con foto Cloudinary |
+| `WhySection.tsx` | Sección ink dark, 4 beneficios con iconos Lucide |
+| `ExperienciasSection.tsx` | 2 cols, lista experiencias, foto real Morella |
+| `GallerySection.tsx` | Filtros por tono, grid fotos reales, lightbox |
+| `ReviewsSection.tsx` | 4 reseñas reales de EscapadaRural |
+| `MapSection.tsx` | Leaflet dinámico (SSR false), CartoDB tiles |
+| `CtaBanner.tsx` | Banner oscuro CTA "Reservar" |
+| `Footer.tsx` | Grid 1→3 cols, datos contacto, registros, redes |
+| `MobileCta.tsx` | Botón flotante mobile tras 400px scroll |
+
+### Página detalle `/apartamentos/[slug]`
+- Galería 2-col (foto principal + 2 thumbnails laterales) con fotos Cloudinary
+- Amenities con iconos Lucide
+- Aviso "Solo adultos" si `aceptaNinos = false`
+- Sidebar sticky de reserva con fechas y personas
+- Grid "Otros apartamentos" con fotos reales
+
+---
+
+## 📄 Rutas
+
+```
+/                             → Landing completa
+/apartamentos/rojo            → Detalle Rojo (SSG)
+/apartamentos/naranja         → Detalle Naranja (SSG)
+/apartamentos/plata           → Detalle Plata (SSG)
+/apartamentos/oro             → Detalle Oro (SSG)
 ```
 
 ---
 
-## 🏗️ Secciones de la landing
-
-### 1. Navbar
-- Logo + nombre "Apartamentos Rojo y Naranja"
-- Links: Apartamentos · Galería · Morella · Contacto
-- CTA "Reservar" (color rojo, destacado)
-- Avatar / Login si autenticado
-- Sticky con fondo semitransparente al hacer scroll
-
-### 2. Hero
-- Imagen de fondo: foto panorámica de Morella o del Ático Oro
-- Titular: "Escapada de diseño en el corazón de Morella"
-- Subtítulo: "4 apartamentos boutique · Jacuzzi · Terraza privada"
-- **Buscador inline**: [Apartamento ▾] [Entrada 📅] [Salida 📅] [Personas ▾] [Buscar →]
-
-### 3. Los apartamentos (4 cards)
-Datos desde Supabase (`/api/apartamentos`):
-- Foto principal
-- Nombre + badge capacidad
-- Íconos de amenities destacados
-- "Desde 85€/noche"
-- Badge "Solo adultos" si `acepta_ninos = false`
-- CTA "Ver detalles" → `/apartamentos/[slug]`
-
-### 4. Por qué reservar directo
-- 🏘️ Centro histórico de Morella
-- ✨ Diseño moderno y contemporáneo
-- 🛁 Jacuzzi y spa en habitación
-- 📵 Sin comisiones · Atención directa
-
-### 5. Galería
-- Grid masonry con fotos de todos los apartamentos
-- Lightbox al clic (librería: `yet-another-react-lightbox`)
-- Filtros por apartamento
-
-### 6. Morella te espera
-- Foto del pueblo + texto descriptivo
-- Lista de actividades: senderismo, gastronomía, castillo, dinosaurios, astroturismo
-- Puntos de interés: Iglesia Santa María, Castillo, Museos
-
-### 7. Reseñas
-- Carrusel con las 10 opiniones importadas de EscapadaRural
-- Valoración media: ⭐ 10/10
-- Foto avatar + nombre + texto + fecha
-
-### 8. Mapa
-- Leaflet.js (sin API key) centrado en C/ San Nicolás, 11
-- Pins: el alojamiento + restaurantes + monumentos cercanos
-
-### 9. CTA final
-- Banner: "Reserva directa · Sin comisiones · Mejor precio garantizado"
-- Botón grande: "Ver disponibilidad"
-
-### 10. Footer
-- Datos: C/ San Nicolás, 11 · Morella (Castellón)
-- Teléfono + email
-- Nº registro: 23750-CS · 23751-CS · 27852-CS · 27853-CS
-- Aviso legal · Privacidad
-- Redes sociales
-
----
-
-## 📄 Página detalle apartamento `/apartamentos/[slug]`
-
-```
-- Galería de fotos específica (carrusel)
-- Descripción completa del apartamento
-- Grid de amenities con iconos
-- Aviso si no acepta niños (Plata y Oro)
-- Calendario de disponibilidad (solo lectura para invitados)
-- Calculadora de precio (fechas → precio total)
-- CTA "Reservar" → /login si invitado, /reservas/nueva si autenticado
-- Sección "Otros apartamentos"
-```
-
-### Slugs y restricciones
-| Slug | Capacidad | Niños | Precio base |
-|------|-----------|-------|-------------|
-| rojo | 1-4 | ✅ | 90€/noche |
-| naranja | 1-4 | ✅ | 85€/noche |
-| plata | 1-2 | ❌ | 120€/noche |
-| oro | 1-2 | ❌ | 150€/noche |
-
----
-
-## 🔍 SEO por página
-
-```typescript
-// app/(public)/apartamentos/[slug]/page.tsx
-export async function generateMetadata({ params }) {
-  const apt = await getApartamento(params.slug)
-  return {
-    title: `${apt.nombre} — Apartamentos Rojo y Naranja · Morella`,
-    description: apt.descripcion,
-    openGraph: { images: [apt.fotos[0]] }
-  }
-}
-```
-
----
-
-## ✅ Checklist del módulo
-
-- [ ] Tailwind config con paleta personalizada
-- [ ] Fuentes Playfair Display + Inter cargadas (next/font)
-- [ ] Componente `Navbar` sticky con scroll effect
-- [ ] Componente `Hero` con buscador inline
-- [ ] Componente `ApartamentoCard` (x4, datos dinámicos)
-- [ ] Componente `Galeria` con lightbox
-- [ ] Sección reseñas con datos reales importados
-- [ ] Mapa Leaflet con pin en C/ San Nicolás, 11
-- [ ] Footer completo
-- [ ] Página `/apartamentos/[slug]` con datos dinámicos
-- [ ] CTA flotante en mobile
-- [ ] Responsive testado: mobile, tablet, desktop
+## 🔍 SEO
+- `generateMetadata` por slug en `app/(public)/apartamentos/[slug]/page.tsx`
+- `generateStaticParams` para SSG en build time
 
 ---
 
 ## 🐛 Problemas conocidos / Notas
 
-> *(Añadir aquí durante el desarrollo)*
+- Las fotos de Cloudinary son 750×500 (3:2), cards usan `c_fill,ar_4:3` para recortar
+- `.next/trace` se bloquea en Windows si hay múltiples procesos node — cerrar todos antes de `npm run dev`
+- Node 20 (miniconda3) necesario para el build — PowerShell hereda Node 16 del PATH global
 
 ---
 

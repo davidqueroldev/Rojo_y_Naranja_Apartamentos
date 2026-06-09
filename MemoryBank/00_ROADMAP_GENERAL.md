@@ -51,11 +51,11 @@ Estado actual del programa y mapeo con los módulos técnicos.
 | 10 | S2 · Core | Tests endpoints Postman/ThunderClient | QA | 🚫 Bloqueada | M13 |
 | 11 | S2 · Core | Documentar rutas API en README | Docs | 🚫 Bloqueada | M13 |
 | 12 | S2 · Core | Demo mentoría S2 | Scrum | ✅ Completada | — |
-| 13 | S3 · Auth | Implementar registro e inicio de sesión | Backend | ⬜ Pendiente | **M3** |
-| 14 | S3 · Auth | Auth JWT: generación y validación | Backend | ⬜ Pendiente | **M3** |
-| 15 | S3 · Auth | Proteger rutas privadas con middleware | Backend | ⬜ Pendiente | **M3** |
-| 16 | S3 · Auth | Vistas React: Login y Register | Frontend | ⬜ Pendiente | **M3** |
-| 17 | S3 · Auth | Gestión estado global (Context/Redux) | Frontend | ⬜ Pendiente | **M3** |
+| 13 | S3 · Auth | Implementar registro e inicio de sesión | Backend | ✅ Completada | **M3** |
+| 14 | S3 · Auth | Auth JWT: generación y validación | Backend | ✅ Completada | **M3** |
+| 15 | S3 · Auth | Proteger rutas privadas con middleware | Backend | ✅ Completada | **M3** |
+| 16 | S3 · Auth | Vistas React: Login y Register | Frontend | ✅ Completada | **M3** |
+| 17 | S3 · Auth | Gestión estado global (Context/Redux) | Frontend | ✅ Completada | **M3** |
 | 18 | S3 · Auth | Demo mentoría S3 | Scrum | ⬜ Pendiente | — |
 | 19 | S4 · Mejoras | Funcionalidades complementarias | Código | ⬜ Pendiente | M7 / M8 / M9 |
 | 20 | S4 · Mejoras | Refactoring: limpiar código | QA | ⬜ Pendiente | M13 |
@@ -82,8 +82,8 @@ Estado actual del programa y mapeo con los módulos técnicos.
 |---|--------|--------|-----------------|-----------|
 | M1 | Setup & Arquitectura | ✅ Completada | S1 | 🔴 Crítico |
 | M2 | Base de datos (Supabase) | ✅ Completada | S2 | 🔴 Crítico |
-| M3 | Autenticación & Roles | ⬜ Pendiente | S3 | 🔴 Crítico |
-| M4 | Landing Page | ⬜ Pendiente | S2/S4 | 🔴 Crítico |
+| M3 | Autenticación & Roles | ✅ Completada | S3 | 🔴 Crítico |
+| M4 | Landing Page | ✅ Completada | S2/S4 | 🔴 Crítico |
 | M5 | Reservas & Disponibilidad | ⬜ Pendiente | S2/S4 | 🔴 Crítico |
 | M6 | Pagos con Stripe | ⬜ Pendiente | S4 | 🔴 Crítico |
 | M7 | Panel de usuario | ⬜ Pendiente | S4 | 🟠 Alto |
@@ -121,8 +121,8 @@ M14 (Deploy) ────────────► Todos completados
 
 ```
 Semana 1  │ M1 completo · M2 completo · inicio M3         │ S1 ✅ · S2 ✅
-Semana 2  │ M3 completo · M4 visible · inicio M5          │ S3
-Semana 3  │ M5 + M6 completos · inicio M7/M8              │ S4
+Semana 2  │ M3 completo · M4 completo (fotos reales)      │ S3 ✅ · S2/S4 ✅
+Semana 3  │ M5 + M6 completos · inicio M7/M8              │ S4     ◄── siguiente
 Semana 4  │ M7 + M8 completos · M9 (chat IA)              │ S4
 Semana 5  │ M10 + M11 + M12 · inicio M13                  │ S5
 Semana 6  │ M13 + M14 · go-live · Demo Day                │ S5 · S6

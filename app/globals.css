@@ -2,26 +2,452 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ============================================================
+   Rojo y Naranja — Design System tokens
+   Palette from the brand book (base ryn.pdf).
+   Fonts: Lora (serif display) + Montserrat (sans UI).
+   ============================================================ */
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* --- Apartment identity colours --- */
+  --ryn-rojo:    #AF2C0E;
+  --ryn-naranja: #C25437;
+  --ryn-plata:   #CB9E78;
+  --ryn-oro:     #D5C4B0;
+
+  --ryn-rojo-dark:    #8E2109;
+  --ryn-rojo-soft:    #F3E0DA;
+  --ryn-naranja-dark: #A23F26;
+  --ryn-naranja-soft: #F6E6DF;
+  --ryn-plata-dark:   #B07F55;
+  --ryn-plata-soft:   #F3E9DD;
+  --ryn-oro-dark:     #BBA582;
+  --ryn-oro-soft:     #F6F0E7;
+
+  /* --- Warm neutrals --- */
+  --ryn-ink:    #1C1916;
+  --ryn-ink-2:  #2A2521;
+  --ryn-ink-3:  #3A332D;
+  --ryn-stone:  #8D8078;
+  --ryn-stone-2:#B3A89F;
+  --ryn-sand:   #F1E8DA;
+  --ryn-cream:  #FBF6EE;
+  --ryn-paper:  #FFFFFF;
+
+  /* --- Status --- */
+  --ryn-success: #5B7B53;
+  --ryn-warning: #C98A2B;
+  --ryn-danger:  #AF2C0E;
+  --ryn-info:    #5E6E78;
+
+  /* --- Semantic aliases --- */
+  --bg-page:        var(--ryn-cream);
+  --bg-dark:        var(--ryn-ink);
+  --bg-dark-2:      var(--ryn-ink-2);
+  --surface-card:   var(--ryn-paper);
+  --surface-sunken: var(--ryn-sand);
+
+  --text-heading:        var(--ryn-ink);
+  --text-body:           #3A332D;
+  --text-muted:          var(--ryn-stone);
+  --text-on-dark:        var(--ryn-cream);
+  --text-on-dark-muted:  #B3A89F;
+
+  --accent:        var(--ryn-rojo);
+  --accent-hover:  var(--ryn-naranja);
+  --accent-press:  var(--ryn-rojo-dark);
+  --accent-on:     #FFFFFF;
+
+  --border:         #E4D9C8;
+  --border-strong:  #D2C4AE;
+  --border-on-dark: var(--ryn-ink-3);
+
+  --focus-ring: #C25437;
+
+  /* --- Typography --- */
+  --font-serif: 'Lora', Georgia, 'Times New Roman', serif;
+  --font-sans:  'Montserrat', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  --fw-regular:  400;
+  --fw-medium:   500;
+  --fw-semibold: 600;
+  --fw-bold:     700;
+
+  --text-2xs:  0.6875rem;
+  --text-xs:   0.75rem;
+  --text-sm:   0.875rem;
+  --text-base: 1rem;
+  --text-md:   1.125rem;
+  --text-lg:   1.375rem;
+  --text-xl:   1.75rem;
+  --text-2xl:  2.25rem;
+  --text-3xl:  3rem;
+  --text-4xl:  3.75rem;
+  --text-5xl:  4.75rem;
+
+  --lh-tight:   1.08;
+  --lh-snug:    1.25;
+  --lh-normal:  1.5;
+  --lh-relaxed: 1.7;
+
+  --ls-tight:  -0.02em;
+  --ls-normal:  0;
+  --ls-wide:    0.08em;
+  --ls-wider:   0.18em;
+
+  --font-display: var(--font-serif);
+  --font-heading: var(--font-serif);
+  --font-body:    var(--font-sans);
+  --font-ui:      var(--font-sans);
+
+  /* --- Spacing (4px base) --- */
+  --space-1:  0.25rem;
+  --space-2:  0.5rem;
+  --space-3:  0.75rem;
+  --space-4:  1rem;
+  --space-5:  1.5rem;
+  --space-6:  2rem;
+  --space-7:  3rem;
+  --space-8:  4rem;
+  --space-9:  6rem;
+  --space-10: 8rem;
+
+  --section-y:     var(--space-9);
+  --container-max: 1200px;
+  --container-pad: var(--space-5);
+
+  /* --- Radii --- */
+  --radius-xs:   3px;
+  --radius-sm:   6px;
+  --radius-md:   10px;
+  --radius-lg:   16px;
+  --radius-xl:   24px;
+  --radius-pill: 999px;
+
+  --hairline: 1px solid var(--border);
+
+  /* --- Shadows --- */
+  --shadow-xs:   0 1px 2px rgba(28,25,22,0.06);
+  --shadow-sm:   0 2px 8px rgba(28,25,22,0.07);
+  --shadow-md:   0 6px 20px rgba(28,25,22,0.10);
+  --shadow-lg:   0 16px 40px rgba(28,25,22,0.14);
+  --shadow-card: 0 4px 24px rgba(28,25,22,0.08);
+
+  /* --- Scrims --- */
+  --scrim-hero: linear-gradient(90deg, rgba(20,17,15,0.82) 0%, rgba(20,17,15,0.55) 45%, rgba(20,17,15,0.15) 100%);
+  --scrim-bottom: linear-gradient(180deg, rgba(20,17,15,0) 0%, rgba(20,17,15,0.70) 100%);
+
+  /* --- Motion --- */
+  --ease-out:    cubic-bezier(0.22, 0.61, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0.05, 0.36, 1);
+  --dur-fast: 140ms;
+  --dur-base: 240ms;
+  --dur-slow: 420ms;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
+/* ============================================================
+   Base reset
+   ============================================================ */
+
+*, *::before, *::after { box-sizing: border-box; }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  line-height: var(--lh-normal);
+  color: var(--text-body);
+  background: var(--bg-page);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
+h1, h2, h3, h4 {
+  font-family: var(--font-heading);
+  color: var(--text-heading);
+  font-weight: var(--fw-semibold);
+  line-height: var(--lh-snug);
+  margin: 0 0 0.5em;
+  text-wrap: balance;
+}
+
+h1 { font-size: var(--text-3xl); line-height: var(--lh-tight); letter-spacing: var(--ls-tight); }
+h2 { font-size: var(--text-2xl); }
+h3 { font-size: var(--text-lg); }
+
+p { margin: 0 0 1em; text-wrap: pretty; }
+
+a { color: var(--accent); text-decoration: none; }
+a:hover { color: var(--accent-hover); }
+
+img { max-width: 100%; display: block; }
+
+:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+::selection { background: var(--ryn-naranja); color: #fff; }
+
+/* ============================================================
+   Typography utilities
+   ============================================================ */
+
+.ryn-versalita {
+  font-family: var(--font-sans);
+  font-weight: var(--fw-medium);
+  font-variant-caps: all-small-caps;
+  letter-spacing: var(--ls-wide);
+  text-transform: lowercase;
+}
+
+.ryn-overline {
+  font-family: var(--font-sans);
+  font-weight: var(--fw-semibold);
+  text-transform: uppercase;
+  letter-spacing: var(--ls-wider);
+  font-size: var(--text-xs);
+  margin: 0 0 0.5em;
+}
+
+.ryn-rule {
+  width: 56px;
+  height: 3px;
+  border: 0;
+  background: var(--accent);
+  margin: 0;
+}
+
+/* ============================================================
+   Button interaction states
+   ============================================================ */
+
+.ryn-btn:hover:not(:disabled)          { filter: brightness(0.95); box-shadow: var(--shadow-sm); }
+.ryn-btn:active:not(:disabled)         { transform: translateY(1px); filter: brightness(0.9); }
+.ryn-btn--outline:hover:not(:disabled) { background: var(--ryn-rojo-soft); border-color: var(--accent); filter: none; }
+.ryn-btn--ghost:hover:not(:disabled)   { background: var(--surface-sunken); filter: none; }
+.ryn-btn--light:hover:not(:disabled)   { background: rgba(251,246,238,0.18); filter: none; }
+
+/* ============================================================
+   Input states
+   ============================================================ */
+
+.ryn-input:focus {
+  border-color: var(--focus-ring);
+  box-shadow: 0 0 0 3px var(--ryn-naranja-soft);
+  outline: none;
+}
+.ryn-input::placeholder { color: var(--ryn-stone-2); }
+
+/* ============================================================
+   Card hover lift
+   ============================================================ */
+
+.ryn-aptcard {
+  transition: transform var(--dur-base) var(--ease-out), box-shadow var(--dur-base) var(--ease-out);
+}
+.ryn-aptcard:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+}
+
+/* ============================================================
+   Hero search select/input
+   ============================================================ */
+
+.ryn-hero-select {
+  width: 100%;
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  color: #fff;
+  background: rgba(20,17,15,0.35);
+  border: 1px solid rgba(251,246,238,0.30);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  outline: none;
+  appearance: none;
+  cursor: pointer;
+}
+.ryn-hero-select::-webkit-calendar-picker-indicator { filter: invert(1); opacity: 0.7; }
+.ryn-hero-select option { color: #1c1916; background: #fff; }
+.ryn-hero-select:focus { border-color: var(--ryn-oro); }
+
+/* ============================================================
+   Responsive layout — media query classes (no Tailwind JIT dependency)
+   ============================================================ */
+
+/* Navbar */
+.ryn-nav-desktop { display: none; align-items: center; gap: 30px; }
+.ryn-nav-mobile  { display: flex; align-items: center; gap: 12px; }
+.ryn-nav-tagline { display: none; }
+
+@media (min-width: 1024px) {
+  .ryn-nav-desktop { display: flex; }
+  .ryn-nav-mobile  { display: none; }
+  .ryn-nav-tagline { display: inline; }
+}
+
+/* Apartments grid: 1 → 2 → 4 */
+.ryn-grid-apts {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+@media (min-width: 640px)  { .ryn-grid-apts { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1280px) { .ryn-grid-apts { grid-template-columns: repeat(4, 1fr); } }
+
+/* Why section grid: 1 → 2 → 4 */
+.ryn-grid-why {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 28px;
+}
+@media (min-width: 640px)  { .ryn-grid-why { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1024px) { .ryn-grid-why { grid-template-columns: repeat(4, 1fr); } }
+
+/* Experiencias outer 2-col */
+.ryn-grid-exp {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 56px;
+  align-items: center;
+}
+@media (min-width: 1024px) { .ryn-grid-exp { grid-template-columns: 1.1fr 1fr; } }
+
+/* Experiencias inner 2-col items */
+.ryn-grid-exp-items {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+@media (min-width: 640px) { .ryn-grid-exp-items { grid-template-columns: 1fr 1fr; } }
+
+/* Experiencias photo — hidden on mobile */
+.ryn-exp-photo { display: none; }
+@media (min-width: 1024px) { .ryn-exp-photo { display: block; } }
+
+/* Reviews header flex */
+.ryn-reviews-header {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: var(--space-7);
+}
+@media (min-width: 640px) {
+  .ryn-reviews-header {
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
   }
+}
+
+/* Reviews grid: 1 → 2 → 4 */
+.ryn-grid-reviews {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+@media (min-width: 640px)  { .ryn-grid-reviews { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1024px) { .ryn-grid-reviews { grid-template-columns: repeat(4, 1fr); } }
+
+/* Gallery header flex */
+.ryn-gallery-header {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-bottom: var(--space-7);
+}
+@media (min-width: 640px) {
+  .ryn-gallery-header {
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
+  }
+}
+
+/* Gallery grid */
+.ryn-gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+@media (min-width: 768px)  { .ryn-gallery-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (min-width: 1024px) { .ryn-gallery-grid { grid-template-columns: repeat(4, 1fr); } }
+
+/* Footer grid: 1 → 3 */
+.ryn-grid-footer {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 40px;
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 0 var(--container-pad);
+}
+@media (min-width: 768px) { .ryn-grid-footer { grid-template-columns: 1.4fr 1fr 1fr; } }
+
+/* ApartmentDetail: photo gallery */
+.ryn-detail-photos {
+  display: grid;
+  grid-template-columns: 1fr;
+  height: 280px;
+  gap: 4px;
+}
+@media (min-width: 768px) {
+  .ryn-detail-photos {
+    grid-template-columns: 2fr 1fr;
+    height: 360px;
+  }
+}
+.ryn-detail-photo-side {
+  display: none;
+  flex-direction: column;
+  gap: 4px;
+  height: 100%;
+}
+@media (min-width: 768px) { .ryn-detail-photo-side { display: flex; } }
+
+/* ApartmentDetail: main 3-col layout */
+.ryn-detail-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 48px;
+  align-items: start;
+}
+@media (min-width: 1024px) { .ryn-detail-layout { grid-template-columns: 1fr 1fr 1fr; } }
+
+.ryn-detail-info { grid-column: 1; }
+@media (min-width: 1024px) { .ryn-detail-info { grid-column: 1 / 3; } }
+
+/* ApartmentDetail: amenities grid */
+.ryn-detail-amenities {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px 24px;
+}
+@media (min-width: 640px) { .ryn-detail-amenities { grid-template-columns: repeat(3, 1fr); } }
+
+/* Mobile CTA floating button — only on < lg */
+.ryn-mobile-cta { display: block; }
+@media (min-width: 1024px) { .ryn-mobile-cta { display: none; } }
+
+/* Map section: 1 → 2 col */
+.ryn-grid-map {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 48px;
+  align-items: center;
+}
+@media (min-width: 1024px) { .ryn-grid-map { grid-template-columns: 1fr 1fr; } }
+
+/* Other apartments grid */
+.ryn-grid-others {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+@media (min-width: 640px)  { .ryn-grid-others { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1024px) { .ryn-grid-others { grid-template-columns: repeat(3, 1fr); } }
+
+@layer utilities {
+  .text-balance { text-wrap: balance; }
 }
