@@ -1,0 +1,70 @@
+/* ============================================================
+   Rojo y Naranja — Base / reset
+   Sensible element defaults wired to the tokens. Optional for
+   consumers, but it makes specimen cards and kits render correctly.
+   ============================================================ */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  line-height: var(--lh-normal);
+  color: var(--text-body);
+  background: var(--bg-page);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-heading);
+  color: var(--text-heading);
+  font-weight: var(--fw-semibold);
+  line-height: var(--lh-snug);
+  margin: 0 0 0.5em;
+  text-wrap: balance;
+}
+
+h1 { font-size: var(--text-3xl); line-height: var(--lh-tight); letter-spacing: var(--ls-tight); }
+h2 { font-size: var(--text-2xl); }
+h3 { font-size: var(--text-lg); }
+
+p { margin: 0 0 1em; text-wrap: pretty; }
+
+a { color: var(--accent); text-decoration: none; }
+a:hover { color: var(--accent-hover); }
+
+img { max-width: 100%; display: block; }
+
+:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+::selection { background: var(--ryn-naranja); color: #fff; }
+
+/* Shared helpers used by specimen cards */
+.ryn-rule {
+  width: 56px; height: 3px; border: 0;
+  background: var(--accent);
+  margin: 0;
+}
+
+/* ---- Button interaction states (ship with the component) ---- */
+.ryn-btn:hover:not(:disabled) { filter: brightness(0.95); box-shadow: var(--shadow-sm); }
+.ryn-btn:active:not(:disabled) { transform: translateY(1px); filter: brightness(0.9); }
+.ryn-btn--outline:hover:not(:disabled) {
+  background: var(--ryn-rojo-soft); border-color: var(--accent); filter: none;
+}
+.ryn-btn--ghost:hover:not(:disabled) { background: var(--surface-sunken); filter: none; }
+.ryn-btn--light:hover:not(:disabled) { background: rgba(251, 246, 238, 0.18); filter: none; }
+
+/* ---- Input focus state ---- */
+.ryn-input:focus { border-color: var(--focus-ring); box-shadow: 0 0 0 3px var(--ryn-naranja-soft); }
+.ryn-input::placeholder { color: var(--ryn-stone-2); }
+
+/* ---- Apartment card hover lift ---- */
+.ryn-aptcard:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }

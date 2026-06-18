@@ -1,0 +1,21 @@
+<!-- @dsCard group="Brand" viewport="700x240" name="Logo — primary lockup" subtitle="White on ink; terracotta on light. Never on busy photo without scrim." -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../styles.css">
+<style>
+  body { margin: 0; display: grid; grid-template-columns: 1fr 1fr; font-family: var(--font-sans); }
+  .panel { height: 240px; display: flex; align-items: center; justify-content: center; }
+  .dark { background: var(--ryn-ink); }
+  .light { background: var(--ryn-cream); }
+  .panel img { height: 130px; width: auto; }
+  .cap { position: absolute; bottom: 10px; font-size: 10px; letter-spacing: .14em; text-transform: uppercase; }
+  .wrap { position: relative; display: flex; align-items: center; justify-content: center; }
+</style>
+</head>
+<body>
+  <div class="panel dark wrap"><img src="../assets/logo-white.png" alt="Rojo y Naranja"><span class="cap" style="color:var(--ryn-stone-2)">Sobre fondo oscuro</span></div>
+  <div class="panel light wrap"><img src="../assets/logo-rojo.png" alt="Rojo y Naranja"><span class="cap" style="color:var(--text-muted)">Sobre fondo claro</span></div>
+</body>
+</html>

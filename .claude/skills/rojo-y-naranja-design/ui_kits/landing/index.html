@@ -1,0 +1,104 @@
+<!-- @dsCard group="Landing" viewport="1280x900" name="Landing — sitio completo" subtitle="Hero, apartamentos, detalle, reserva con validación y admin" -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rojo y Naranja · Morella</title>
+<link rel="stylesheet" href="../../styles.css">
+<style>
+  body { margin: 0; background: var(--bg-page); }
+  /* Lucide icon sizing/stroke */
+  .ryn-ic svg { width: 100%; height: 100%; display: block; stroke-width: 1.6; }
+  .ryn-ic--fill svg { fill: currentColor; }
+  /* Hero search controls (dark, translucent) */
+  .ryn-hero-select {
+    width: 100%; font-family: var(--font-ui); font-size: var(--text-sm);
+    color: #fff; background: rgba(20,17,15,0.35);
+    border: 1px solid rgba(251,246,238,0.30); border-radius: var(--radius-sm);
+    padding: 10px 12px; outline: none; appearance: none;
+  }
+  .ryn-hero-select::-webkit-calendar-picker-indicator { filter: invert(1); opacity: .7; }
+  .ryn-hero-select option { color: #1c1916; }
+  .ryn-hero-select:focus { border-color: var(--ryn-oro); }
+</style>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script src="../../_ds_bundle.js"></script>
+<script src="data.js"></script>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel" src="kit-shared.jsx"></script>
+  <script type="text/babel" src="Navbar.jsx"></script>
+  <script type="text/babel" src="Hero.jsx"></script>
+  <script type="text/babel" src="Calendar.jsx"></script>
+  <script type="text/babel" src="LandingSections.jsx"></script>
+  <script type="text/babel" src="ApartmentDetail.jsx"></script>
+  <script type="text/babel" src="BookingModal.jsx"></script>
+  <script type="text/babel" src="AdminPanel.jsx"></script>
+
+  <script type="text/babel">
+    const { useState, useEffect } = React;
+
+    function App() {
+      const [view, setView] = useState('home');      // home | detail | admin
+      const [slug, setSlug] = useState('oro');
+      const [booking, setBooking] = useState(null);   // slug or null
+      const [scrolled, setScrolled] = useState(false);
+
+      // re-run lucide after every render so freshly-mounted icons resolve
+      window.useLucide();
+      useEffect(() => { if (window.lucide) window.lucide.createIcons(); });
+
+      useEffect(() => {
+        const onScroll = () => setScrolled(window.scrollY > 40);
+        window.addEventListener('scroll', onScroll); onScroll();
+        return () => window.removeEventListener('scroll', onScroll);
+      }, []);
+
+      useEffect(() => { window.scrollTo(0, 0); }, [view, slug]);
+
+      const goHome = () => setView('home');
+      const goDetail = (s) => { setSlug(s); setView('detail'); };
+      const openBooking = (s) => setBooking(s || slug);
+
+      if (view === 'admin') {
+        return <AdminPanel onSalir={goHome} />;
+      }
+
+      return (
+        <div>
+          <Navbar scrolled={scrolled} onReservar={() => openBooking(slug)} onHome={goHome} onAdmin={() => setView('admin')} />
+          {view === 'home' && (
+            <main>
+              <Hero onBuscar={() => goDetail('oro')} />
+              <ApartmentsSection onVer={goDetail} />
+              <WhySection />
+              <ExperienciasSection />
+              <ReviewsSection />
+              <CtaBanner onReservar={() => openBooking('oro')} />
+              <Footer />
+            </main>
+          )}
+          {view === 'detail' && (
+            <main>
+              <ApartmentDetail slug={slug} onReservar={openBooking} onVolver={goHome} onVer={goDetail} />
+              <Footer />
+            </main>
+          )}
+          {booking && (
+            <BookingModal slug={booking} onClose={() => setBooking(null)}
+              onConfirmed={() => { setBooking(null); setView('admin'); }} />
+          )}
+        </div>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+  </script>
+</body>
+</html>

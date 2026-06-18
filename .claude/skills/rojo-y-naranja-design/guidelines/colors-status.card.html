@@ -1,0 +1,25 @@
+<!-- @dsCard group="Colors" viewport="700x170" name="Status & functional" subtitle="Warm-tinted states for the reservation flow" -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../styles.css">
+<style>
+  body { margin: 0; background: var(--surface-card); padding: 24px; }
+  .row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+  .sw { display: flex; flex-direction: column; gap: 8px; }
+  .chip { height: 64px; border-radius: var(--radius-sm); display: flex; align-items: flex-end; padding: 8px; }
+  .tag { font-family: var(--font-sans); font-weight: 600; font-size: 11px; color: #fff; }
+  .name { font-family: var(--font-sans); font-weight: 600; font-size: 12px; color: var(--text-heading); }
+  .use { font-family: var(--font-sans); font-size: 11px; color: var(--text-muted); }
+</style>
+</head>
+<body>
+  <div class="row">
+    <div class="sw"><div class="chip" style="background:var(--ryn-success)"></div><div class="name">Success · #5B7B53</div><div class="use">Reserva confirmada</div></div>
+    <div class="sw"><div class="chip" style="background:var(--ryn-warning)"></div><div class="name">Warning · #C98A2B</div><div class="use">Pendiente de pago</div></div>
+    <div class="sw"><div class="chip" style="background:var(--ryn-danger)"></div><div class="name">Danger · #AF2C0E</div><div class="use">Reserva anulada</div></div>
+    <div class="sw"><div class="chip" style="background:var(--ryn-info)"></div><div class="name">Info · #5E6E78</div><div class="use">Aviso informativo</div></div>
+  </div>
+</body>
+</html>

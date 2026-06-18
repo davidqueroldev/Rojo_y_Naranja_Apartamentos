@@ -1,39 +1,100 @@
+import type { CSSProperties } from 'react'
 import Image from 'next/image'
-import { ApartmentCard } from '@/components/ui/ApartmentCard'
-import { apartamentos } from '@/lib/data/apartments'
+import { Button } from '@/components/ui/Button'
+import { Badge } from '@/components/ui/Badge'
+import { apartamentos, toneColor, type Apartment } from '@/lib/data/apartments'
 import { cldUrl } from '@/lib/cloudinary'
 
 export function ApartmentsSection() {
   return (
-    <section id="apartamentos" style={{ background: 'var(--bg-page)', padding: 'var(--section-y) 0' }}>
-      <div style={{ maxWidth: 'var(--container-max)', margin: '0 auto', padding: '0 var(--container-pad)' }}>
-        <SectionHead
-          eyebrow="Los apartamentos"
-          titulo="Cuatro estancias, cuatro caracteres"
-          texto="Cada apartamento lleva el nombre de un color de nuestra identidad. Todos de diseño moderno, en pleno casco histórico."
-        />
-        <div className="ryn-grid-apts" style={{ marginTop: 'var(--space-7)' }}>
-          {apartamentos.map((apt) => (
-            <ApartmentCard
-              key={apt.slug}
-              tone={apt.tone}
-              nombre={apt.nombre}
-              capacidad={`${apt.capacidadMax} pers.`}
-              soloAdultos={!apt.aceptaNinos}
-              amenities={apt.amenities.slice(0, 3)}
-              precioDesde={apt.precio}
-              ctaHref={`/apartamentos/${apt.slug}`}
-              media={
-                <Image
-                  src={cldUrl(apt.fotos[0], 'w_800,c_fill,ar_4:3')}
-                  alt={apt.nombre}
-                  fill
-                  style={{ objectFit: 'cover' }}
-                  sizes="(max-width: 640px) 100vw, (max-width: 1280px) 50vw, 25vw"
-                />
-              }
-            />
-          ))}
+    <div id="apartamentos">
+      {apartamentos.map((apt, i) => (
+        <ApartmentFeedItem key={apt.slug} apt={apt} index={i} />
+      ))}
+    </div>
+  )
+}
+
+function ApartmentFeedItem({ apt, index }: { apt: Apartment; index: number }) {
+  const reverse = index % 2 !== 0
+  const accent = toneColor[apt.tone]
+  const bg = index % 2 === 0 ? 'var(--surface-card)' : 'var(--bg-page)'
+
+  return (
+    <section
+      id={apt.slug}
+      style={{ background: bg, padding: 'var(--section-y) 0' }}
+    >
+      <div
+        className="ryn-feed-row"
+        style={{
+          maxWidth: 'var(--container-max)',
+          margin: '0 auto',
+          padding: '0 var(--container-pad)',
+          '--feed-dir': reverse ? 'row-reverse' : 'row',
+        } as CSSProperties}
+      >
+        {/* Photo */}
+        <div className="ryn-feed-photo">
+          <Image
+            src={cldUrl(apt.fotos[0], 'w_1000,c_fill,ar_4:3')}
+            alt={apt.nombre}
+            fill
+            style={{ objectFit: 'cover' }}
+            sizes="(max-width: 768px) 100vw, 54vw"
+          />
+          <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: 4, background: accent }} />
+        </div>
+
+        {/* Info */}
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <div className="ryn-overline" style={{ color: accent }}>
+            {apt.tone === 'oro' ? 'Ático de lujo' : 'Apartamento'}
+          </div>
+
+          <h2 style={{
+            fontFamily: 'var(--font-serif)',
+            fontSize: 'clamp(1.75rem, 3.5vw, var(--text-2xl))',
+            margin: '10px 0 0',
+            fontWeight: 600,
+            color: 'var(--text-heading)',
+            letterSpacing: '-0.01em',
+          }}>
+            {apt.nombre}
+          </h2>
+
+          <div style={{ width: 48, height: 3, background: accent, margin: '18px 0' }} />
+
+          <p style={{
+            fontFamily: 'var(--font-ui)',
+            fontSize: 'var(--text-md)',
+            lineHeight: 1.65,
+            color: 'var(--text-muted)',
+            margin: 0,
+          }}>
+            {apt.resumen}
+          </p>
+
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginTop: 'var(--space-5)' }}>
+            {apt.amenities.map(a => (
+              <Badge key={a} tone="neutral" variant="outline" size="sm">{a}</Badge>
+            ))}
+          </div>
+
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10, marginTop: 'var(--space-4)', alignItems: 'center' }}>
+            <Badge tone="neutral" variant="solid" size="sm">
+              {apt.capacidadMax} personas · {apt.habitaciones} hab.
+            </Badge>
+            {!apt.aceptaNinos && (
+              <Badge tone="rojo" variant="soft" size="sm">Solo adultos</Badge>
+            )}
+          </div>
+
+          <div style={{ marginTop: 'var(--space-6)' }}>
+            <Button variant="primary" size="md" href={`/apartamentos/${apt.slug}`}>
+              Ver detalles y reservar
+            </Button>
+          </div>
         </div>
       </div>
     </section>

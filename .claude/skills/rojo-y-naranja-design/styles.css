@@ -1,0 +1,11 @@
+/* ============================================================
+   Rojo y Naranja — Design System
+   Root stylesheet. Consumers link THIS file.
+   Imports only — every token & font-face lives in an imported file.
+   ============================================================ */
+
+@import url('./tokens/fonts.css');
+@import url('./tokens/colors.css');
+@import url('./tokens/typography.css');
+@import url('./tokens/spacing.css');
+@import url('./tokens/base.css');

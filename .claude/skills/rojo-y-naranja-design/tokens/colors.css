@@ -1,0 +1,68 @@
+/* ============================================================
+   Rojo y Naranja — Color tokens
+   Identity palette taken from the brand book (base ryn.pdf) and the
+   approved mockup. Each of the four apartments owns a colour; the
+   neutrals are warm, earthy and slightly desaturated to match the
+   medieval-stone, candle-lit feel of Morella.
+   ============================================================ */
+
+:root {
+  /* --- Apartment identity colours (brand book, exact HEX) --- */
+  --ryn-rojo:    #AF2C0E;   /* Apartamento Rojo    — deep terracotta red */
+  --ryn-naranja: #C25437;   /* Apartamento Naranja — burnt orange       */
+  --ryn-plata:   #CB9E78;   /* Apartamento Plata   — warm camel         */
+  --ryn-oro:     #D5C4B0;   /* Ático Oro           — soft sand           */
+
+  /* Tints / shades for hover & press states (derived in oklch from the
+     identity hues so they stay in-family). */
+  --ryn-rojo-dark:    #8E2109;   /* press / active red   */
+  --ryn-rojo-soft:    #F3E0DA;   /* tinted red surface   */
+  --ryn-naranja-dark: #A23F26;   /* press / active orange */
+  --ryn-naranja-soft: #F6E6DF;   /* tinted orange surface */
+  --ryn-plata-dark:   #B07F55;
+  --ryn-plata-soft:   #F3E9DD;
+  --ryn-oro-dark:     #BBA582;
+  --ryn-oro-soft:     #F6F0E7;
+
+  /* --- Warm neutrals --- */
+  --ryn-ink:      #1C1916;   /* near-black warm charcoal — hero / dark sections */
+  --ryn-ink-2:    #2A2521;   /* raised dark surface */
+  --ryn-ink-3:    #3A332D;   /* dark borders / hairlines on dark */
+  --ryn-stone:    #8D8078;   /* "piedra" — muted warm grey for secondary text */
+  --ryn-stone-2:  #B3A89F;   /* lighter stone */
+  --ryn-sand:     #F1E8DA;   /* soft sand fill */
+  --ryn-cream:    #FBF6EE;   /* warm off-white — default page surface */
+  --ryn-paper:    #FFFFFF;   /* pure white card surface */
+
+  /* --- Functional / status (kept warm, used sparingly) --- */
+  --ryn-success:  #5B7B53;   /* sage — reserva confirmada */
+  --ryn-warning:  #C98A2B;   /* amber — pendiente de pago  */
+  --ryn-danger:   #AF2C0E;   /* reuses rojo — reserva anulada */
+  --ryn-info:     #5E6E78;   /* slate — informativo */
+
+  /* ============================================================
+     Semantic aliases — reference these in components, not the raw hues.
+     ============================================================ */
+  --bg-page:        var(--ryn-cream);
+  --bg-dark:        var(--ryn-ink);
+  --bg-dark-2:      var(--ryn-ink-2);
+  --surface-card:   var(--ryn-paper);
+  --surface-sunken: var(--ryn-sand);
+
+  --text-heading:   var(--ryn-ink);
+  --text-body:      #3A332D;
+  --text-muted:     var(--ryn-stone);
+  --text-on-dark:   var(--ryn-cream);
+  --text-on-dark-muted: #B3A89F;
+
+  --accent:         var(--ryn-rojo);
+  --accent-hover:   var(--ryn-naranja);
+  --accent-press:   var(--ryn-rojo-dark);
+  --accent-on:      #FFFFFF;        /* text/icon on accent fills */
+
+  --border:         #E4D9C8;        /* hairline on light surfaces */
+  --border-strong:  #D2C4AE;
+  --border-on-dark: var(--ryn-ink-3);
+
+  --focus-ring:     #C25437;        /* naranja focus outline */
+}

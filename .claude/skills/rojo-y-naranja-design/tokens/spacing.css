@@ -1,0 +1,64 @@
+/* ============================================================
+   Rojo y Naranja — Spacing, radii, shadows, layout
+   Calm, generous spacing. Restrained corner radii (boutique, not
+   playful). Shadows are soft, warm-tinted and low — never harsh.
+   ============================================================ */
+
+:root {
+  /* Spacing scale (4px base) */
+  --space-0:   0;
+  --space-1:   0.25rem;   /* 4  */
+  --space-2:   0.5rem;    /* 8  */
+  --space-3:   0.75rem;   /* 12 */
+  --space-4:   1rem;      /* 16 */
+  --space-5:   1.5rem;    /* 24 */
+  --space-6:   2rem;      /* 32 */
+  --space-7:   3rem;      /* 48 */
+  --space-8:   4rem;      /* 64 */
+  --space-9:   6rem;      /* 96 */
+  --space-10:  8rem;      /* 128 */
+
+  /* Section rhythm */
+  --section-y:        var(--space-9);
+  --container-max:    1200px;
+  --container-pad:    var(--space-5);
+
+  /* Corner radii — modest, architectural */
+  --radius-xs:   3px;
+  --radius-sm:   6px;
+  --radius-md:   10px;
+  --radius-lg:   16px;
+  --radius-xl:   24px;
+  --radius-pill: 999px;
+
+  /* Borders */
+  --border-width: 1px;
+  --hairline:     1px solid var(--border);
+
+  /* Shadows — warm-tinted, soft, low elevation */
+  --shadow-xs:  0 1px 2px rgba(28, 25, 22, 0.06);
+  --shadow-sm:  0 2px 8px rgba(28, 25, 22, 0.07);
+  --shadow-md:  0 6px 20px rgba(28, 25, 22, 0.10);
+  --shadow-lg:  0 16px 40px rgba(28, 25, 22, 0.14);
+  --shadow-card: 0 4px 24px rgba(28, 25, 22, 0.08);
+
+  /* Image scrim — used over photography for legible white text (hero) */
+  --scrim-hero: linear-gradient(
+    90deg,
+    rgba(20, 17, 15, 0.82) 0%,
+    rgba(20, 17, 15, 0.55) 45%,
+    rgba(20, 17, 15, 0.15) 100%
+  ); /* @kind other */
+  --scrim-bottom: linear-gradient(
+    180deg,
+    rgba(20, 17, 15, 0) 0%,
+    rgba(20, 17, 15, 0.70) 100%
+  ); /* @kind other */
+
+  /* Motion — quiet, editorial. No bounce. */
+  --ease-out:  cubic-bezier(0.22, 0.61, 0.36, 1); /* @kind other */
+  --ease-in-out: cubic-bezier(0.65, 0.05, 0.36, 1); /* @kind other */
+  --dur-fast:  140ms; /* @kind other */
+  --dur-base:  240ms; /* @kind other */
+  --dur-slow:  420ms; /* @kind other */
+}

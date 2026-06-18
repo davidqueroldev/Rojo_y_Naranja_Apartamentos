@@ -1,0 +1,29 @@
+<!-- @dsCard group="Brand" viewport="700x230" name="Hero scrim treatment" subtitle="Left-weighted dark gradient keeps white type legible over photography" -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../styles.css">
+<style>
+  body { margin: 0; }
+  .hero { position: relative; height: 230px; background:
+      linear-gradient(115deg, #3a3330, #6b5b4f 55%, #9a8472);
+      overflow: hidden; }
+  .scrim { position: absolute; inset: 0; background: var(--scrim-hero); }
+  .content { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; padding: 0 40px; }
+  .over { font-family: var(--font-sans); font-weight: 600; text-transform: uppercase; letter-spacing: .2em; font-size: 11px; color: var(--ryn-plata); margin-bottom: 12px; }
+  h2 { font-family: var(--font-serif); color: #fff; font-size: 34px; line-height: 1.08; margin: 0; font-weight: 600; letter-spacing: -.01em; }
+  .rule { width: 56px; height: 3px; background: var(--ryn-naranja); margin: 16px 0 0; }
+</style>
+</head>
+<body>
+  <div class="hero">
+    <div class="scrim"></div>
+    <div class="content">
+      <div class="over">Tu lugar en Morella</div>
+      <h2>Apartamentos exclusivos<br>en el centro medieval</h2>
+      <div class="rule"></div>
+    </div>
+  </div>
+</body>
+</html>

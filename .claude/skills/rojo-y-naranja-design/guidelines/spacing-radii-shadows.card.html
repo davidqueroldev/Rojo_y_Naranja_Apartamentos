@@ -1,0 +1,35 @@
+<!-- @dsCard group="Spacing" viewport="700x170" name="Radii & shadows" subtitle="Architectural corners, soft warm elevation" -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../styles.css">
+<style>
+  body { margin: 0; background: var(--ryn-sand); padding: 26px 32px; font-family: var(--font-sans); display: flex; gap: 40px; align-items: center; }
+  .group { display: flex; gap: 16px; align-items: flex-end; }
+  .ra { width: 70px; height: 56px; background: var(--surface-card); border: 1px solid var(--border); display: flex; align-items: flex-end; justify-content: center; padding-bottom: 6px; }
+  .sh { width: 84px; height: 56px; background: var(--surface-card); border-radius: var(--radius-md); }
+  .t { font-size: 10px; color: var(--text-muted); }
+  .gl { font-size: 11px; font-weight: 600; color: var(--text-heading); letter-spacing: .12em; text-transform: uppercase; align-self: flex-start; }
+</style>
+</head>
+<body>
+  <div>
+    <div class="gl">Radii</div>
+    <div class="group" style="margin-top:12px">
+      <div class="ra" style="border-radius:var(--radius-sm)"><span class="t">sm</span></div>
+      <div class="ra" style="border-radius:var(--radius-md)"><span class="t">md</span></div>
+      <div class="ra" style="border-radius:var(--radius-lg)"><span class="t">lg</span></div>
+      <div class="ra" style="border-radius:var(--radius-xl)"><span class="t">xl</span></div>
+    </div>
+  </div>
+  <div>
+    <div class="gl">Shadows</div>
+    <div class="group" style="margin-top:12px">
+      <div class="sh" style="box-shadow:var(--shadow-sm)"></div>
+      <div class="sh" style="box-shadow:var(--shadow-md)"></div>
+      <div class="sh" style="box-shadow:var(--shadow-lg)"></div>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,68 @@
+/* ============================================================
+   Rojo y Naranja — Typography tokens
+   Lora carries the editorial / display voice (apartment names, headlines,
+   pull quotes). Montserrat carries everything functional (nav, buttons,
+   body, labels). Nav and small labels use the "Versalita" treatment:
+   all-small-caps Montserrat with generous tracking.
+   ============================================================ */
+
+:root {
+  /* Families */
+  --font-serif: 'Lora', Georgia, 'Times New Roman', serif;
+  --font-sans:  'Montserrat', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  /* Weights */
+  --fw-regular:  400; /* @kind font */
+  --fw-medium:   500; /* @kind font */
+  --fw-semibold: 600; /* @kind font */
+  --fw-bold:     700; /* @kind font */
+
+  /* Type scale (1.25 major-third-ish, tuned for editorial headlines) */
+  --text-2xs:  0.6875rem;  /* 11px — micro labels, registro nº */
+  --text-xs:   0.75rem;    /* 12px — overline / versalita nav   */
+  --text-sm:   0.875rem;   /* 14px — captions, helper text      */
+  --text-base: 1rem;       /* 16px — body                       */
+  --text-md:   1.125rem;   /* 18px — lead body                  */
+  --text-lg:   1.375rem;   /* 22px — card titles                */
+  --text-xl:   1.75rem;    /* 28px — section subheads           */
+  --text-2xl:  2.25rem;    /* 36px — section headings           */
+  --text-3xl:  3rem;       /* 48px — page headings              */
+  --text-4xl:  3.75rem;    /* 60px — hero                       */
+  --text-5xl:  4.75rem;    /* 76px — oversized hero / numerals  */
+
+  /* Line heights */
+  --lh-tight:   1.08; /* @kind font */
+  --lh-snug:    1.25; /* @kind font */
+  --lh-normal:  1.5;  /* @kind font */
+  --lh-relaxed: 1.7;  /* @kind font */
+
+  /* Letter spacing */
+  --ls-tight:    -0.02em; /* @kind font */
+  --ls-normal:   0;       /* @kind font */
+  --ls-wide:     0.08em;  /* @kind font */
+  --ls-wider:    0.18em;  /* @kind font */
+
+  /* Semantic roles */
+  --font-display: var(--font-serif);
+  --font-heading: var(--font-serif);
+  --font-body:    var(--font-sans);
+  --font-ui:      var(--font-sans);
+}
+
+/* ---- Versalita utility: the brand's small-caps navigation style ---- */
+.ryn-versalita {
+  font-family: var(--font-sans);
+  font-weight: var(--fw-medium);
+  font-variant-caps: all-small-caps;
+  letter-spacing: var(--ls-wide);
+  text-transform: lowercase; /* lets small-caps render on mixed-case source */
+}
+
+/* ---- Overline (the "• MORELLA •" lockup, section eyebrows) ---- */
+.ryn-overline {
+  font-family: var(--font-sans);
+  font-weight: var(--fw-semibold);
+  text-transform: uppercase;
+  letter-spacing: var(--ls-wider);
+  font-size: var(--text-xs);
+}

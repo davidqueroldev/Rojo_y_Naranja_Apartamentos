@@ -65,8 +65,8 @@
   --focus-ring: #C25437;
 
   /* --- Typography --- */
-  --font-serif: 'Lora', Georgia, 'Times New Roman', serif;
-  --font-sans:  'Montserrat', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-serif: var(--font-lora, Georgia, serif);
+  --font-sans:  var(--font-montserrat, system-ui, -apple-system, sans-serif);
 
   --fw-regular:  400;
   --fw-medium:   500;
@@ -429,6 +429,32 @@ img { max-width: 100%; display: block; }
 /* Mobile CTA floating button — only on < lg */
 .ryn-mobile-cta { display: block; }
 @media (min-width: 1024px) { .ryn-mobile-cta { display: none; } }
+
+/* Apartment feed alternating layout */
+.ryn-feed-row {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+@media (min-width: 768px) {
+  .ryn-feed-row {
+    flex-direction: var(--feed-dir, row);
+    align-items: center;
+    gap: clamp(40px, 5vw, 64px);
+  }
+}
+
+.ryn-feed-photo {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+@media (min-width: 768px) {
+  .ryn-feed-photo { width: 54%; }
+}
 
 /* Map section: 1 → 2 col */
 .ryn-grid-map {

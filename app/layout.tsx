@@ -6,14 +6,14 @@ const lora = Lora({
   subsets: ['latin'],
   weight: ['400', '500', '600', '700'],
   style: ['normal', 'italic'],
-  variable: '--font-serif',
+  variable: '--font-lora',
   display: 'swap',
 })
 
 const montserrat = Montserrat({
   subsets: ['latin'],
   weight: ['400', '500', '600', '700'],
-  variable: '--font-sans',
+  variable: '--font-montserrat',
   display: 'swap',
 })
 
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="es" className={`${lora.variable} ${montserrat.variable}`}>
+    <html lang="es" className={`${lora.variable} ${montserrat.variable}`} suppressHydrationWarning>
       <body>{children}</body>
     </html>
   )

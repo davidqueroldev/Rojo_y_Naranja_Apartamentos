@@ -13,9 +13,9 @@ Landing de alto impacto visual que convierta visitantes en reservas directas. Ce
 |-------|--------|
 | Sistema de tokens CSS (design system real) | ✅ Completado |
 | Fuentes Lora + Montserrat (next/font) | ✅ Completado |
-| Navbar sticky dark con versalita + mobile drawer | ✅ Completado |
-| Hero con foto real Cloudinary + buscador inline | ✅ Completado |
-| Cards de los 4 apartamentos (fotos reales) | ✅ Completado |
+| Navbar sticky dark con dropdown apartamentos + mobile drawer | ✅ Completado |
+| Hero con foto real Cloudinary (sin buscador inline) | ✅ Completado |
+| Feed individual por apartamento con foto grande alternada (sin precio) | ✅ Completado |
 | Sección WhySection (ink dark) | ✅ Completado |
 | Galería con filtros por tono + lightbox | ✅ Completado |
 | Sección reseñas | ✅ Completado |
@@ -82,9 +82,9 @@ Las clases Tailwind se usan solo para utilidades simples no responsivas.
 ### Componentes en `components/landing/`
 | Componente | Descripción |
 |-----------|-------------|
-| `Navbar.tsx` | Sticky dark, versalita links, mobile drawer, logo Cloudinary |
-| `Hero.tsx` | Foto real Oro como fondo, scrim izquierdo, buscador inline |
-| `ApartmentsSection.tsx` | Grid 1→2→4 cols, ApartmentCard con foto Cloudinary |
+| `Navbar.tsx` | Sticky dark, dropdown apartamentos con anchors individuales, mobile drawer expandido |
+| `Hero.tsx` | Foto real Oro como fondo, scrim izquierdo, título + descripción (sin buscador) |
+| `ApartmentsSection.tsx` | Feed alternado — cada apt. tiene sección propia con `id=slug`, foto grande 54%, description, amenities, CTA |
 | `WhySection.tsx` | Sección ink dark, 4 beneficios con iconos Lucide |
 | `ExperienciasSection.tsx` | 2 cols, lista experiencias, foto real Morella |
 | `GallerySection.tsx` | Filtros por tono, grid fotos reales, lightbox |
