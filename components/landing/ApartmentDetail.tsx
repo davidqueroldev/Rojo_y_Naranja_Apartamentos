@@ -3,13 +3,13 @@ import Image from 'next/image'
 import {
   Wifi, Tv, Bath, ShowerHead, Waves, Flame, BedDouble, Coffee,
   Sun, CookingPot, Wind, UtensilsCrossed, Users,
-  ArrowLeft, CalendarDays,
+  ArrowLeft,
 } from 'lucide-react'
 import { Apartment, apartamentos, toneColor } from '@/lib/data/apartments'
 import { ApartmentCard } from '@/components/ui/ApartmentCard'
 import { Badge } from '@/components/ui/Badge'
-import { Button } from '@/components/ui/Button'
 import { cldUrl } from '@/lib/cloudinary'
+import { BookingWidget } from '@/components/booking/BookingWidget'
 
 const amenityIcon: Record<string, React.ReactNode> = {
   'Wifi':           <Wifi size={18} />,
@@ -119,26 +119,6 @@ export function ApartmentDetail({ apartment: apt }: { apartment: Apartment }) {
               </div>
             </div>
 
-            {/* Calendar placeholder */}
-            <div style={{ marginBottom: 'var(--space-7)' }}>
-              <div className="ryn-overline" style={{ color: 'var(--accent)', marginBottom: 'var(--space-4)' }}>Disponibilidad</div>
-              <div style={{
-                background: 'var(--surface-sunken)', borderRadius: 'var(--radius-lg)',
-                border: '1px solid var(--border)', padding: 'var(--space-6)',
-                display: 'flex', alignItems: 'center', gap: 16, color: 'var(--text-muted)',
-              }}>
-                <CalendarDays size={28} style={{ color: 'var(--accent)', flexShrink: 0 }} />
-                <div>
-                  <div style={{ fontFamily: 'var(--font-ui)', fontWeight: 600, fontSize: 'var(--text-sm)', color: 'var(--text-body)' }}>
-                    Calendario disponible al reservar
-                  </div>
-                  <div style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', marginTop: 2 }}>
-                    Selecciona tus fechas en el formulario de reserva para comprobar disponibilidad en tiempo real.
-                  </div>
-                </div>
-              </div>
-            </div>
-
             {/* Adults-only notice */}
             {!apt.aceptaNinos && (
               <div style={{
@@ -163,57 +143,7 @@ export function ApartmentDetail({ apartment: apt }: { apartment: Apartment }) {
 
           {/* Right: booking sidebar */}
           <div style={{ position: 'sticky', top: 100 }}>
-            <div style={{
-              background: 'var(--surface-card)', border: '1px solid var(--border)',
-              borderRadius: 'var(--radius-xl)', padding: 'var(--space-6)',
-              boxShadow: 'var(--shadow-md)',
-            }}>
-              <div style={{ display: 'flex', alignItems: 'baseline', gap: 6, marginBottom: 'var(--space-5)' }}>
-                <span style={{ fontFamily: 'var(--font-serif)', fontSize: 'var(--text-3xl)', fontWeight: 600, color: 'var(--text-heading)' }}>
-                  {apt.precio}€
-                </span>
-                <span style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', color: 'var(--text-muted)' }}>/noche</span>
-              </div>
-
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginBottom: 'var(--space-5)' }}>
-                {(['Entrada', 'Salida'] as const).map((label) => (
-                  <div key={label}>
-                    <label style={{ fontFamily: 'var(--font-ui)', fontWeight: 600, fontSize: 'var(--text-xs)', letterSpacing: '0.06em', textTransform: 'uppercase', color: 'var(--text-muted)', display: 'block', marginBottom: 6 }}>
-                      {label}
-                    </label>
-                    <input type="date" className="ryn-input" style={{
-                      width: '100%', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-base)',
-                      color: 'var(--text-body)', background: 'var(--surface-card)',
-                      border: '1px solid var(--border-strong)', borderRadius: 'var(--radius-sm)',
-                      padding: '10px 12px', outline: 'none', boxSizing: 'border-box',
-                    }} />
-                  </div>
-                ))}
-                <div>
-                  <label style={{ fontFamily: 'var(--font-ui)', fontWeight: 600, fontSize: 'var(--text-xs)', letterSpacing: '0.06em', textTransform: 'uppercase', color: 'var(--text-muted)', display: 'block', marginBottom: 6 }}>
-                    Personas
-                  </label>
-                  <select className="ryn-input" style={{
-                    width: '100%', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-base)',
-                    color: 'var(--text-body)', background: 'var(--surface-card)',
-                    border: '1px solid var(--border-strong)', borderRadius: 'var(--radius-sm)',
-                    padding: '10px 12px', outline: 'none',
-                  }}>
-                    {Array.from({ length: apt.capacidadMax }, (_, i) => (
-                      <option key={i + 1} value={i + 1}>{i + 1} persona{i > 0 ? 's' : ''}</option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-
-              <Button variant="primary" size="lg" fullWidth href="/login">
-                Reservar ahora
-              </Button>
-
-              <p style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--text-xs)', color: 'var(--text-muted)', textAlign: 'center', margin: 'var(--space-3) 0 0', lineHeight: 1.5 }}>
-                Reserva directa · Sin comisiones · Mejor precio garantizado
-              </p>
-            </div>
+            <BookingWidget apartment={apt} />
           </div>
         </div>
 
