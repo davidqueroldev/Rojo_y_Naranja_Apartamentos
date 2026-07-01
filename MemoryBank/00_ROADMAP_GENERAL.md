@@ -1,7 +1,7 @@
 # 🗺️ ROADMAP GENERAL — Apartamentos Rojo y Naranja
 > **Repositorio:** https://github.com/davidqueroldev/Rojo_y_Naranja_Apartamentos  
 > **Stack:** Next.js 14 · Tailwind CSS · Supabase · Stripe · Vercel · Claude API  
-> **Última actualización:** Junio 2026
+> **Última actualización:** 18 Junio 2026
 
 ---
 
@@ -46,7 +46,7 @@ Estado actual del programa y mapeo con los módulos técnicos.
 | 5 | S1 · Planificación | Completar módulo Full Stack con IA | Formación | ✅ Completada | — |
 | 6 | S1 · Planificación | Primer commit con README y estructura | Código | ✅ Completada | M1 |
 | 7 | S2 · Core | Diseñar y crear BD / modelos | Backend | ✅ Completada | **M2** |
-| 8 | S2 · Core | API REST: endpoints CRUD principales | Backend | 🔄 En progreso | **M2 / M5** |
+| 8 | S2 · Core | API REST: endpoints CRUD principales | Backend | 🔄 En progreso | **M5 / M6** |
 | 9 | S2 · Core | Configurar variables de entorno (.env) | Backend | ✅ Completada | **M1** |
 | 10 | S2 · Core | Tests endpoints Postman/ThunderClient | QA | 🚫 Bloqueada | M13 |
 | 11 | S2 · Core | Documentar rutas API en README | Docs | 🚫 Bloqueada | M13 |
@@ -56,8 +56,8 @@ Estado actual del programa y mapeo con los módulos técnicos.
 | 15 | S3 · Auth | Proteger rutas privadas con middleware | Backend | ✅ Completada | **M3** |
 | 16 | S3 · Auth | Vistas React: Login y Register | Frontend | ✅ Completada | **M3** |
 | 17 | S3 · Auth | Gestión estado global (Context/Redux) | Frontend | ✅ Completada | **M3** |
-| 18 | S3 · Auth | Demo mentoría S3 | Scrum | ⬜ Pendiente | — |
-| 19 | S4 · Mejoras | Funcionalidades complementarias | Código | ⬜ Pendiente | M7 / M8 / M9 |
+| 18 | S3 · Auth | Demo mentoría S3 | Scrum | ✅ Completada | — |
+| 19 | S4 · Mejoras | Funcionalidades complementarias (M5+M6) | Código | 🔄 En progreso | **M5 / M6** |
 | 20 | S4 · Mejoras | Refactoring: limpiar código | QA | ⬜ Pendiente | M13 |
 | 21 | S4 · Mejoras | Mejorar UX: loading, errores, feedback | Frontend | ⬜ Pendiente | M7 / M8 |
 | 22 | S4 · Mejoras | Revisión técnica (Dojo) | Scrum | ⬜ Pendiente | — |
@@ -80,19 +80,19 @@ Estado actual del programa y mapeo con los módulos técnicos.
 
 | # | Módulo | Estado | Sprint programa | Prioridad |
 |---|--------|--------|-----------------|-----------|
-| M1 | Setup & Arquitectura | ✅ Completada | S1 | 🔴 Crítico |
-| M2 | Base de datos (Supabase) | ✅ Completada | S2 | 🔴 Crítico |
-| M3 | Autenticación & Roles | ✅ Completada | S3 | 🔴 Crítico |
-| M4 | Landing Page | ✅ Completada | S2/S4 | 🔴 Crítico |
-| M5 | Reservas & Disponibilidad | ⬜ Pendiente | S2/S4 | 🔴 Crítico |
-| M6 | Pagos con Stripe | ⬜ Pendiente | S4 | 🔴 Crítico |
-| M7 | Panel de usuario | ⬜ Pendiente | S4 | 🟠 Alto |
-| M8 | Dashboard propietario | ⬜ Pendiente | S4 | 🟠 Alto |
-| M9 | Chat híbrido IA/Manual | ⬜ Pendiente | S4 | 🟠 Alto |
-| M10 | Email transaccional | ⬜ Pendiente | S4 | 🟠 Alto |
+| M1 | Setup & Arquitectura | ✅ Completado | S1 | 🔴 Crítico |
+| M2 | Base de datos (Supabase) | ✅ Completado | S2 | 🔴 Crítico |
+| M3 | Autenticación & Roles | ✅ Completado | S3 | 🔴 Crítico |
+| M4 | Landing Page | ✅ Completado | S2/S4 | 🔴 Crítico |
+| M5 | Reservas & Disponibilidad | 🔄 En progreso — **siguiente** | S4 | 🔴 Crítico |
+| M6 | Pagos con Stripe | 🟡 Scaffolded (placeholder) | S4 | 🔴 Crítico |
+| M7 | Panel de usuario | 🟡 Scaffolded (placeholder) | S4 | 🟠 Alto |
+| M8 | Dashboard propietario | 🟡 Scaffolded (placeholder) | S4 | 🟠 Alto |
+| M9 | Chat híbrido IA/Manual | 🟡 Scaffolded (placeholder) | S4 | 🟠 Alto |
+| M10 | Email transaccional | 🔄 Parcial — confirm registro OK; emails reserva pendientes | S4 | 🟠 Alto |
 | M11 | SEO técnico | ⬜ Pendiente | S4/S5 | 🟡 Medio |
 | M12 | Analytics básico | ⬜ Pendiente | S5 | 🟡 Medio |
-| M13 | Testing & QA | ⬜ Pendiente | S2/S5 | 🟡 Medio |
+| M13 | Testing & QA | 🔄 Parcial — E2E auth con Playwright; resto pendiente | S2/S5 | 🟡 Medio |
 | M14 | Despliegue & Go-live | ⬜ Pendiente | S5 | 🔴 Crítico |
 
 ### Árbol de dependencias
@@ -122,9 +122,10 @@ M14 (Deploy) ────────────► Todos completados
 ```
 Semana 1  │ M1 completo · M2 completo · inicio M3         │ S1 ✅ · S2 ✅
 Semana 2  │ M3 completo · M4 completo (fotos reales)      │ S3 ✅ · S2/S4 ✅
-Semana 3  │ M5 + M6 completos · inicio M7/M8              │ S4     ◄── siguiente
+           │ + email confirmación registro (nodemailer)    │
+Semana 3  │ M5 + M6 completos · inicio M7/M8              │ S4     ◄── AHORA
 Semana 4  │ M7 + M8 completos · M9 (chat IA)              │ S4
-Semana 5  │ M10 + M11 + M12 · inicio M13                  │ S5
+Semana 5  │ M10 (completar) + M11 + M12 · inicio M13      │ S5
 Semana 6  │ M13 + M14 · go-live · Demo Day                │ S5 · S6
 ```
 
