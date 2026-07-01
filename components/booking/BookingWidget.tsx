@@ -109,7 +109,19 @@ export function BookingWidget({ apartment: apt }: { apartment: Apartment }) {
       }
       const data = await res.json()
       if (!res.ok) throw new Error(data.error || 'No se pudo crear la reserva')
-      router.push(`/user/reservas/${data.reserva_id}`)
+
+      const checkoutRes = await fetch('/api/checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ reserva_id: data.reserva_id }),
+      })
+      const checkoutData = await checkoutRes.json()
+      if (!checkoutRes.ok || !checkoutData.url) {
+        // La reserva ya se creó; el usuario puede reintentar el pago desde su detalle.
+        router.push(`/user/reservas/${data.reserva_id}`)
+        return
+      }
+      window.location.href = checkoutData.url
     } catch (e) {
       setError(e instanceof Error ? e.message : 'No se pudo crear la reserva')
       setEnviando(false)

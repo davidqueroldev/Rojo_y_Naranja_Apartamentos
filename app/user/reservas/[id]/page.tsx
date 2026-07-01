@@ -1,15 +1,17 @@
 import { notFound } from 'next/navigation'
-import { CalendarDays, Users, MapPin } from 'lucide-react'
+import { CalendarDays, Users, MapPin, CheckCircle2, XCircle } from 'lucide-react'
 import { createClient } from '@/lib/supabase/server'
 import { Badge } from '@/components/ui/Badge'
 import { estadoReserva } from '@/lib/utils/reservas'
 import { formatearPrecio } from '@/lib/utils/precios'
+import { RetryPaymentButton } from '@/components/booking/RetryPaymentButton'
 
 interface Props {
   params: { id: string }
+  searchParams: { pago?: string }
 }
 
-export default async function DetalleReservaPage({ params }: Props) {
+export default async function DetalleReservaPage({ params, searchParams }: Props) {
   const supabase = await createClient()
   const { data: reserva } = await supabase
     .from('reservas')
@@ -50,10 +52,28 @@ export default async function DetalleReservaPage({ params }: Props) {
           </div>
         </div>
 
-        {reserva.estado === 'pendiente_pago' && (
-          <p className="text-sm text-gray-500 mt-4">
-            Tu reserva está registrada pero el pago aún no se ha procesado. Te avisaremos por email en cuanto esté disponible.
-          </p>
+        {searchParams.pago === 'ok' && (
+          <div className="flex items-center gap-2 text-sm text-green-700 bg-green-50 rounded-lg p-3 mt-4">
+            <CheckCircle2 size={16} /> Pago recibido. El propietario confirmará tu reserva en breve.
+          </div>
+        )}
+
+        {searchParams.pago === 'cancelado' && reserva.estado === 'pendiente_pago' && (
+          <div className="mt-4">
+            <div className="flex items-center gap-2 text-sm text-amber-700 bg-amber-50 rounded-lg p-3">
+              <XCircle size={16} /> El pago se canceló. Puedes reintentarlo cuando quieras.
+            </div>
+            <RetryPaymentButton reservaId={reserva.id} />
+          </div>
+        )}
+
+        {!searchParams.pago && reserva.estado === 'pendiente_pago' && (
+          <div className="mt-4">
+            <p className="text-sm text-gray-500 mb-2">
+              Tu reserva está registrada pero el pago aún no se ha procesado.
+            </p>
+            <RetryPaymentButton reservaId={reserva.id} />
+          </div>
         )}
       </div>
     </main>
