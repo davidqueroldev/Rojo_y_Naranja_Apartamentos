@@ -39,7 +39,7 @@ export function Navbar() {
       position: 'sticky',
       top: 0,
       zIndex: 50,
-      background: scrolled ? 'rgba(20,17,15,0.95)' : 'rgba(20,17,15,0.4)',
+      background: scrolled ? 'rgba(20,17,15,0.95)' : 'rgba(20,17,15,0.65)',
       backdropFilter: 'blur(10px)',
       WebkitBackdropFilter: 'blur(10px)',
       borderBottom: scrolled ? '1px solid var(--border-on-dark)' : '1px solid transparent',
@@ -93,45 +93,53 @@ export function Navbar() {
             </button>
 
             {aptsOpen && (
+              // El wrapper arranca justo pegado al botón (top: 100%, sin hueco) para que el
+              // área "hoverable" sea continua; el padding-top interno es lo que crea el
+              // espaciado visual sin abrir un hueco muerto que dispare mouseleave antes de
+              // que el cursor llegue al panel.
               <div style={{
                 position: 'absolute',
-                top: 'calc(100% + 12px)',
+                top: '100%',
                 left: '50%',
                 transform: 'translateX(-50%)',
-                background: 'rgba(20,17,15,0.97)',
-                border: '1px solid var(--border-on-dark)',
-                borderRadius: 'var(--radius-md)',
-                padding: '6px',
-                minWidth: 210,
-                backdropFilter: 'blur(12px)',
-                boxShadow: 'var(--shadow-lg)',
+                paddingTop: 12,
                 zIndex: 100,
               }}>
-                {apartamentos.map(apt => (
-                  <Link
-                    key={apt.slug}
-                    href={`#${apt.slug}`}
-                    onClick={() => setAptsOpen(false)}
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: 10,
-                      padding: '9px 12px',
-                      borderRadius: 'var(--radius-sm)',
-                      textDecoration: 'none',
-                      fontFamily: 'var(--font-ui)',
-                      fontSize: 14,
-                      fontWeight: 500,
-                      color: 'var(--text-on-dark)',
-                      transition: 'background var(--dur-fast) var(--ease-out)',
-                    }}
-                    onMouseEnter={e => (e.currentTarget.style.background = 'rgba(255,255,255,0.07)')}
-                    onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
-                  >
-                    <span style={{ width: 8, height: 8, borderRadius: '50%', background: toneColor[apt.tone], flexShrink: 0 }} />
-                    {apt.nombre}
-                  </Link>
-                ))}
+                <div style={{
+                  background: 'rgba(20,17,15,0.97)',
+                  border: '1px solid var(--border-on-dark)',
+                  borderRadius: 'var(--radius-md)',
+                  padding: '6px',
+                  minWidth: 210,
+                  backdropFilter: 'blur(12px)',
+                  boxShadow: 'var(--shadow-lg)',
+                }}>
+                  {apartamentos.map(apt => (
+                    <Link
+                      key={apt.slug}
+                      href={`#${apt.slug}`}
+                      onClick={() => setAptsOpen(false)}
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 10,
+                        padding: '9px 12px',
+                        borderRadius: 'var(--radius-sm)',
+                        textDecoration: 'none',
+                        fontFamily: 'var(--font-ui)',
+                        fontSize: 14,
+                        fontWeight: 500,
+                        color: 'var(--text-on-dark)',
+                        transition: 'background var(--dur-fast) var(--ease-out)',
+                      }}
+                      onMouseEnter={e => (e.currentTarget.style.background = 'rgba(255,255,255,0.07)')}
+                      onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
+                    >
+                      <span style={{ width: 8, height: 8, borderRadius: '50%', background: toneColor[apt.tone], flexShrink: 0 }} />
+                      {apt.nombre}
+                    </Link>
+                  ))}
+                </div>
               </div>
             )}
           </div>
