@@ -145,10 +145,7 @@ export function BookingWidget({ apartment: apt }: { apartment: Apartment }) {
 
       {step === 1 && (
         <>
-          <div
-            className="ryn-booking-calendar"
-            style={{ marginBottom: 'var(--space-5)', ['--rdp-accent-color' as string]: 'var(--accent)', ['--rdp-accent-background-color' as string]: 'var(--ryn-rojo-soft)' }}
-          >
+          <div className="ryn-daypicker" style={{ marginBottom: 'var(--space-5)' }}>
             {cargandoDisponibilidad ? (
               <div style={{ display: 'flex', alignItems: 'center', gap: 10, color: 'var(--text-muted)', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', padding: 'var(--space-6) 0' }}>
                 <Loader2 size={18} className="ryn-spin" /> Comprobando disponibilidad…
