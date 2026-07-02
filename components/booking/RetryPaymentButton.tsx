@@ -30,7 +30,7 @@ export function RetryPaymentButton({ reservaId }: { reservaId: string }) {
       <Button variant="primary" onClick={reintentar} disabled={cargando}>
         {cargando ? 'Redirigiendo…' : 'Reintentar pago'}
       </Button>
-      {error && <p className="text-sm text-red-600 mt-2">{error}</p>}
+      {error && <p role="alert" className="text-sm text-[var(--ryn-danger)] mt-2">{error}</p>}
     </div>
   )
 }

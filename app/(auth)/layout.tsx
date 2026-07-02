@@ -1,12 +1,16 @@
+import Image from 'next/image'
+
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
-      <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <h1 className="text-center text-3xl font-bold text-red-600">Rojo & Naranja</h1>
-        <p className="mt-1 text-center text-sm text-gray-500">Morella, Castellón</p>
+    <div style={{ minHeight: '100vh', background: 'var(--bg-page)', display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: 'var(--space-6) var(--container-pad)' }}>
+      <div style={{ width: '100%', maxWidth: 420, margin: '0 auto', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        <Image src="/logo-rojo.png" alt="Rojo y Naranja" width={160} height={48} style={{ height: 40, width: 'auto' }} priority />
+        <p style={{ marginTop: 'var(--space-2)', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', color: 'var(--text-muted)' }}>
+          Morella, Castellón
+        </p>
       </div>
-      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="bg-white py-8 px-4 shadow-sm rounded-lg sm:px-10">
+      <div style={{ width: '100%', maxWidth: 420, margin: 'var(--space-6) auto 0' }}>
+        <div style={{ background: 'var(--surface-card)', border: '1px solid var(--border)', borderRadius: 'var(--radius-lg)', boxShadow: 'var(--shadow-card)', padding: 'var(--space-6) var(--space-5)' }}>
           {children}
         </div>
       </div>

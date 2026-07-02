@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
 import { Badge } from '@/components/ui/Badge'
 import { ModoIAGlobalToggle } from '@/components/owner/ModoIAGlobalToggle'
+import { EmptyState } from '@/components/ui/EmptyState'
 
 export default async function OwnerChatListPage() {
   const supabase = await createClient()
@@ -21,24 +22,24 @@ export default async function OwnerChatListPage() {
   return (
     <main className="min-h-screen p-8">
       <div className="max-w-2xl mx-auto">
-        <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center justify-between flex-wrap gap-3 mb-6">
           <h1 className="text-2xl font-bold">Conversaciones</h1>
           <ModoIAGlobalToggle />
         </div>
 
         {lista.length === 0 ? (
-          <p className="text-sm text-gray-500">Todavía no hay conversaciones.</p>
+          <EmptyState title="Todavía no hay conversaciones" description="Cuando un huésped escriba, aparecerá aquí." />
         ) : (
           <div className="flex flex-col gap-2">
             {lista.map((c) => (
               <Link
                 key={c.id}
                 href={`/owner/chat/${c.id}`}
-                className="flex items-center justify-between rounded-lg border border-gray-200 p-4 hover:border-gray-400 transition-colors"
+                className="flex items-center justify-between rounded-lg border border-[var(--border)] p-4 hover:border-[var(--border-strong)] transition-colors"
               >
                 <div className="min-w-0">
                   <div className="font-medium">{c.profiles?.nombre ?? 'Usuario'}</div>
-                  <div className="text-sm text-gray-500 truncate max-w-xs">{c.ultimo?.contenido ?? 'Sin mensajes'}</div>
+                  <div className="text-sm text-[var(--text-muted)] truncate max-w-xs">{c.ultimo?.contenido ?? 'Sin mensajes'}</div>
                 </div>
                 <div className="flex items-center gap-2 shrink-0">
                   {c.modo_ia && <Badge tone="neutral" variant="soft">IA</Badge>}

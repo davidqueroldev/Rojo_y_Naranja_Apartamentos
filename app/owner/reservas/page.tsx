@@ -5,6 +5,8 @@ import { estadoReserva } from '@/lib/utils/reservas'
 import { formatearPrecio } from '@/lib/utils/precios'
 import { apartamentos as apartamentosEstaticos } from '@/lib/data/apartments'
 import { ReservaAccionesButtons } from '@/components/owner/ReservaAccionesButtons'
+import { EmptyState } from '@/components/ui/EmptyState'
+import { Card } from '@/components/ui/Card'
 
 const ESTADOS = ['pendiente_pago', 'pendiente_confirmacion', 'confirmada', 'completada', 'anulada'] as const
 const POR_PAGINA = 20
@@ -58,14 +60,14 @@ export default async function OwnerReservasPage({ searchParams }: Props) {
         <h1 className="text-2xl font-bold mb-4">Gestión de reservas</h1>
 
         <div className="flex flex-wrap gap-2 mb-2">
-          <Link href={hrefConFiltro({ estado: undefined, page: undefined })} className={`text-xs px-3 py-1.5 rounded-full border ${!searchParams.estado ? 'bg-gray-900 text-white border-gray-900' : 'border-gray-300 text-gray-600'}`}>
+          <Link href={hrefConFiltro({ estado: undefined, page: undefined })} className={`text-xs px-3 py-1.5 rounded-full border ${!searchParams.estado ? 'bg-[var(--ryn-ink)] text-white border-[var(--ryn-ink)]' : 'border-[var(--border-strong)] text-[var(--text-muted)]'}`}>
             Todos los estados
           </Link>
           {ESTADOS.map((e) => (
             <Link
               key={e}
               href={hrefConFiltro({ estado: e, page: undefined })}
-              className={`text-xs px-3 py-1.5 rounded-full border ${searchParams.estado === e ? 'bg-gray-900 text-white border-gray-900' : 'border-gray-300 text-gray-600'}`}
+              className={`text-xs px-3 py-1.5 rounded-full border ${searchParams.estado === e ? 'bg-[var(--ryn-ink)] text-white border-[var(--ryn-ink)]' : 'border-[var(--border-strong)] text-[var(--text-muted)]'}`}
             >
               {estadoReserva(e).label}
             </Link>
@@ -73,14 +75,14 @@ export default async function OwnerReservasPage({ searchParams }: Props) {
         </div>
 
         <div className="flex flex-wrap gap-2 mb-6">
-          <Link href={hrefConFiltro({ apartamento: undefined, page: undefined })} className={`text-xs px-3 py-1.5 rounded-full border ${!searchParams.apartamento ? 'bg-gray-900 text-white border-gray-900' : 'border-gray-300 text-gray-600'}`}>
+          <Link href={hrefConFiltro({ apartamento: undefined, page: undefined })} className={`text-xs px-3 py-1.5 rounded-full border ${!searchParams.apartamento ? 'bg-[var(--ryn-ink)] text-white border-[var(--ryn-ink)]' : 'border-[var(--border-strong)] text-[var(--text-muted)]'}`}>
             Todos los apartamentos
           </Link>
           {apartamentosEstaticos.map((a) => (
             <Link
               key={a.slug}
               href={hrefConFiltro({ apartamento: a.slug, page: undefined })}
-              className={`text-xs px-3 py-1.5 rounded-full border ${searchParams.apartamento === a.slug ? 'bg-gray-900 text-white border-gray-900' : 'border-gray-300 text-gray-600'}`}
+              className={`text-xs px-3 py-1.5 rounded-full border ${searchParams.apartamento === a.slug ? 'bg-[var(--ryn-ink)] text-white border-[var(--ryn-ink)]' : 'border-[var(--border-strong)] text-[var(--text-muted)]'}`}
             >
               {a.nombre}
             </Link>
@@ -91,54 +93,78 @@ export default async function OwnerReservasPage({ searchParams }: Props) {
           {searchParams.estado && <input type="hidden" name="estado" value={searchParams.estado} />}
           {searchParams.apartamento && <input type="hidden" name="apartamento" value={searchParams.apartamento} />}
           <label className="flex flex-col gap-1">
-            <span className="text-xs text-gray-400 uppercase">Desde</span>
-            <input type="date" name="desde" defaultValue={searchParams.desde} className="border border-gray-300 rounded px-2 py-1" />
+            <span className="text-xs text-[var(--text-muted)] uppercase">Desde</span>
+            <input type="date" name="desde" defaultValue={searchParams.desde} className="ryn-input border border-[var(--border-strong)] rounded px-2 py-1.5" />
           </label>
           <label className="flex flex-col gap-1">
-            <span className="text-xs text-gray-400 uppercase">Hasta</span>
-            <input type="date" name="hasta" defaultValue={searchParams.hasta} className="border border-gray-300 rounded px-2 py-1" />
+            <span className="text-xs text-[var(--text-muted)] uppercase">Hasta</span>
+            <input type="date" name="hasta" defaultValue={searchParams.hasta} className="ryn-input border border-[var(--border-strong)] rounded px-2 py-1.5" />
           </label>
-          <button type="submit" className="px-3 py-1.5 rounded bg-gray-900 text-white text-sm">Filtrar</button>
+          <button type="submit" className="px-3 py-1.5 rounded bg-[var(--ryn-ink)] text-white text-sm">Filtrar</button>
         </form>
 
         {!reservas || reservas.length === 0 ? (
-          <p className="text-sm text-gray-500">No hay reservas con estos filtros.</p>
+          <EmptyState title="No hay reservas con estos filtros" description="Prueba a cambiar el estado, el apartamento o el rango de fechas." />
         ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm border-collapse">
-              <thead>
-                <tr className="text-left text-gray-400 uppercase text-xs border-b border-gray-200">
-                  <th className="py-2 pr-4">Código</th>
-                  <th className="py-2 pr-4">Apartamento</th>
-                  <th className="py-2 pr-4">Usuario</th>
-                  <th className="py-2 pr-4">Check-in</th>
-                  <th className="py-2 pr-4">Check-out</th>
-                  <th className="py-2 pr-4">Estado</th>
-                  <th className="py-2 pr-4">Importe</th>
-                  <th className="py-2 pr-4">Acciones</th>
-                </tr>
-              </thead>
-              <tbody>
-                {reservas.map((r) => {
-                  const estado = estadoReserva(r.estado)
-                  return (
-                    <tr key={r.id} className="border-b border-gray-100">
-                      <td className="py-2 pr-4">
-                        <Link href={`/owner/reservas/${r.id}`} className="text-red-700 hover:underline">{r.codigo}</Link>
-                      </td>
-                      <td className="py-2 pr-4">{r.apartamentos?.nombre}</td>
-                      <td className="py-2 pr-4">{r.profiles?.nombre ?? '—'}</td>
-                      <td className="py-2 pr-4">{r.fecha_checkin}</td>
-                      <td className="py-2 pr-4">{r.fecha_checkout}</td>
-                      <td className="py-2 pr-4"><Badge tone={estado.tone} variant="soft">{estado.label}</Badge></td>
-                      <td className="py-2 pr-4">{formatearPrecio(r.precio_total)}</td>
-                      <td className="py-2 pr-4"><ReservaAccionesButtons id={r.id} estado={r.estado} /></td>
-                    </tr>
-                  )
-                })}
-              </tbody>
-            </table>
-          </div>
+          <>
+            {/* Vista tabla — sm y superior */}
+            <div className="hidden sm:block overflow-x-auto">
+              <table className="w-full text-sm border-collapse">
+                <thead>
+                  <tr className="text-left text-[var(--text-muted)] uppercase text-xs border-b border-[var(--border)]">
+                    <th className="py-2 pr-4">Código</th>
+                    <th className="py-2 pr-4">Apartamento</th>
+                    <th className="py-2 pr-4">Usuario</th>
+                    <th className="py-2 pr-4">Check-in</th>
+                    <th className="py-2 pr-4">Check-out</th>
+                    <th className="py-2 pr-4">Estado</th>
+                    <th className="py-2 pr-4">Importe</th>
+                    <th className="py-2 pr-4">Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {reservas.map((r) => {
+                    const estado = estadoReserva(r.estado)
+                    return (
+                      <tr key={r.id} className="border-b border-[var(--border)]">
+                        <td className="py-2 pr-4">
+                          <Link href={`/owner/reservas/${r.id}`} className="text-[var(--accent)] hover:underline">{r.codigo}</Link>
+                        </td>
+                        <td className="py-2 pr-4">{r.apartamentos?.nombre}</td>
+                        <td className="py-2 pr-4">{r.profiles?.nombre ?? '—'}</td>
+                        <td className="py-2 pr-4">{r.fecha_checkin}</td>
+                        <td className="py-2 pr-4">{r.fecha_checkout}</td>
+                        <td className="py-2 pr-4"><Badge tone={estado.tone} variant="soft">{estado.label}</Badge></td>
+                        <td className="py-2 pr-4">{formatearPrecio(r.precio_total)}</td>
+                        <td className="py-2 pr-4"><ReservaAccionesButtons id={r.id} estado={r.estado} /></td>
+                      </tr>
+                    )
+                  })}
+                </tbody>
+              </table>
+            </div>
+
+            {/* Vista tarjetas — móvil */}
+            <div className="flex flex-col gap-3 sm:hidden">
+              {reservas.map((r) => {
+                const estado = estadoReserva(r.estado)
+                return (
+                  <Card key={r.id} padding="sm">
+                    <div className="flex items-center justify-between mb-2">
+                      <Link href={`/owner/reservas/${r.id}`} className="font-semibold text-[var(--accent)]">{r.codigo}</Link>
+                      <Badge tone={estado.tone} variant="soft">{estado.label}</Badge>
+                    </div>
+                    <div className="text-sm mb-1">{r.apartamentos?.nombre} · {r.profiles?.nombre ?? '—'}</div>
+                    <div className="text-sm text-[var(--text-muted)] mb-2">{r.fecha_checkin} → {r.fecha_checkout}</div>
+                    <div className="flex items-center justify-between">
+                      <span className="font-semibold">{formatearPrecio(r.precio_total)}</span>
+                      <ReservaAccionesButtons id={r.id} estado={r.estado} />
+                    </div>
+                  </Card>
+                )
+              })}
+            </div>
+          </>
         )}
 
         {totalPaginas > 1 && (
@@ -147,7 +173,7 @@ export default async function OwnerReservasPage({ searchParams }: Props) {
               <Link
                 key={p}
                 href={hrefConFiltro({ page: String(p) })}
-                className={`px-2 py-1 rounded ${p === page ? 'bg-gray-900 text-white' : 'text-gray-600 border border-gray-300'}`}
+                className={`px-2 py-1 rounded ${p === page ? 'bg-[var(--ryn-ink)] text-white' : 'text-[var(--text-muted)] border border-[var(--border-strong)]'}`}
               >
                 {p}
               </Link>

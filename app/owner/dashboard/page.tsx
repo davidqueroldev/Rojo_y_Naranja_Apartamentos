@@ -8,6 +8,7 @@ import { formatearPrecio } from '@/lib/utils/precios'
 import { fechasEnRango } from '@/lib/utils/reservas'
 import { OwnerCalendar, type CalendarioEvento } from '@/components/owner/OwnerCalendar'
 import { GraficoOcupacion } from '@/components/owner/GraficoOcupacion'
+import { Card } from '@/components/ui/Card'
 
 interface Props {
   searchParams: { mes?: string }
@@ -100,41 +101,41 @@ export default async function OwnerDashboardPage({ searchParams }: Props) {
         <div className="flex items-center justify-between mb-6">
           <h1 className="text-2xl font-bold">Panel propietario</h1>
           <div className="flex items-center gap-2 text-sm">
-            <Link href={`/owner/dashboard?mes=${mesAnteriorParam}`} className="p-1.5 rounded border border-gray-200 hover:bg-gray-50" aria-label="Mes anterior">
+            <Link href={`/owner/dashboard?mes=${mesAnteriorParam}`} className="p-1.5 rounded border border-[var(--border)] hover:bg-[var(--surface-sunken)]" aria-label="Mes anterior">
               <ChevronLeft size={16} />
             </Link>
             <span className="font-medium capitalize min-w-32 text-center">{format(ahora, 'MMMM yyyy', { locale: es })}</span>
-            <Link href={`/owner/dashboard?mes=${mesSiguienteParam}`} className="p-1.5 rounded border border-gray-200 hover:bg-gray-50" aria-label="Mes siguiente">
+            <Link href={`/owner/dashboard?mes=${mesSiguienteParam}`} className="p-1.5 rounded border border-[var(--border)] hover:bg-[var(--surface-sunken)]" aria-label="Mes siguiente">
               <ChevronRight size={16} />
             </Link>
           </div>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
-          <div className="rounded-lg border border-gray-200 p-4">
-            <div className="flex items-center gap-2 text-gray-400 text-xs uppercase tracking-wide mb-1">
+          <Card padding="sm">
+            <div className="flex items-center gap-2 text-[var(--text-muted)] text-xs uppercase tracking-wide mb-1">
               <CalendarCheck size={14} /> Reservas del mes
             </div>
             <div className="text-2xl font-bold">{reservasDelMes?.length ?? 0}</div>
-            <div className="text-xs text-gray-500 mt-1">
+            <div className="text-xs text-[var(--text-muted)] mt-1">
               {porEstado.confirmadas} confirmadas · {porEstado.pendientes} pendientes · {porEstado.anuladas} anuladas
             </div>
-          </div>
-          <div className="rounded-lg border border-gray-200 p-4">
-            <div className="flex items-center gap-2 text-gray-400 text-xs uppercase tracking-wide mb-1">
+          </Card>
+          <Card padding="sm">
+            <div className="flex items-center gap-2 text-[var(--text-muted)] text-xs uppercase tracking-wide mb-1">
               <TrendingUp size={14} /> Ingresos del mes
             </div>
             <div className="text-2xl font-bold">{formatearPrecio(ingresosDelMes)}</div>
-          </div>
-          <div className="rounded-lg border border-gray-200 p-4">
-            <div className="flex items-center gap-2 text-gray-400 text-xs uppercase tracking-wide mb-1">
+          </Card>
+          <Card padding="sm">
+            <div className="flex items-center gap-2 text-[var(--text-muted)] text-xs uppercase tracking-wide mb-1">
               <Trophy size={14} /> Más reservado
             </div>
             <div className="text-lg font-bold">{masReservado ? masReservado[0] : '—'}</div>
-            {masReservado && <div className="text-xs text-gray-500 mt-1">{masReservado[1]} reserva{masReservado[1] > 1 ? 's' : ''}</div>}
-          </div>
-          <div className="rounded-lg border border-gray-200 p-4">
-            <div className="flex items-center gap-2 text-gray-400 text-xs uppercase tracking-wide mb-1">
+            {masReservado && <div className="text-xs text-[var(--text-muted)] mt-1">{masReservado[1]} reserva{masReservado[1] > 1 ? 's' : ''}</div>}
+          </Card>
+          <Card padding="sm">
+            <div className="flex items-center gap-2 text-[var(--text-muted)] text-xs uppercase tracking-wide mb-1">
               <Percent size={14} /> Ocupación media
             </div>
             <div className="text-2xl font-bold">
@@ -142,17 +143,17 @@ export default async function OwnerDashboardPage({ searchParams }: Props) {
                 ? Math.round(ocupacionPorApartamento.reduce((s, o) => s + o.porcentaje, 0) / ocupacionPorApartamento.length)
                 : 0}%
             </div>
-          </div>
+          </Card>
         </div>
 
         {pendientes && pendientes.length > 0 && (
-          <div className="mb-6 rounded-lg border border-amber-200 bg-amber-50 p-4">
-            <div className="flex items-center gap-2 text-amber-800 font-semibold text-sm mb-2">
+          <div className="mb-6 rounded-lg p-4" style={{ border: '1px solid #EDDCB0', background: '#F7ECD6' }}>
+            <div className="flex items-center gap-2 font-semibold text-sm mb-2" style={{ color: '#8A5E14' }}>
               <AlertCircle size={16} /> {pendientes.length} reserva{pendientes.length > 1 ? 's' : ''} pendiente{pendientes.length > 1 ? 's' : ''} de confirmación
             </div>
             <div className="flex flex-col gap-1">
               {pendientes.map((p) => (
-                <Link key={p.id} href={`/owner/reservas/${p.id}`} className="text-sm text-amber-700 hover:underline">
+                <Link key={p.id} href={`/owner/reservas/${p.id}`} className="text-sm hover:underline" style={{ color: '#8A5E14' }}>
                   {p.codigo} — {p.apartamentos?.nombre} — {p.fecha_checkin}
                 </Link>
               ))}
@@ -160,15 +161,15 @@ export default async function OwnerDashboardPage({ searchParams }: Props) {
           </div>
         )}
 
-        <h2 className="text-sm font-semibold uppercase tracking-wide text-gray-400 mb-2">Ocupación por apartamento</h2>
-        <div className="rounded-lg border border-gray-200 p-4 mb-6">
+        <h2 className="text-sm font-semibold uppercase tracking-wide text-[var(--text-muted)] mb-2">Ocupación por apartamento</h2>
+        <Card padding="sm" className="mb-6">
           <GraficoOcupacion data={ocupacionPorApartamento} />
-        </div>
+        </Card>
 
-        <h2 className="text-sm font-semibold uppercase tracking-wide text-gray-400 mb-2">Calendario global</h2>
-        <div className="rounded-lg border border-gray-200 p-4">
+        <h2 className="text-sm font-semibold uppercase tracking-wide text-[var(--text-muted)] mb-2">Calendario global</h2>
+        <Card padding="sm">
           <OwnerCalendar events={eventos} />
-        </div>
+        </Card>
       </div>
     </main>
   )

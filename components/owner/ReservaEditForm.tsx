@@ -47,31 +47,31 @@ export function ReservaEditForm({ reservaId, fechaCheckin, fechaCheckout, numHue
   }
 
   return (
-    <form onSubmit={guardar} className="rounded-lg border border-gray-200 p-5 flex flex-col gap-3 mt-4">
+    <form onSubmit={guardar} className="rounded-lg border border-[var(--border)] p-5 flex flex-col gap-3 mt-4">
       <h2 className="font-semibold text-sm">Modificar reserva</h2>
       <div className="grid grid-cols-2 gap-3">
         <label className="flex flex-col gap-1 text-sm">
-          <span className="text-xs text-gray-400 uppercase">Check-in</span>
-          <input type="date" value={checkin} onChange={(e) => setCheckin(e.target.value)} className="border border-gray-300 rounded px-2 py-1" />
+          <span className="text-xs text-[var(--text-muted)] uppercase">Check-in</span>
+          <input type="date" value={checkin} onChange={(e) => setCheckin(e.target.value)} className="ryn-input border border-[var(--border-strong)] rounded px-2 py-1" />
         </label>
         <label className="flex flex-col gap-1 text-sm">
-          <span className="text-xs text-gray-400 uppercase">Check-out</span>
-          <input type="date" value={checkout} onChange={(e) => setCheckout(e.target.value)} className="border border-gray-300 rounded px-2 py-1" />
+          <span className="text-xs text-[var(--text-muted)] uppercase">Check-out</span>
+          <input type="date" value={checkout} onChange={(e) => setCheckout(e.target.value)} className="ryn-input border border-[var(--border-strong)] rounded px-2 py-1" />
         </label>
       </div>
       <label className="flex flex-col gap-1 text-sm">
-        <span className="text-xs text-gray-400 uppercase">Huéspedes</span>
-        <input type="number" min={1} value={huespedes} onChange={(e) => setHuespedes(Number(e.target.value))} className="border border-gray-300 rounded px-2 py-1 w-24" />
+        <span className="text-xs text-[var(--text-muted)] uppercase">Huéspedes</span>
+        <input type="number" min={1} value={huespedes} onChange={(e) => setHuespedes(Number(e.target.value))} className="ryn-input border border-[var(--border-strong)] rounded px-2 py-1 w-24" />
       </label>
       <label className="flex flex-col gap-1 text-sm">
-        <span className="text-xs text-gray-400 uppercase">Nota interna</span>
-        <textarea value={notas} onChange={(e) => setNotas(e.target.value)} className="border border-gray-300 rounded px-2 py-1" rows={2} />
+        <span className="text-xs text-[var(--text-muted)] uppercase">Nota interna</span>
+        <textarea value={notas} onChange={(e) => setNotas(e.target.value)} className="ryn-input border border-[var(--border-strong)] rounded px-2 py-1" rows={2} />
       </label>
       <div className="flex items-center gap-3">
-        <button type="submit" disabled={guardando} className="px-3 py-1.5 rounded bg-gray-900 text-white text-sm disabled:opacity-50">
+        <button type="submit" disabled={guardando} className="px-3 py-1.5 rounded bg-[var(--ryn-ink)] text-white text-sm disabled:opacity-50">
           {guardando ? 'Guardando…' : 'Guardar cambios'}
         </button>
-        {mensaje && <span className="text-sm text-gray-500">{mensaje}</span>}
+        {mensaje && <span className="text-sm text-[var(--text-muted)]">{mensaje}</span>}
       </div>
     </form>
   )

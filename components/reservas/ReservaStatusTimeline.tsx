@@ -17,7 +17,7 @@ const ORDEN: Record<string, number> = {
 export function ReservaStatusTimeline({ estado }: { estado: string }) {
   if (estado === 'anulada') {
     return (
-      <div className="flex items-center gap-2 text-sm text-red-700 bg-red-50 rounded-lg p-3">
+      <div className="flex items-center gap-2 text-sm rounded-lg p-3" style={{ color: 'var(--ryn-rojo-dark)', background: 'var(--ryn-rojo-soft)' }}>
         <XCircle size={16} /> Esta reserva fue anulada.
       </div>
     )
@@ -32,11 +32,11 @@ export function ReservaStatusTimeline({ estado }: { estado: string }) {
         return (
           <div key={paso.key} className="flex items-center gap-2 text-sm">
             {completado ? (
-              <CheckCircle2 size={18} className="text-green-600 shrink-0" />
+              <CheckCircle2 size={18} className="shrink-0" style={{ color: 'var(--ryn-success)' }} />
             ) : (
-              <Circle size={18} className="text-gray-300 shrink-0" />
+              <Circle size={18} className="shrink-0" style={{ color: 'var(--ryn-stone-2)' }} />
             )}
-            <span className={completado ? 'text-gray-900 font-medium' : 'text-gray-400'}>
+            <span className={completado ? 'font-medium' : ''} style={{ color: completado ? 'var(--text-heading)' : 'var(--text-muted)' }}>
               {paso.label}
             </span>
           </div>

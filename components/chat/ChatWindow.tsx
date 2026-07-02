@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { Send, Sparkles } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
+import { Badge } from '@/components/ui/Badge'
 
 interface Mensaje {
   id: string
@@ -21,6 +22,7 @@ export function ChatWindow({
   modoIaInicial?: boolean
 }) {
   const [mensajes, setMensajes] = useState<Mensaje[]>([])
+  const [cargandoHistorial, setCargandoHistorial] = useState(true)
   const [texto, setTexto] = useState('')
   const [enviando, setEnviando] = useState(false)
   const [modoIa, setModoIa] = useState(!!modoIaInicial)
@@ -46,6 +48,7 @@ export function ChatWindow({
         .order('created_at', { ascending: true })
       if (cancelado) return
       setMensajes((data as Mensaje[]) ?? [])
+      setCargandoHistorial(false)
 
       channel = supabase
         .channel(`mensajes-${conversacionId}`)
@@ -128,48 +131,65 @@ export function ChatWindow({
   }
 
   return (
-    <div className="flex flex-col h-[70vh] border border-gray-200 rounded-lg overflow-hidden">
+    <div className="flex flex-col h-[70vh] rounded-lg overflow-hidden" style={{ border: '1px solid var(--border)' }}>
       {isOwner && (
-        <div className="flex items-center justify-between px-4 py-2 border-b border-gray-200 text-sm bg-white">
+        <div className="flex items-center justify-between px-4 py-2 text-sm" style={{ borderBottom: '1px solid var(--border)', background: 'var(--surface-card)' }}>
           <span className="font-medium">Modo de respuesta</span>
-          <button
-            onClick={alternarModoIa}
-            className={`px-3 py-1 rounded-full text-xs font-medium ${modoIa ? 'bg-purple-100 text-purple-700' : 'bg-gray-100 text-gray-600'}`}
-          >
-            {modoIa ? 'IA activa' : 'Manual'}
+          <button onClick={alternarModoIa} aria-pressed={modoIa}>
+            <Badge tone={modoIa ? 'plata' : 'neutral'} variant="soft">{modoIa ? 'IA activa' : 'Manual'}</Badge>
           </button>
         </div>
       )}
       {!isOwner && modoIa && (
-        <div className="flex items-center gap-1 px-4 py-2 border-b border-gray-100 text-xs text-purple-600 bg-purple-50">
+        <div className="flex items-center gap-1 px-4 py-2 text-xs" style={{ borderBottom: '1px solid var(--border)', color: 'var(--ryn-plata-dark)', background: 'var(--ryn-plata-soft)' }}>
           <Sparkles size={12} /> Respondiendo automáticamente
         </div>
       )}
 
-      <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-2 bg-gray-50">
-        {mensajes.map((m) => {
-          const esPropio = isOwner ? m.remitente === 'owner' : m.remitente === 'user'
-          const esIA = m.remitente === 'ia'
-          return (
-            <div
-              key={m.id}
-              className={`max-w-[75%] rounded-lg px-3 py-2 text-sm ${
-                esPropio ? 'self-end bg-red-700 text-white' : esIA ? 'self-start bg-purple-50 border border-purple-200 text-gray-800' : 'self-start bg-white border border-gray-200 text-gray-800'
-              }`}
-            >
-              {esIA && (
-                <div className="text-[10px] font-semibold text-purple-600 mb-1 flex items-center gap-1">
-                  <Sparkles size={10} /> IA
-                </div>
-              )}
-              {m.contenido}
-            </div>
-          )
-        })}
+      <div
+        role="log"
+        aria-live="polite"
+        aria-busy={cargandoHistorial}
+        className="flex-1 overflow-y-auto p-4 flex flex-col gap-2"
+        style={{ background: 'var(--surface-sunken)' }}
+      >
+        {cargandoHistorial ? (
+          <div className="flex-1 flex items-center justify-center text-sm" style={{ color: 'var(--text-muted)' }}>
+            Cargando conversación…
+          </div>
+        ) : mensajes.length === 0 ? (
+          <div className="flex-1 flex items-center justify-center text-sm text-center" style={{ color: 'var(--text-muted)' }}>
+            Todavía no hay mensajes. Escribe el primero.
+          </div>
+        ) : (
+          mensajes.map((m) => {
+            const esPropio = isOwner ? m.remitente === 'owner' : m.remitente === 'user'
+            const esIA = m.remitente === 'ia'
+            return (
+              <div
+                key={m.id}
+                className="max-w-[75%] rounded-lg px-3 py-2 text-sm"
+                style={{
+                  alignSelf: esPropio ? 'flex-end' : 'flex-start',
+                  background: esPropio ? 'var(--accent)' : esIA ? 'var(--ryn-plata-soft)' : 'var(--surface-card)',
+                  color: esPropio ? '#fff' : 'var(--text-body)',
+                  border: !esPropio ? `1px solid ${esIA ? 'var(--ryn-plata)' : 'var(--border)'}` : 'none',
+                }}
+              >
+                {esIA && (
+                  <div className="text-[10px] font-semibold mb-1 flex items-center gap-1" style={{ color: 'var(--ryn-plata-dark)' }}>
+                    <Sparkles size={10} /> IA
+                  </div>
+                )}
+                {m.contenido}
+              </div>
+            )
+          })
+        )}
         <div ref={finRef} />
       </div>
 
-      <div className="flex items-center gap-2 p-3 border-t border-gray-200 bg-white">
+      <div className="flex items-center gap-2 p-3" style={{ borderTop: '1px solid var(--border)', background: 'var(--surface-card)' }}>
         <input
           value={texto}
           onChange={(e) => setTexto(e.target.value)}
@@ -177,12 +197,15 @@ export function ChatWindow({
             if (e.key === 'Enter') enviar()
           }}
           placeholder="Escribe un mensaje…"
-          className="flex-1 border border-gray-300 rounded-full px-4 py-2 text-sm outline-none focus:border-gray-400"
+          aria-label="Mensaje"
+          className="ryn-input flex-1 rounded-full px-4 py-2 text-sm outline-none"
+          style={{ border: '1px solid var(--border-strong)' }}
         />
         <button
           onClick={enviar}
           disabled={enviando || !texto.trim()}
-          className="p-2 rounded-full bg-red-700 text-white disabled:opacity-50"
+          className="p-2 rounded-full text-white disabled:opacity-50"
+          style={{ background: 'var(--accent)' }}
           aria-label="Enviar"
         >
           <Send size={16} />

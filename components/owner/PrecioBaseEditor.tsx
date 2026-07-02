@@ -30,7 +30,7 @@ export function PrecioBaseEditor({ apartamentoId, nombre, precioActual }: { apar
   }
 
   return (
-    <div className="flex items-center justify-between rounded-lg border border-gray-200 p-3">
+    <div className="flex items-center justify-between rounded-lg border border-[var(--border)] p-3">
       <span className="font-medium text-sm">{nombre}</span>
       <div className="flex items-center gap-2">
         <input
@@ -39,13 +39,13 @@ export function PrecioBaseEditor({ apartamentoId, nombre, precioActual }: { apar
           step="0.01"
           value={valor}
           onChange={(e) => setValor(Number(e.target.value))}
-          className="border border-gray-300 rounded px-2 py-1 w-24 text-sm"
+          className="ryn-input border border-[var(--border-strong)] rounded px-2 py-1 w-24 text-sm"
         />
-        <span className="text-sm text-gray-400">€/noche</span>
-        <button onClick={guardar} disabled={guardando || valor === precioActual} className="text-xs px-2 py-1 rounded bg-gray-900 text-white disabled:opacity-40">
+        <span className="text-sm text-[var(--text-muted)]">€/noche</span>
+        <button onClick={guardar} disabled={guardando || valor === precioActual} className="text-xs px-2 py-1 rounded bg-[var(--ryn-ink)] text-white disabled:opacity-40">
           {guardando ? '…' : 'Guardar'}
         </button>
-        {mensaje && <span className="text-xs text-gray-400">{mensaje}</span>}
+        {mensaje && <span className="text-xs text-[var(--text-muted)]">{mensaje}</span>}
       </div>
     </div>
   )

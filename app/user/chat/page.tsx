@@ -28,7 +28,7 @@ export default async function UserChatPage({ searchParams }: Props) {
     if (error || !nueva) {
       return (
         <main className="min-h-screen p-8">
-          <p className="text-sm text-red-600">No se pudo abrir el chat. Inténtalo de nuevo.</p>
+          <p role="alert" className="text-sm text-[var(--ryn-danger)]">No se pudo abrir el chat. Inténtalo de nuevo.</p>
         </main>
       )
     }
