@@ -90,13 +90,15 @@ export function BloqueoManager({ apartamentoId, bloqueos }: { apartamentoId: str
       <div>
         <h2 className="text-sm font-semibold uppercase tracking-wide text-[var(--text-muted)] mb-2">Nuevo bloqueo</h2>
         <div className="rounded-lg border border-[var(--border)] p-4">
-          <DayPicker
-            mode="range"
-            locale={es}
-            selected={range}
-            onSelect={setRange}
-            disabled={[{ before: new Date() }, (date) => fechasBloqueadas.has(fmt(date))]}
-          />
+          <div className="ryn-daypicker">
+            <DayPicker
+              mode="range"
+              locale={es}
+              selected={range}
+              onSelect={setRange}
+              disabled={[{ before: new Date() }, (date) => fechasBloqueadas.has(fmt(date))]}
+            />
+          </div>
           <input
             type="text"
             placeholder="Motivo (mantenimiento, uso propietario…)"

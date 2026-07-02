@@ -474,8 +474,19 @@ img { max-width: 100%; display: block; }
 @media (min-width: 640px)  { .ryn-grid-others { grid-template-columns: repeat(2, 1fr); } }
 @media (min-width: 1024px) { .ryn-grid-others { grid-template-columns: repeat(3, 1fr); } }
 
-/* Booking widget */
-.ryn-booking-calendar .rdp-root { font-family: var(--font-ui); margin: 0; width: 100%; }
+/* Calendario (react-day-picker) — tema de marca.
+   Debe fijarse aquí, en .rdp-root, y no en un ancestro: la propia hoja de
+   estilos de react-day-picker redeclara estas variables directamente sobre
+   .rdp-root (con el azul por defecto), por lo que un override en un div
+   padre queda tapado por esa redeclaración aunque tenga menor especificidad,
+   ya que actúa sobre el propio elemento en vez de heredarse. */
+.ryn-daypicker .rdp-root {
+  font-family: var(--font-ui);
+  margin: 0;
+  width: 100%;
+  --rdp-accent-color: var(--accent);
+  --rdp-accent-background-color: var(--ryn-rojo-soft);
+}
 
 @keyframes ryn-spin { to { transform: rotate(360deg); } }
 .ryn-spin { animation: ryn-spin 0.8s linear infinite; }
