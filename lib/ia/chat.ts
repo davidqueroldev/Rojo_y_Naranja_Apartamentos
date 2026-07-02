@@ -2,7 +2,8 @@ import type { SupabaseClient } from '@supabase/supabase-js'
 import type { Database } from '@/types/supabase'
 import { apartamentos, info } from '@/lib/data/apartments'
 
-const APIFREELLM_URL = process.env.APIFREELLM_URL || 'https://apifreellm.com/api/v1/chat'
+const GEMINI_MODEL = process.env.GEMINI_MODEL || 'gemini-flash-latest'
+const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent`
 
 function construirSystemPrompt(): string {
   const listaApartamentos = apartamentos
@@ -31,18 +32,12 @@ INSTRUCCIONES:
 
 const RESPUESTA_FALLBACK = 'Disculpa, no he podido procesar tu mensaje ahora mismo. El propietario te responderá en breve.'
 
-/** apifreellm no soporta system prompt ni historial estructurado: solo { message }. Se concatena todo en un único mensaje. */
-function construirMensaje(historial: { remitente: string; contenido: string }[]): string {
-  const conversacion = historial
-    .map((m) => `${m.remitente === 'user' ? 'Huésped' : 'Anfitrión'}: ${m.contenido}`)
-    .join('\n')
-
-  return `${construirSystemPrompt()}
-
-CONVERSACIÓN HASTA AHORA:
-${conversacion}
-
-Responde ahora como el anfitrión al último mensaje del huésped.`
+/** Gemini estructura el historial como turnos user/model; los mensajes del owner cuentan como "model" (lado anfitrión), igual que los de la IA. */
+function construirContents(historial: { remitente: string; contenido: string }[]) {
+  return historial.map((m) => ({
+    role: m.remitente === 'user' ? 'user' : 'model',
+    parts: [{ text: m.contenido }],
+  }))
 }
 
 export async function generarRespuestaIA(supabase: SupabaseClient<Database>, conversacionId: string) {
@@ -58,23 +53,29 @@ export async function generarRespuestaIA(supabase: SupabaseClient<Database>, con
   let respuesta = RESPUESTA_FALLBACK
 
   try {
-    const res = await fetch(APIFREELLM_URL, {
+    const res = await fetch(GEMINI_URL, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${process.env.APIFREELLM_API_KEY}`,
+        'X-goog-api-key': process.env.GEMINI_API_KEY || '',
       },
-      body: JSON.stringify({ message: construirMensaje(mensajes) }),
+      body: JSON.stringify({
+        system_instruction: { parts: [{ text: construirSystemPrompt() }] },
+        contents: construirContents(mensajes),
+      }),
+      signal: AbortSignal.timeout(15_000),
     })
 
     const data = await res.json().catch(() => null)
-    if (res.ok && data?.success && typeof data.response === 'string') {
-      respuesta = data.response
+    const texto = data?.candidates?.[0]?.content?.parts?.[0]?.text
+
+    if (res.ok && typeof texto === 'string' && texto.trim()) {
+      respuesta = texto.trim()
     } else {
-      console.error('apifreellm respondió con error', res.status, data)
+      console.error('Gemini respondió con error', res.status, data)
     }
   } catch (e) {
-    console.error('Error llamando a apifreellm', e)
+    console.error('Error llamando a Gemini', e)
   }
 
   await supabase.from('mensajes').insert({
