@@ -1,10 +1,12 @@
 import { notFound } from 'next/navigation'
-import { CalendarDays, Users, MapPin, CheckCircle2, XCircle } from 'lucide-react'
+import { CalendarDays, Users, MapPin, CheckCircle2, XCircle, Mail } from 'lucide-react'
 import { createClient } from '@/lib/supabase/server'
 import { Badge } from '@/components/ui/Badge'
 import { estadoReserva } from '@/lib/utils/reservas'
 import { formatearPrecio } from '@/lib/utils/precios'
 import { RetryPaymentButton } from '@/components/booking/RetryPaymentButton'
+import { ReservaStatusTimeline } from '@/components/reservas/ReservaStatusTimeline'
+import { info } from '@/lib/data/apartments'
 
 interface Props {
   params: { id: string }
@@ -51,6 +53,17 @@ export default async function DetalleReservaPage({ params, searchParams }: Props
             <span className="font-semibold">{formatearPrecio(reserva.precio_total)}</span>
           </div>
         </div>
+
+        <div className="mt-4 rounded-lg border border-gray-200 p-5">
+          <ReservaStatusTimeline estado={reserva.estado} />
+        </div>
+
+        <a
+          href={`mailto:${info.email}?subject=${encodeURIComponent(`Consulta sobre la reserva ${reserva.codigo}`)}`}
+          className="mt-4 inline-flex items-center gap-2 text-sm text-red-700 hover:underline"
+        >
+          <Mail size={14} /> Contactar propietario
+        </a>
 
         {searchParams.pago === 'ok' && (
           <div className="flex items-center gap-2 text-sm text-green-700 bg-green-50 rounded-lg p-3 mt-4">

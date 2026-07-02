@@ -5,19 +5,51 @@ import { Badge } from '@/components/ui/Badge'
 import { estadoReserva } from '@/lib/utils/reservas'
 import { formatearPrecio } from '@/lib/utils/precios'
 
-export default async function MisReservasPage() {
+const FILTROS = ['pendiente_pago', 'pendiente_confirmacion', 'confirmada', 'completada', 'anulada'] as const
+
+interface Props {
+  searchParams: { estado?: string }
+}
+
+export default async function MisReservasPage({ searchParams }: Props) {
   const supabase = await createClient()
-  const { data: reservas } = await supabase
+  const filtro = searchParams.estado
+
+  let query = supabase
     .from('reservas')
     .select('id, codigo, fecha_checkin, fecha_checkout, num_huespedes, precio_total, estado, apartamentos(nombre)')
     .order('created_at', { ascending: false })
 
+  if (filtro && FILTROS.includes(filtro as (typeof FILTROS)[number])) {
+    query = query.eq('estado', filtro)
+  }
+
+  const { data: reservas } = await query
+
   return (
     <main className="min-h-screen p-8">
-      <h1 className="text-2xl font-bold mb-6">Mis reservas</h1>
+      <h1 className="text-2xl font-bold mb-4">Mis reservas</h1>
+
+      <div className="flex flex-wrap gap-2 mb-6">
+        <Link
+          href="/user/reservas"
+          className={`text-xs px-3 py-1.5 rounded-full border ${!filtro ? 'bg-gray-900 text-white border-gray-900' : 'border-gray-300 text-gray-600'}`}
+        >
+          Todas
+        </Link>
+        {FILTROS.map((f) => (
+          <Link
+            key={f}
+            href={`/user/reservas?estado=${f}`}
+            className={`text-xs px-3 py-1.5 rounded-full border ${filtro === f ? 'bg-gray-900 text-white border-gray-900' : 'border-gray-300 text-gray-600'}`}
+          >
+            {estadoReserva(f).label}
+          </Link>
+        ))}
+      </div>
 
       {!reservas || reservas.length === 0 ? (
-        <p className="text-sm text-gray-500">Todavía no tienes ninguna reserva.</p>
+        <p className="text-sm text-gray-500">No hay reservas para este filtro.</p>
       ) : (
         <div className="flex flex-col gap-3">
           {reservas.map((r) => {
