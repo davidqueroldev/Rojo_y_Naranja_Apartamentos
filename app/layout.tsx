@@ -17,12 +17,28 @@ const montserrat = Montserrat({
   display: 'swap',
 })
 
+const APP_URL = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
+
 export const metadata: Metadata = {
+  metadataBase: new URL(APP_URL),
   title: {
-    default: 'Apartamentos Rojo y Naranja — Morella',
+    default: 'Apartamentos Rojo y Naranja — Diseño y confort en Morella',
     template: '%s | Apartamentos Rojo y Naranja',
   },
   description: 'Cuatro apartamentos boutique en el corazón de la ciudad medieval amurallada de Morella. Reserva directa, sin comisiones.',
+  keywords: ['apartamentos Morella', 'alojamiento Morella', 'casa rural Morella', 'apartamento jacuzzi Morella', 'apartamento romántico Morella', 'alojamiento centro histórico Morella'],
+  openGraph: {
+    siteName: 'Apartamentos Rojo y Naranja',
+    locale: 'es_ES',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
