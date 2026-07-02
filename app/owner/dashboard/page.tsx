@@ -1,32 +1,41 @@
 import Link from 'next/link'
-import { startOfMonth, endOfMonth, addMonths, subMonths, getDaysInMonth, format } from 'date-fns'
-import { AlertCircle, TrendingUp, CalendarCheck, Percent } from 'lucide-react'
+import { startOfMonth, endOfMonth, addMonths, subMonths, getDaysInMonth, format, parse } from 'date-fns'
+import { es } from 'date-fns/locale'
+import { AlertCircle, TrendingUp, CalendarCheck, Percent, Trophy, ChevronLeft, ChevronRight } from 'lucide-react'
 import { createClient } from '@/lib/supabase/server'
 import { toneColor } from '@/lib/data/apartments'
 import { formatearPrecio } from '@/lib/utils/precios'
 import { fechasEnRango } from '@/lib/utils/reservas'
 import { OwnerCalendar, type CalendarioEvento } from '@/components/owner/OwnerCalendar'
+import { GraficoOcupacion } from '@/components/owner/GraficoOcupacion'
 
-export default async function OwnerDashboardPage() {
+interface Props {
+  searchParams: { mes?: string }
+}
+
+export default async function OwnerDashboardPage({ searchParams }: Props) {
   const supabase = await createClient()
 
-  const ahora = new Date()
+  const ahora = searchParams.mes ? parse(searchParams.mes, 'yyyy-MM', new Date()) : new Date()
   const inicioMes = format(startOfMonth(ahora), 'yyyy-MM-dd')
   const finMes = format(endOfMonth(ahora), 'yyyy-MM-dd')
+  const inicioMesSiguiente = format(addMonths(startOfMonth(ahora), 1), 'yyyy-MM-dd')
+  const mesAnteriorParam = format(subMonths(startOfMonth(ahora), 1), 'yyyy-MM')
+  const mesSiguienteParam = format(addMonths(startOfMonth(ahora), 1), 'yyyy-MM')
 
-  const [{ count: reservasDelMes }, { data: pagosDelMes }, { data: apartamentos }, { data: pendientes }] =
+  const [{ data: reservasDelMes }, { data: pagosDelMes }, { data: apartamentos }, { data: pendientes }] =
     await Promise.all([
       supabase
         .from('reservas')
-        .select('id', { count: 'exact', head: true })
+        .select('id, estado, apartamentos(nombre)')
         .gte('created_at', inicioMes)
-        .lt('created_at', format(addMonths(startOfMonth(ahora), 1), 'yyyy-MM-dd')),
+        .lt('created_at', inicioMesSiguiente),
       supabase
         .from('pagos')
         .select('importe')
         .eq('estado', 'completado')
         .gte('created_at', inicioMes)
-        .lt('created_at', format(addMonths(startOfMonth(ahora), 1), 'yyyy-MM-dd')),
+        .lt('created_at', inicioMesSiguiente),
       supabase.from('apartamentos').select('id, slug, nombre'),
       supabase
         .from('reservas')
@@ -36,6 +45,19 @@ export default async function OwnerDashboardPage() {
     ])
 
   const ingresosDelMes = (pagosDelMes ?? []).reduce((sum, p) => sum + Number(p.importe), 0)
+
+  const porEstado = {
+    confirmadas: (reservasDelMes ?? []).filter((r) => r.estado === 'confirmada' || r.estado === 'completada').length,
+    pendientes: (reservasDelMes ?? []).filter((r) => r.estado === 'pendiente_confirmacion' || r.estado === 'pendiente_pago').length,
+    anuladas: (reservasDelMes ?? []).filter((r) => r.estado === 'anulada').length,
+  }
+
+  const conteoPorApartamento = new Map<string, number>()
+  for (const r of reservasDelMes ?? []) {
+    if (r.estado === 'anulada' || !r.apartamentos?.nombre) continue
+    conteoPorApartamento.set(r.apartamentos.nombre, (conteoPorApartamento.get(r.apartamentos.nombre) ?? 0) + 1)
+  }
+  const masReservado = Array.from(conteoPorApartamento.entries()).sort((a, b) => b[1] - a[1])[0]
 
   // Reservas para calcular ocupación + poblar el calendario (ventana: mes anterior a +2 meses)
   const inicioVentana = format(subMonths(startOfMonth(ahora), 1), 'yyyy-MM-dd')
@@ -54,11 +76,12 @@ export default async function OwnerDashboardPage() {
       .filter((r) => r.apartamentos?.slug === apt.slug)
       .reduce((total, r) => {
         const desde = r.fecha_checkin > inicioMes ? r.fecha_checkin : inicioMes
-        const hasta = r.fecha_checkout < finMes ? r.fecha_checkout : format(addMonths(startOfMonth(ahora), 1), 'yyyy-MM-dd')
+        const hasta = r.fecha_checkout < finMes ? r.fecha_checkout : inicioMesSiguiente
         if (hasta <= desde) return total
         return total + fechasEnRango(desde, hasta).length
       }, 0)
-    return { nombre: apt.nombre, porcentaje: Math.min(100, Math.round((nochesDelApartamento / diasEnMes) * 100)) }
+    const slug = apt.slug as keyof typeof toneColor
+    return { nombre: apt.nombre, porcentaje: Math.min(100, Math.round((nochesDelApartamento / diasEnMes) * 100)), color: toneColor[slug] ?? '#999' }
   })
 
   const eventos: CalendarioEvento[] = (reservasVentana ?? []).map((r) => {
@@ -74,14 +97,28 @@ export default async function OwnerDashboardPage() {
   return (
     <main className="min-h-screen p-8">
       <div className="max-w-5xl mx-auto">
-        <h1 className="text-2xl font-bold mb-6">Panel propietario</h1>
+        <div className="flex items-center justify-between mb-6">
+          <h1 className="text-2xl font-bold">Panel propietario</h1>
+          <div className="flex items-center gap-2 text-sm">
+            <Link href={`/owner/dashboard?mes=${mesAnteriorParam}`} className="p-1.5 rounded border border-gray-200 hover:bg-gray-50" aria-label="Mes anterior">
+              <ChevronLeft size={16} />
+            </Link>
+            <span className="font-medium capitalize min-w-32 text-center">{format(ahora, 'MMMM yyyy', { locale: es })}</span>
+            <Link href={`/owner/dashboard?mes=${mesSiguienteParam}`} className="p-1.5 rounded border border-gray-200 hover:bg-gray-50" aria-label="Mes siguiente">
+              <ChevronRight size={16} />
+            </Link>
+          </div>
+        </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
           <div className="rounded-lg border border-gray-200 p-4">
             <div className="flex items-center gap-2 text-gray-400 text-xs uppercase tracking-wide mb-1">
               <CalendarCheck size={14} /> Reservas del mes
             </div>
-            <div className="text-2xl font-bold">{reservasDelMes ?? 0}</div>
+            <div className="text-2xl font-bold">{reservasDelMes?.length ?? 0}</div>
+            <div className="text-xs text-gray-500 mt-1">
+              {porEstado.confirmadas} confirmadas · {porEstado.pendientes} pendientes · {porEstado.anuladas} anuladas
+            </div>
           </div>
           <div className="rounded-lg border border-gray-200 p-4">
             <div className="flex items-center gap-2 text-gray-400 text-xs uppercase tracking-wide mb-1">
@@ -91,15 +128,19 @@ export default async function OwnerDashboardPage() {
           </div>
           <div className="rounded-lg border border-gray-200 p-4">
             <div className="flex items-center gap-2 text-gray-400 text-xs uppercase tracking-wide mb-1">
-              <Percent size={14} /> Ocupación por apartamento
+              <Trophy size={14} /> Más reservado
             </div>
-            <div className="flex flex-col gap-1 mt-1">
-              {ocupacionPorApartamento.map((o) => (
-                <div key={o.nombre} className="flex items-center justify-between text-sm">
-                  <span className="text-gray-600">{o.nombre}</span>
-                  <span className="font-semibold">{o.porcentaje}%</span>
-                </div>
-              ))}
+            <div className="text-lg font-bold">{masReservado ? masReservado[0] : '—'}</div>
+            {masReservado && <div className="text-xs text-gray-500 mt-1">{masReservado[1]} reserva{masReservado[1] > 1 ? 's' : ''}</div>}
+          </div>
+          <div className="rounded-lg border border-gray-200 p-4">
+            <div className="flex items-center gap-2 text-gray-400 text-xs uppercase tracking-wide mb-1">
+              <Percent size={14} /> Ocupación media
+            </div>
+            <div className="text-2xl font-bold">
+              {ocupacionPorApartamento.length > 0
+                ? Math.round(ocupacionPorApartamento.reduce((s, o) => s + o.porcentaje, 0) / ocupacionPorApartamento.length)
+                : 0}%
             </div>
           </div>
         </div>
@@ -118,6 +159,11 @@ export default async function OwnerDashboardPage() {
             </div>
           </div>
         )}
+
+        <h2 className="text-sm font-semibold uppercase tracking-wide text-gray-400 mb-2">Ocupación por apartamento</h2>
+        <div className="rounded-lg border border-gray-200 p-4 mb-6">
+          <GraficoOcupacion data={ocupacionPorApartamento} />
+        </div>
 
         <h2 className="text-sm font-semibold uppercase tracking-wide text-gray-400 mb-2">Calendario global</h2>
         <div className="rounded-lg border border-gray-200 p-4">
