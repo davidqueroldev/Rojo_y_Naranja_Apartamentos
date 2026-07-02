@@ -23,11 +23,21 @@ export function ModoIAGlobalToggle() {
 
   return (
     <div className="flex items-center gap-2 text-sm">
-      <span className="text-gray-500">IA para todas:</span>
-      <button onClick={() => aplicar(true)} disabled={cargando} className="px-2 py-1 rounded bg-purple-100 text-purple-700 text-xs disabled:opacity-50">
+      <span className="text-[var(--text-muted)]">IA para todas:</span>
+      <button
+        onClick={() => aplicar(true)}
+        disabled={cargando}
+        className="px-2 py-1 rounded text-xs disabled:opacity-50"
+        style={{ background: 'var(--ryn-plata-soft)', color: 'var(--ryn-plata-dark)' }}
+      >
         Activar
       </button>
-      <button onClick={() => aplicar(false)} disabled={cargando} className="px-2 py-1 rounded bg-gray-100 text-gray-600 text-xs disabled:opacity-50">
+      <button
+        onClick={() => aplicar(false)}
+        disabled={cargando}
+        className="px-2 py-1 rounded text-xs disabled:opacity-50"
+        style={{ background: 'var(--surface-sunken)', color: 'var(--text-muted)' }}
+      >
         Desactivar
       </button>
     </div>

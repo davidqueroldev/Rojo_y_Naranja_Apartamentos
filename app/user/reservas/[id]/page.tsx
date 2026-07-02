@@ -7,6 +7,7 @@ import { estadoReserva } from '@/lib/utils/reservas'
 import { formatearPrecio } from '@/lib/utils/precios'
 import { RetryPaymentButton } from '@/components/booking/RetryPaymentButton'
 import { ReservaStatusTimeline } from '@/components/reservas/ReservaStatusTimeline'
+import { Card } from '@/components/ui/Card'
 
 interface Props {
   params: { id: string }
@@ -33,47 +34,47 @@ export default async function DetalleReservaPage({ params, searchParams }: Props
           <Badge tone={estado.tone} variant="soft">{estado.label}</Badge>
         </div>
 
-        <div className="rounded-lg border border-gray-200 p-5 flex flex-col gap-3">
+        <Card padding="lg" className="flex flex-col gap-3">
           <div className="flex items-center gap-2 font-semibold">
             <MapPin size={16} /> {reserva.apartamentos?.nombre ?? 'Apartamento'}
           </div>
-          <div className="flex items-center gap-2 text-sm text-gray-600">
+          <div className="flex items-center gap-2 text-sm text-[var(--text-muted)]">
             <CalendarDays size={16} /> {reserva.fecha_checkin} → {reserva.fecha_checkout}
           </div>
-          <div className="flex items-center gap-2 text-sm text-gray-600">
+          <div className="flex items-center gap-2 text-sm text-[var(--text-muted)]">
             <Users size={16} /> {reserva.num_huespedes} huésped{reserva.num_huespedes > 1 ? 'es' : ''}
           </div>
           {reserva.notas_usuario && (
-            <div className="text-sm text-gray-600">
+            <div className="text-sm text-[var(--text-muted)]">
               <span className="font-medium">Notas:</span> {reserva.notas_usuario}
             </div>
           )}
-          <div className="flex items-center justify-between pt-3 border-t border-gray-200">
+          <div className="flex items-center justify-between pt-3 border-t border-[var(--border)]">
             <span className="font-semibold">Total</span>
             <span className="font-semibold">{formatearPrecio(reserva.precio_total)}</span>
           </div>
-        </div>
+        </Card>
 
-        <div className="mt-4 rounded-lg border border-gray-200 p-5">
+        <Card padding="lg" className="mt-4">
           <ReservaStatusTimeline estado={reserva.estado} />
-        </div>
+        </Card>
 
         <Link
           href={`/user/chat?reserva=${reserva.id}`}
-          className="mt-4 inline-flex items-center gap-2 text-sm text-red-700 hover:underline"
+          className="mt-4 inline-flex items-center gap-2 text-sm text-[var(--accent)] hover:underline"
         >
           <MessageCircle size={14} /> Contactar propietario
         </Link>
 
         {searchParams.pago === 'ok' && (
-          <div className="flex items-center gap-2 text-sm text-green-700 bg-green-50 rounded-lg p-3 mt-4">
+          <div className="flex items-center gap-2 text-sm rounded-lg p-3 mt-4" style={{ color: '#3F5938', background: '#E7EEE4' }}>
             <CheckCircle2 size={16} /> Pago recibido. El propietario confirmará tu reserva en breve.
           </div>
         )}
 
         {searchParams.pago === 'cancelado' && reserva.estado === 'pendiente_pago' && (
           <div className="mt-4">
-            <div className="flex items-center gap-2 text-sm text-amber-700 bg-amber-50 rounded-lg p-3">
+            <div className="flex items-center gap-2 text-sm rounded-lg p-3" style={{ color: '#8A5E14', background: '#F7ECD6' }}>
               <XCircle size={16} /> El pago se canceló. Puedes reintentarlo cuando quieras.
             </div>
             <RetryPaymentButton reservaId={reserva.id} />
@@ -82,7 +83,7 @@ export default async function DetalleReservaPage({ params, searchParams }: Props
 
         {!searchParams.pago && reserva.estado === 'pendiente_pago' && (
           <div className="mt-4">
-            <p className="text-sm text-gray-500 mb-2">
+            <p className="text-sm text-[var(--text-muted)] mb-2">
               Tu reserva está registrada pero el pago aún no se ha procesado.
             </p>
             <RetryPaymentButton reservaId={reserva.id} />

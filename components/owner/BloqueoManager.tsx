@@ -8,6 +8,7 @@ import { format } from 'date-fns'
 import { es } from 'date-fns/locale'
 import { Trash2 } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
+import { ConfirmDialog } from '@/components/ui/ConfirmDialog'
 
 export interface Bloqueo {
   id: string
@@ -26,6 +27,9 @@ export function BloqueoManager({ apartamentoId, bloqueos }: { apartamentoId: str
   const [motivo, setMotivo] = useState('')
   const [enviando, setEnviando] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [eliminando, setEliminando] = useState<string | null>(null)
+  const [errorEliminar, setErrorEliminar] = useState<string | null>(null)
+  const [aEliminar, setAEliminar] = useState<Bloqueo | null>(null)
 
   const fechasBloqueadas = new Set(bloqueos.flatMap((b) => {
     const dias: string[] = []
@@ -65,17 +69,27 @@ export function BloqueoManager({ apartamentoId, bloqueos }: { apartamentoId: str
     }
   }
 
-  async function eliminarBloqueo(id: string) {
-    if (!window.confirm('¿Eliminar este bloqueo?')) return
-    await fetch(`/api/owner/bloqueos/${id}`, { method: 'DELETE' })
-    router.refresh()
+  async function confirmarEliminar() {
+    if (!aEliminar) return
+    setEliminando(aEliminar.id)
+    setErrorEliminar(null)
+    try {
+      const res = await fetch(`/api/owner/bloqueos/${aEliminar.id}`, { method: 'DELETE' })
+      if (!res.ok) throw new Error('No se pudo eliminar el bloqueo')
+      setAEliminar(null)
+      router.refresh()
+    } catch (e) {
+      setErrorEliminar(e instanceof Error ? e.message : 'Error inesperado')
+    } finally {
+      setEliminando(null)
+    }
   }
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
       <div>
-        <h2 className="text-sm font-semibold uppercase tracking-wide text-gray-400 mb-2">Nuevo bloqueo</h2>
-        <div className="rounded-lg border border-gray-200 p-4">
+        <h2 className="text-sm font-semibold uppercase tracking-wide text-[var(--text-muted)] mb-2">Nuevo bloqueo</h2>
+        <div className="rounded-lg border border-[var(--border)] p-4">
           <DayPicker
             mode="range"
             locale={es}
@@ -88,9 +102,9 @@ export function BloqueoManager({ apartamentoId, bloqueos }: { apartamentoId: str
             placeholder="Motivo (mantenimiento, uso propietario…)"
             value={motivo}
             onChange={(e) => setMotivo(e.target.value)}
-            className="border border-gray-300 rounded px-2 py-1 w-full mt-3 text-sm"
+            className="ryn-input border border-[var(--border-strong)] rounded px-2 py-1 w-full mt-3 text-sm"
           />
-          {error && <p className="text-sm text-red-600 mt-2">{error}</p>}
+          {error && <p role="alert" className="text-sm text-[var(--ryn-danger)] mt-2">{error}</p>}
           <Button variant="primary" size="sm" fullWidth disabled={!range?.from || !range?.to || enviando} onClick={crearBloqueo} className="mt-3">
             {enviando ? 'Guardando…' : 'Bloquear fechas'}
           </Button>
@@ -98,18 +112,24 @@ export function BloqueoManager({ apartamentoId, bloqueos }: { apartamentoId: str
       </div>
 
       <div>
-        <h2 className="text-sm font-semibold uppercase tracking-wide text-gray-400 mb-2">Bloqueos existentes</h2>
+        <h2 className="text-sm font-semibold uppercase tracking-wide text-[var(--text-muted)] mb-2">Bloqueos existentes</h2>
+        {errorEliminar && <p role="alert" className="text-sm text-[var(--ryn-danger)] mb-2">{errorEliminar}</p>}
         {bloqueos.length === 0 ? (
-          <p className="text-sm text-gray-500">Sin bloqueos activos.</p>
+          <p className="text-sm text-[var(--text-muted)]">Sin bloqueos activos.</p>
         ) : (
           <div className="flex flex-col gap-2">
             {bloqueos.map((b) => (
-              <div key={b.id} className="flex items-center justify-between rounded-lg border border-gray-200 p-3 text-sm">
+              <div key={b.id} className="flex items-center justify-between rounded-lg border border-[var(--border)] p-3 text-sm">
                 <div>
                   <div>{b.fecha_inicio} → {b.fecha_fin}</div>
-                  {b.motivo && <div className="text-xs text-gray-400">{b.motivo}</div>}
+                  {b.motivo && <div className="text-xs text-[var(--text-muted)]">{b.motivo}</div>}
                 </div>
-                <button onClick={() => eliminarBloqueo(b.id)} className="text-gray-400 hover:text-red-600">
+                <button
+                  onClick={() => setAEliminar(b)}
+                  disabled={eliminando === b.id}
+                  aria-label={`Eliminar bloqueo del ${b.fecha_inicio} al ${b.fecha_fin}`}
+                  className="text-[var(--ryn-stone-2)] hover:text-[var(--ryn-danger)] disabled:opacity-40"
+                >
                   <Trash2 size={16} />
                 </button>
               </div>
@@ -117,6 +137,17 @@ export function BloqueoManager({ apartamentoId, bloqueos }: { apartamentoId: str
           </div>
         )}
       </div>
+
+      <ConfirmDialog
+        open={!!aEliminar}
+        title="Eliminar bloqueo"
+        description={aEliminar ? `¿Eliminar el bloqueo del ${aEliminar.fecha_inicio} al ${aEliminar.fecha_fin}?` : undefined}
+        confirmLabel="Eliminar"
+        danger
+        loading={!!eliminando}
+        onConfirm={confirmarEliminar}
+        onCancel={() => setAEliminar(null)}
+      />
     </div>
   )
 }

@@ -3,6 +3,8 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
+import { Input } from '@/components/ui/Input'
+import { Button } from '@/components/ui/Button'
 
 export default function LoginPage() {
   const router = useRouter()
@@ -37,50 +39,36 @@ export default function LoginPage() {
 
   return (
     <>
-      <h2 className="text-2xl font-bold text-gray-900 mb-6">Iniciar sesión</h2>
-      <form onSubmit={handleSubmit} className="space-y-5">
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
-          <input
-            type="email"
-            required
-            autoComplete="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-red-500"
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Contraseña</label>
-          <input
-            type="password"
-            required
-            autoComplete="current-password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-red-500"
-          />
-        </div>
-        {error && <p className="text-sm text-red-600">{error}</p>}
-        <button
-          type="submit"
-          disabled={loading}
-          className="w-full bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-4 rounded-md text-sm transition disabled:opacity-60"
-        >
-          {loading ? 'Entrando...' : 'Entrar'}
-        </button>
+      <h2 style={{ fontSize: 'var(--text-2xl)', marginBottom: 'var(--space-5)' }}>Iniciar sesión</h2>
+      <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}>
+        <Input
+          label="Email"
+          type="email"
+          required
+          autoComplete="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <Input
+          label="Contraseña"
+          type="password"
+          required
+          autoComplete="current-password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        {error && <p role="alert" style={{ margin: 0, fontSize: 'var(--text-sm)', color: 'var(--ryn-danger)' }}>{error}</p>}
+        <Button type="submit" disabled={loading} fullWidth shape="rounded">
+          {loading ? 'Entrando…' : 'Entrar'}
+        </Button>
       </form>
-      <div className="mt-6 space-y-2 text-center text-sm">
-        <p>
-          <Link href="/reset-password" className="text-red-600 hover:underline">
-            ¿Olvidaste tu contraseña?
-          </Link>
+      <div style={{ marginTop: 'var(--space-5)', display: 'flex', flexDirection: 'column', gap: 'var(--space-2)', textAlign: 'center', fontSize: 'var(--text-sm)' }}>
+        <p style={{ margin: 0 }}>
+          <Link href="/reset-password" style={{ color: 'var(--accent)' }}>¿Olvidaste tu contraseña?</Link>
         </p>
-        <p className="text-gray-600">
+        <p style={{ margin: 0, color: 'var(--text-muted)' }}>
           ¿No tienes cuenta?{' '}
-          <Link href="/register" className="text-red-600 hover:underline font-medium">
-            Regístrate
-          </Link>
+          <Link href="/register" style={{ color: 'var(--accent)', fontWeight: 600 }}>Regístrate</Link>
         </p>
       </div>
     </>

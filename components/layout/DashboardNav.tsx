@@ -1,8 +1,10 @@
 'use client'
 
+import { useState } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { usePathname, useRouter } from 'next/navigation'
-import { LogOut } from 'lucide-react'
+import { LogOut, Menu, X } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 
 interface NavLink {
@@ -29,6 +31,7 @@ const LINKS: Record<'user' | 'owner', NavLink[]> = {
 export function DashboardNav({ role, nombre }: { role: 'user' | 'owner'; nombre?: string }) {
   const pathname = usePathname()
   const router = useRouter()
+  const [open, setOpen] = useState(false)
 
   async function cerrarSesion() {
     const supabase = createClient()
@@ -37,34 +40,132 @@ export function DashboardNav({ role, nombre }: { role: 'user' | 'owner'; nombre?
     router.refresh()
   }
 
+  function linkStyle(active: boolean) {
+    return {
+      fontFamily: 'var(--font-ui)',
+      fontSize: 'var(--text-sm)',
+      fontWeight: active ? 600 : 500,
+      color: active ? 'var(--accent)' : 'var(--text-body)',
+      textDecoration: 'none',
+    }
+  }
+
   return (
-    <nav className="border-b border-gray-200 bg-white">
-      <div className="max-w-5xl mx-auto px-6 h-14 flex items-center justify-between">
-        <div className="flex items-center gap-6">
-          <Link href="/" className="font-bold text-sm">Rojo y Naranja</Link>
+    <nav style={{ background: 'var(--surface-card)', borderBottom: 'var(--hairline)' }}>
+      <div
+        style={{
+          maxWidth: 'var(--container-max)',
+          margin: '0 auto',
+          padding: '0 var(--container-pad)',
+          height: 64,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          gap: 'var(--space-4)',
+        }}
+      >
+        <Link href="/" style={{ display: 'flex', alignItems: 'center', flexShrink: 0 }}>
+          <Image src="/logo-rojo.png" alt="Rojo y Naranja" width={120} height={36} style={{ height: 28, width: 'auto' }} priority />
+        </Link>
+
+        {/* Desktop links */}
+        <div className="ryn-nav-desktop" style={{ flex: 1 }}>
           {LINKS[role].map((link) =>
             link.disabled ? (
-              <span key={link.href} className="text-sm text-gray-300 cursor-not-allowed" title="Próximamente">
+              <span key={link.href} style={{ ...linkStyle(false), color: 'var(--ryn-stone-2)', cursor: 'not-allowed' }} title="Próximamente">
+                {link.label}
+              </span>
+            ) : (
+              <Link key={link.href} href={link.href} style={linkStyle(!!pathname?.startsWith(link.href))}>
+                {link.label}
+              </Link>
+            )
+          )}
+        </div>
+
+        <div className="ryn-nav-desktop" style={{ flex: 'none' }}>
+          {nombre && <span style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', color: 'var(--text-muted)' }}>{nombre}</span>}
+          <button
+            onClick={cerrarSesion}
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 6,
+              background: 'none',
+              border: 'none',
+              cursor: 'pointer',
+              fontFamily: 'var(--font-ui)',
+              fontSize: 'var(--text-sm)',
+              color: 'var(--text-muted)',
+            }}
+          >
+            <LogOut size={14} /> Salir
+          </button>
+        </div>
+
+        {/* Mobile: hamburger */}
+        <button
+          className="ryn-nav-mobile"
+          onClick={() => setOpen(!open)}
+          aria-label={open ? 'Cerrar menú' : 'Abrir menú'}
+          aria-expanded={open}
+          style={{ background: 'none', border: 'none', color: 'var(--text-heading)', cursor: 'pointer', padding: 4 }}
+        >
+          {open ? <X size={22} /> : <Menu size={22} />}
+        </button>
+      </div>
+
+      {/* Mobile drawer */}
+      {open && (
+        <div
+          style={{
+            borderTop: 'var(--hairline)',
+            padding: 'var(--space-3) var(--container-pad) var(--space-4)',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 4,
+          }}
+        >
+          {LINKS[role].map((link) =>
+            link.disabled ? (
+              <span key={link.href} style={{ ...linkStyle(false), color: 'var(--ryn-stone-2)', padding: '10px 0', cursor: 'not-allowed' }}>
                 {link.label}
               </span>
             ) : (
               <Link
                 key={link.href}
                 href={link.href}
-                className={`text-sm ${pathname?.startsWith(link.href) ? 'font-semibold text-red-700' : 'text-gray-600 hover:text-gray-900'}`}
+                onClick={() => setOpen(false)}
+                style={{ ...linkStyle(!!pathname?.startsWith(link.href)), padding: '10px 0', borderBottom: '1px solid var(--border)' }}
               >
                 {link.label}
               </Link>
             )
           )}
-        </div>
-        <div className="flex items-center gap-4">
-          {nombre && <span className="text-sm text-gray-500">{nombre}</span>}
-          <button onClick={cerrarSesion} className="flex items-center gap-1 text-sm text-gray-500 hover:text-gray-900">
+          {nombre && (
+            <span style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', color: 'var(--text-muted)', padding: '10px 0 0' }}>
+              {nombre}
+            </span>
+          )}
+          <button
+            onClick={cerrarSesion}
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 6,
+              background: 'none',
+              border: 'none',
+              cursor: 'pointer',
+              fontFamily: 'var(--font-ui)',
+              fontSize: 'var(--text-sm)',
+              color: 'var(--text-muted)',
+              padding: '10px 0 0',
+            }}
+          >
             <LogOut size={14} /> Salir
           </button>
         </div>
-      </div>
+      )}
     </nav>
   )
 }

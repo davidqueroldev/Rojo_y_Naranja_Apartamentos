@@ -3,6 +3,8 @@ import { useState } from 'react'
 import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
+import { Input } from '@/components/ui/Input'
+import { Button } from '@/components/ui/Button'
 
 export default function ResetForm() {
   const searchParams = useSearchParams()
@@ -57,46 +59,32 @@ export default function ResetForm() {
   if (step === 'update') {
     return (
       <>
-        <h2 className="text-2xl font-bold text-gray-900 mb-6">Nueva contraseña</h2>
+        <h2 style={{ fontSize: 'var(--text-2xl)', marginBottom: 'var(--space-5)' }}>Nueva contraseña</h2>
         {message ? (
-          <p className="text-sm text-green-600 text-center">{message}</p>
+          <p style={{ textAlign: 'center', fontSize: 'var(--text-sm)', color: 'var(--ryn-success)' }}>{message}</p>
         ) : (
-          <form onSubmit={handleUpdatePassword} className="space-y-5">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Nueva contraseña
-              </label>
-              <input
-                type="password"
-                required
-                minLength={8}
-                autoComplete="new-password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-red-500"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Confirmar contraseña
-              </label>
-              <input
-                type="password"
-                required
-                autoComplete="new-password"
-                value={confirm}
-                onChange={(e) => setConfirm(e.target.value)}
-                className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-red-500"
-              />
-            </div>
-            {error && <p className="text-sm text-red-600">{error}</p>}
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-4 rounded-md text-sm transition disabled:opacity-60"
-            >
-              {loading ? 'Guardando...' : 'Guardar contraseña'}
-            </button>
+          <form onSubmit={handleUpdatePassword} style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}>
+            <Input
+              label="Nueva contraseña"
+              type="password"
+              required
+              minLength={8}
+              autoComplete="new-password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <Input
+              label="Confirmar contraseña"
+              type="password"
+              required
+              autoComplete="new-password"
+              value={confirm}
+              onChange={(e) => setConfirm(e.target.value)}
+            />
+            {error && <p role="alert" style={{ margin: 0, fontSize: 'var(--text-sm)', color: 'var(--ryn-danger)' }}>{error}</p>}
+            <Button type="submit" disabled={loading} fullWidth shape="rounded">
+              {loading ? 'Guardando…' : 'Guardar contraseña'}
+            </Button>
           </form>
         )}
       </>
@@ -105,44 +93,33 @@ export default function ResetForm() {
 
   return (
     <>
-      <h2 className="text-2xl font-bold text-gray-900 mb-2">Restablecer contraseña</h2>
-      <p className="text-sm text-gray-500 mb-6">
+      <h2 style={{ fontSize: 'var(--text-2xl)', marginBottom: 'var(--space-2)' }}>Restablecer contraseña</h2>
+      <p style={{ fontSize: 'var(--text-sm)', color: 'var(--text-muted)', marginBottom: 'var(--space-5)' }}>
         Introduce tu email y te enviaremos un enlace.
       </p>
       {message ? (
-        <div className="text-center">
-          <p className="text-sm text-green-600 mb-6">{message}</p>
-          <Link href="/login" className="text-red-600 hover:underline text-sm">
-            Volver al inicio de sesión
-          </Link>
+        <div style={{ textAlign: 'center' }}>
+          <p style={{ fontSize: 'var(--text-sm)', color: 'var(--ryn-success)', marginBottom: 'var(--space-5)' }}>{message}</p>
+          <Link href="/login" style={{ color: 'var(--accent)', fontSize: 'var(--text-sm)' }}>Volver al inicio de sesión</Link>
         </div>
       ) : (
         <>
-          <form onSubmit={handleRequestReset} className="space-y-5">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
-              <input
-                type="email"
-                required
-                autoComplete="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-red-500"
-              />
-            </div>
-            {error && <p className="text-sm text-red-600">{error}</p>}
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-4 rounded-md text-sm transition disabled:opacity-60"
-            >
-              {loading ? 'Enviando...' : 'Enviar enlace'}
-            </button>
+          <form onSubmit={handleRequestReset} style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}>
+            <Input
+              label="Email"
+              type="email"
+              required
+              autoComplete="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            {error && <p role="alert" style={{ margin: 0, fontSize: 'var(--text-sm)', color: 'var(--ryn-danger)' }}>{error}</p>}
+            <Button type="submit" disabled={loading} fullWidth shape="rounded">
+              {loading ? 'Enviando…' : 'Enviar enlace'}
+            </Button>
           </form>
-          <p className="mt-6 text-center text-sm">
-            <Link href="/login" className="text-red-600 hover:underline">
-              Volver al inicio de sesión
-            </Link>
+          <p style={{ marginTop: 'var(--space-5)', textAlign: 'center', fontSize: 'var(--text-sm)' }}>
+            <Link href="/login" style={{ color: 'var(--accent)' }}>Volver al inicio de sesión</Link>
           </p>
         </>
       )}

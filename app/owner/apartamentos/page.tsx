@@ -11,10 +11,10 @@ export default function OwnerApartamentosPage() {
             <Link
               key={a.slug}
               href={`/owner/apartamentos/${a.slug}/disponibilidad`}
-              className="rounded-lg border border-gray-200 p-4 hover:border-gray-400 transition-colors"
+              className="rounded-lg border border-[var(--border)] p-4 hover:border-[var(--border-strong)] transition-colors"
             >
               <div className="font-semibold">{a.nombre}</div>
-              <div className="text-sm text-gray-500">Gestionar bloqueos de calendario</div>
+              <div className="text-sm text-[var(--text-muted)]">Gestionar bloqueos de calendario</div>
             </Link>
           ))}
         </div>
