@@ -15,14 +15,14 @@ const LINKS: Record<'user' | 'owner', NavLink[]> = {
   user: [
     { href: '/user/dashboard', label: 'Panel' },
     { href: '/user/reservas', label: 'Mis reservas' },
-    { href: '/user/chat', label: 'Chat', disabled: true },
+    { href: '/user/chat', label: 'Chat' },
   ],
   owner: [
     { href: '/owner/dashboard', label: 'Panel' },
     { href: '/owner/reservas', label: 'Reservas' },
     { href: '/owner/precios', label: 'Precios' },
     { href: '/owner/apartamentos', label: 'Disponibilidad' },
-    { href: '/owner/chat', label: 'Chat', disabled: true },
+    { href: '/owner/chat', label: 'Chat' },
   ],
 }
 
