@@ -53,7 +53,18 @@ export function ChatWindow({
           'postgres_changes',
           { event: 'INSERT', schema: 'public', table: 'mensajes', filter: `conversacion_id=eq.${conversacionId}` },
           (payload) => {
-            setMensajes((prev) => [...prev, payload.new as Mensaje])
+            const nuevo = payload.new as Mensaje
+            setMensajes((prev) => {
+              if (prev.some((m) => m.id === nuevo.id)) return prev
+              // ¿es el eco de un mensaje que ya mostramos de forma optimista al enviarlo?
+              const idxTemp = prev.findIndex((m) => m.id.startsWith('temp-') && m.remitente === nuevo.remitente && m.contenido === nuevo.contenido)
+              if (idxTemp !== -1) {
+                const copia = [...prev]
+                copia[idxTemp] = nuevo
+                return copia
+              }
+              return [...prev, nuevo]
+            })
           }
         )
         .subscribe()
@@ -76,12 +87,31 @@ export function ChatWindow({
     if (!contenido) return
     setEnviando(true)
     setTexto('')
+
+    // Se muestra al instante en vez de esperar al eco por Realtime, que si el modo
+    // IA está activo puede tardar varios segundos (la respuesta de la IA se genera
+    // antes de que este fetch resuelva).
+    const tempId = `temp-${Date.now()}`
+    const remitentePropio: Mensaje['remitente'] = isOwner ? 'owner' : 'user'
+    setMensajes((prev) => [...prev, { id: tempId, remitente: remitentePropio, contenido, created_at: new Date().toISOString() }])
+
     try {
-      await fetch(`/api/conversaciones/${conversacionId}/mensajes`, {
+      const res = await fetch(`/api/conversaciones/${conversacionId}/mensajes`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ contenido }),
       })
+      const data = await res.json().catch(() => null)
+      if (res.ok && data?.id) {
+        setMensajes((prev) => {
+          if (prev.some((m) => m.id === data.id)) return prev.filter((m) => m.id !== tempId)
+          return prev.map((m) => (m.id === tempId ? { ...m, id: data.id } : m))
+        })
+      } else {
+        setMensajes((prev) => prev.filter((m) => m.id !== tempId))
+      }
+    } catch {
+      setMensajes((prev) => prev.filter((m) => m.id !== tempId))
     } finally {
       setEnviando(false)
     }

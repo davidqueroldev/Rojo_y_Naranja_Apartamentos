@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
-import { render } from '@react-email/components'
-import { transporter } from '@/lib/email/mailer'
+import { enviarEmail } from '@/lib/email/send'
 import { ConfirmacionEmail } from '@/emails/ConfirmacionEmail'
 
 export async function POST(req: NextRequest) {
@@ -43,12 +42,10 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const html = await render(<ConfirmacionEmail nombre={nombre} confirmLink={confirmLink} />)
-    await transporter.sendMail({
-      from: `"Apartamentos Rojo y Naranja" <${process.env.GMAIL_USER}>`,
+    await enviarEmail({
       to: email,
       subject: 'Confirma tu cuenta — Apartamentos Rojo y Naranja',
-      html,
+      react: <ConfirmacionEmail nombre={nombre} confirmLink={confirmLink} />,
     })
   } catch (mailErr) {
     console.error('[register] Error enviando email:', mailErr)
