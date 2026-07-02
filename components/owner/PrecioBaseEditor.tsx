@@ -30,9 +30,9 @@ export function PrecioBaseEditor({ apartamentoId, nombre, precioActual }: { apar
   }
 
   return (
-    <div className="flex items-center justify-between rounded-lg border border-[var(--border)] p-3">
+    <div className="flex items-center justify-between flex-wrap gap-2 rounded-lg border border-[var(--border)] p-3">
       <span className="font-medium text-sm">{nombre}</span>
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-2 flex-wrap">
         <input
           type="number"
           min={1}
