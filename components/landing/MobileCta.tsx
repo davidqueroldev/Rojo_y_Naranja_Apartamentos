@@ -26,7 +26,7 @@ export function MobileCta() {
         pointerEvents: visible ? 'auto' : 'none',
       }}
     >
-      <Button variant="primary" size="lg" href="#rojo" shape="pill" style={{ boxShadow: 'var(--shadow-lg)' } as React.CSSProperties}>
+      <Button variant="primary" size="lg" href="#reserva" shape="pill" style={{ boxShadow: 'var(--shadow-lg)' } as React.CSSProperties}>
         Ver disponibilidad
       </Button>
     </div>

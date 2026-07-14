@@ -1,5 +1,10 @@
+'use client'
+
+import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
+import Lightbox from 'yet-another-react-lightbox'
+import 'yet-another-react-lightbox/styles.css'
 import {
   Wifi, Tv, Bath, ShowerHead, Waves, Flame, BedDouble, Coffee,
   Sun, CookingPot, Wind, UtensilsCrossed, Users,
@@ -8,8 +13,8 @@ import {
 import { Apartment, apartamentos, toneColor } from '@/lib/data/apartments'
 import { ApartmentCard } from '@/components/ui/ApartmentCard'
 import { Badge } from '@/components/ui/Badge'
+import { Button } from '@/components/ui/Button'
 import { cldUrl } from '@/lib/cloudinary'
-import { BookingWidget } from '@/components/booking/BookingWidget'
 
 const amenityIcon: Record<string, React.ReactNode> = {
   'Wifi':           <Wifi size={18} />,
@@ -35,6 +40,11 @@ const amenityIcon: Record<string, React.ReactNode> = {
 export function ApartmentDetail({ apartment: apt }: { apartment: Apartment }) {
   const seam = toneColor[apt.tone]
   const others = apartamentos.filter((a) => a.slug !== apt.slug)
+  const [lightboxIndex, setLightbox] = useState(-1)
+  const slides = apt.fotos.map((photoId, i) => ({
+    src: cldUrl(photoId, 'w_1600'),
+    alt: `${apt.nombre} — foto ${i + 1}`,
+  }))
 
   return (
     <main>
@@ -79,7 +89,46 @@ export function ApartmentDetail({ apartment: apt }: { apartment: Apartment }) {
             ))}
           </div>
         </div>
+
+        {/* Full gallery grid */}
+        <div style={{ maxWidth: 'var(--container-max)', margin: '0 auto', padding: 'var(--space-6) var(--container-pad)' }}>
+          <div className="ryn-overline" style={{ color: 'var(--ryn-plata)', marginBottom: 'var(--space-4)' }}>Galería</div>
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))',
+            gap: 8,
+          }}>
+            {apt.fotos.map((photoId, i) => (
+              <button
+                key={photoId}
+                onClick={() => setLightbox(i)}
+                style={{
+                  position: 'relative', aspectRatio: '4 / 3', border: 'none',
+                  padding: 0, cursor: 'pointer', borderRadius: 'var(--radius-md)',
+                  overflow: 'hidden', background: 'var(--ryn-ink-2)',
+                }}
+                aria-label={`${apt.nombre} — foto ${i + 1}`}
+              >
+                <Image
+                  src={cldUrl(photoId, 'w_600,c_fill,ar_4:3')}
+                  alt={`${apt.nombre} — foto ${i + 1}`}
+                  fill
+                  style={{ objectFit: 'cover' }}
+                  sizes="(max-width: 768px) 33vw, 16vw"
+                />
+              </button>
+            ))}
+          </div>
+        </div>
       </div>
+
+      <Lightbox
+        open={lightboxIndex >= 0}
+        close={() => setLightbox(-1)}
+        index={lightboxIndex}
+        slides={slides}
+        styles={{ container: { backgroundColor: 'rgba(20,17,15,0.97)' } }}
+      />
 
       {/* Main content */}
       <div style={{ maxWidth: 'var(--container-max)', margin: '0 auto', padding: 'var(--space-8) var(--container-pad)' }}>
@@ -141,9 +190,35 @@ export function ApartmentDetail({ apartment: apt }: { apartment: Apartment }) {
             )}
           </div>
 
-          {/* Right: booking sidebar */}
+          {/* Right: reserva CTA */}
           <div style={{ position: 'sticky', top: 100 }}>
-            <BookingWidget apartment={apt} />
+            <div style={{
+              background: 'var(--surface-card)', border: '1px solid var(--border)',
+              borderRadius: 'var(--radius-xl)', padding: 'var(--space-6)',
+              boxShadow: 'var(--shadow-md)',
+            }}>
+              <div style={{ display: 'flex', alignItems: 'baseline', gap: 6, marginBottom: 'var(--space-4)' }}>
+                <span style={{ fontFamily: 'var(--font-serif)', fontSize: 'var(--text-3xl)', fontWeight: 600, color: 'var(--text-heading)' }}>
+                  {apt.precio}€
+                </span>
+                <span style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', color: 'var(--text-muted)' }}>/noche</span>
+              </div>
+
+              <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: 'var(--text-lg)', fontWeight: 600, color: 'var(--text-heading)', margin: '0 0 var(--space-3)' }}>
+                ¿Te interesa este apartamento?
+              </h3>
+              <p style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', lineHeight: 1.6, color: 'var(--text-muted)', margin: '0 0 var(--space-5)' }}>
+                Cuéntanos tus fechas y necesidades: te confirmamos disponibilidad y precio sin compromiso.
+              </p>
+
+              <Button variant="primary" size="lg" fullWidth href={`/?apartamento=${apt.slug}#reserva`}>
+                Solicitar esta reserva
+              </Button>
+
+              <p style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--text-xs)', color: 'var(--text-muted)', textAlign: 'center', margin: 'var(--space-3) 0 0', lineHeight: 1.5 }}>
+                Reserva directa · Sin comisiones · Mejor precio garantizado
+              </p>
+            </div>
           </div>
         </div>
 

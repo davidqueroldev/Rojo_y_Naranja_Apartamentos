@@ -14,7 +14,7 @@ const experiencias: { icon: ReactNode; titulo: string; texto: string }[] = [
 
 export function ExperienciasSection() {
   return (
-    <section id="morella" style={{ background: 'var(--bg-page)', padding: 'var(--section-y) 0' }}>
+    <section style={{ background: 'var(--bg-page)', padding: 'var(--section-y) 0' }}>
       <div className="ryn-grid-exp" style={{
         maxWidth: 'var(--container-max)', margin: '0 auto', padding: '0 var(--container-pad)',
       }}>
