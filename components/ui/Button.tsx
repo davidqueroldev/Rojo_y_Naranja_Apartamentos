@@ -1,4 +1,4 @@
-import { CSSProperties, ReactNode } from 'react'
+import { CSSProperties, MouseEvent, ReactNode } from 'react'
 import Link from 'next/link'
 
 type Variant = 'primary' | 'sand' | 'outline' | 'ghost' | 'light'
@@ -15,7 +15,7 @@ interface ButtonProps {
   iconLeft?: ReactNode
   iconRight?: ReactNode
   href?: string
-  onClick?: () => void
+  onClick?: (e: MouseEvent<HTMLAnchorElement | HTMLButtonElement>) => void
   type?: 'button' | 'submit' | 'reset'
   className?: string
   style?: CSSProperties
@@ -78,7 +78,7 @@ export function Button({
 
   if (href) {
     return (
-      <Link href={href} className={cls} style={style}>
+      <Link href={href} className={cls} style={style} onClick={onClick}>
         {iconLeft}
         {children}
         {iconRight}

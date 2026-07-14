@@ -1,14 +1,12 @@
 'use client'
 
 import { useState } from 'react'
-import Link from 'next/link'
 import Image from 'next/image'
 import Lightbox from 'yet-another-react-lightbox'
 import 'yet-another-react-lightbox/styles.css'
 import {
   Wifi, Tv, Bath, ShowerHead, Waves, Flame, BedDouble, Coffee,
   Sun, CookingPot, Wind, UtensilsCrossed, Users,
-  ArrowLeft,
 } from 'lucide-react'
 import { Apartment, apartamentos, toneColor } from '@/lib/data/apartments'
 import { ApartmentCard } from '@/components/ui/ApartmentCard'
@@ -48,15 +46,6 @@ export function ApartmentDetail({ apartment: apt }: { apartment: Apartment }) {
 
   return (
     <main>
-      {/* Back */}
-      <div style={{ background: 'var(--bg-page)', borderBottom: '1px solid var(--border)', padding: '12px var(--container-pad)' }}>
-        <div style={{ maxWidth: 'var(--container-max)', margin: '0 auto' }}>
-          <Link href="/" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', color: 'var(--text-muted)', textDecoration: 'none' }}>
-            <ArrowLeft size={16} /> Todos los apartamentos
-          </Link>
-        </div>
-      </div>
-
       {/* Photo gallery */}
       <div style={{ background: 'var(--ryn-ink)' }}>
         <div className="ryn-detail-photos" style={{ maxWidth: 'var(--container-max)', margin: '0 auto' }}>

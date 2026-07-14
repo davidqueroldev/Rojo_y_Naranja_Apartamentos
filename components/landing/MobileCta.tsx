@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { Button } from '@/components/ui/Button'
+import { scrollToHash } from '@/lib/utils/scroll'
 
 export function MobileCta() {
   const [visible, setVisible] = useState(false)
@@ -26,7 +27,11 @@ export function MobileCta() {
         pointerEvents: visible ? 'auto' : 'none',
       }}
     >
-      <Button variant="primary" size="lg" href="#reserva" shape="pill" style={{ boxShadow: 'var(--shadow-lg)' } as React.CSSProperties}>
+      <Button
+        variant="primary" size="lg" href="/#reserva" shape="pill"
+        onClick={(e) => { e.preventDefault(); scrollToHash('#reserva') }}
+        style={{ boxShadow: 'var(--shadow-lg)' } as React.CSSProperties}
+      >
         Ver disponibilidad
       </Button>
     </div>

@@ -34,10 +34,8 @@ export default function LandingPage() {
         <Hero />
         <ApartmentsSection />
         <WhySection />
-        <div id="morella">
-          <ExperienciasSection />
-          <MapSection />
-        </div>
+        <ExperienciasSection />
+        <MapSection />
         <ReviewsSection />
         <ConsultaSection />
       </main>

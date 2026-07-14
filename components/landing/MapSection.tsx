@@ -11,7 +11,7 @@ const LeafletMap = dynamic(() => import('./LeafletMap'), { ssr: false, loading: 
 
 export function MapSection() {
   return (
-    <section style={{ background: 'var(--bg-page)', padding: 'var(--section-y) 0' }}>
+    <section id="ubicacion" style={{ background: 'var(--bg-page)', padding: 'var(--section-y) 0' }}>
       <div style={{ maxWidth: 'var(--container-max)', margin: '0 auto', padding: '0 var(--container-pad)' }}>
         <div className="ryn-grid-map">
           <div>
