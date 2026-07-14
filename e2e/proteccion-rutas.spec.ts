@@ -38,10 +38,7 @@ async function login(page: import('@playwright/test').Page, email: string, passw
 }
 
 test.describe('protección de rutas por rol', () => {
-  test('invitado sin sesión no accede a /user ni /owner', async ({ page }) => {
-    await page.goto('/user/dashboard')
-    await expect(page).toHaveURL(/\/login/)
-
+  test('invitado sin sesión no accede a /owner', async ({ page }) => {
     await page.goto('/owner/dashboard')
     await expect(page).toHaveURL(/\/login/)
   })
@@ -61,7 +58,7 @@ test.describe('protección de rutas por rol', () => {
     }
   })
 
-  test('propietario accede a /owner y a /user (rol admite ambas)', async ({ page }) => {
+  test('propietario accede a /owner', async ({ page }) => {
     const suffix = Date.now()
     const email = `e2e-proteccion-owner-${suffix}@mailinator.com`
     const password = 'Password123!'

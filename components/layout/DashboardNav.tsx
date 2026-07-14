@@ -13,22 +13,17 @@ interface NavLink {
   disabled?: boolean
 }
 
-const LINKS: Record<'user' | 'owner', NavLink[]> = {
-  user: [
-    { href: '/user/dashboard', label: 'Panel' },
-    { href: '/user/reservas', label: 'Mis reservas' },
-    { href: '/user/chat', label: 'Chat' },
-  ],
+const LINKS: Record<'owner', NavLink[]> = {
   owner: [
     { href: '/owner/dashboard', label: 'Panel' },
     { href: '/owner/reservas', label: 'Reservas' },
     { href: '/owner/precios', label: 'Precios' },
     { href: '/owner/apartamentos', label: 'Disponibilidad' },
-    { href: '/owner/chat', label: 'Chat' },
+    { href: '/owner/consultas', label: 'Consultas' },
   ],
 }
 
-export function DashboardNav({ role, nombre }: { role: 'user' | 'owner'; nombre?: string }) {
+export function DashboardNav({ role, nombre }: { role: 'owner'; nombre?: string }) {
   const pathname = usePathname()
   const router = useRouter()
   const [open, setOpen] = useState(false)

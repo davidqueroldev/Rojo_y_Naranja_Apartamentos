@@ -33,7 +33,7 @@ export default function LoginPage() {
       .eq('id', data.user.id)
       .single()
 
-    router.push(profile?.rol === 'owner' ? '/owner/dashboard' : '/user/dashboard')
+    router.push(profile?.rol === 'owner' ? '/owner/dashboard' : '/unauthorized')
     router.refresh()
   }
 
@@ -65,10 +65,6 @@ export default function LoginPage() {
       <div style={{ marginTop: 'var(--space-5)', display: 'flex', flexDirection: 'column', gap: 'var(--space-2)', textAlign: 'center', fontSize: 'var(--text-sm)' }}>
         <p style={{ margin: 0 }}>
           <Link href="/reset-password" style={{ color: 'var(--accent)' }}>¿Olvidaste tu contraseña?</Link>
-        </p>
-        <p style={{ margin: 0, color: 'var(--text-muted)' }}>
-          ¿No tienes cuenta?{' '}
-          <Link href="/register" style={{ color: 'var(--accent)', fontWeight: 600 }}>Regístrate</Link>
         </p>
       </div>
     </>

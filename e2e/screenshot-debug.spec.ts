@@ -1,3 +1,4 @@
+// TODO: este test depende del registro de invitados/Stripe, eliminado en el nuevo concepto sin registro — pendiente de decidir si se reescribe o se retira
 import { test } from '@playwright/test'
 
 test('screenshot register', async ({ page }) => {

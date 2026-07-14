@@ -1,3 +1,4 @@
+// TODO: este test depende del registro de invitados/Stripe, eliminado en el nuevo concepto sin registro — pendiente de decidir si se reescribe o se retira
 import { test, expect } from '@playwright/test'
 
 // Requiere: `npm run dev` y `stripe listen --forward-to localhost:3000/api/webhooks/stripe`

@@ -41,15 +41,9 @@ export async function middleware(request: NextRequest) {
     }
   }
 
-  if (pathname.startsWith('/user')) {
-    if (!user) {
-      return NextResponse.redirect(new URL('/login', request.url))
-    }
-  }
-
   return response
 }
 
 export const config = {
-  matcher: ['/user/:path*', '/owner/:path*'],
+  matcher: ['/owner/:path*'],
 }
