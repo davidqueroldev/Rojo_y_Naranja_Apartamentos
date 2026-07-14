@@ -24,7 +24,7 @@ export default async function OwnerDashboardPage({ searchParams }: Props) {
   const mesAnteriorParam = format(subMonths(startOfMonth(ahora), 1), 'yyyy-MM')
   const mesSiguienteParam = format(addMonths(startOfMonth(ahora), 1), 'yyyy-MM')
 
-  const [{ data: reservasDelMes }, { data: pagosDelMes }, { data: apartamentos }, { data: pendientes }] =
+  const [{ data: reservasDelMes }, { data: pagosDelMes }, { data: apartamentos }, { data: pendientes }, { data: consultasPendientes }] =
     await Promise.all([
       supabase
         .from('reservas')
@@ -43,6 +43,11 @@ export default async function OwnerDashboardPage({ searchParams }: Props) {
         .select('id, codigo, fecha_checkin, apartamentos(nombre)')
         .eq('estado', 'pendiente_confirmacion')
         .order('fecha_checkin', { ascending: true }),
+      supabase
+        .from('consultas')
+        .select('id, nombre, tipo, created_at')
+        .eq('estado', 'pendiente_confirmacion')
+        .order('created_at', { ascending: true }),
     ])
 
   const ingresosDelMes = (pagosDelMes ?? []).reduce((sum, p) => sum + Number(p.importe), 0)
@@ -158,6 +163,17 @@ export default async function OwnerDashboardPage({ searchParams }: Props) {
                 </Link>
               ))}
             </div>
+          </div>
+        )}
+
+        {consultasPendientes && consultasPendientes.length > 0 && (
+          <div className="mb-6 rounded-lg p-4" style={{ border: '1px solid #EDDCB0', background: '#F7ECD6' }}>
+            <div className="flex items-center gap-2 font-semibold text-sm mb-2" style={{ color: '#8A5E14' }}>
+              <AlertCircle size={16} /> {consultasPendientes.length} consulta{consultasPendientes.length > 1 ? 's' : ''} pendiente{consultasPendientes.length > 1 ? 's' : ''} de confirmación
+            </div>
+            <Link href="/owner/consultas?estado=pendiente_confirmacion" className="text-sm hover:underline" style={{ color: '#8A5E14' }}>
+              Ver consultas pendientes →
+            </Link>
           </div>
         )}
 
