@@ -56,7 +56,7 @@ export function Navbar() {
       }}>
         {/* Logo */}
         <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: 12, textDecoration: 'none', flexShrink: 0 }}>
-          <Image src="/logo-white.png" alt="Rojo y Naranja" width={120} height={36} style={{ height: 34, width: 'auto' }} priority />
+          <Image src="/logo-white-b.png" alt="Rojo y Naranja" width={120} height={36} style={{ height: 34, width: 'auto' }} priority />
           <span style={{ width: 1, height: 26, background: 'var(--border-on-dark)', flexShrink: 0 }} className="ryn-nav-tagline" />
           <span className="ryn-nav-tagline" style={{
             fontFamily: 'var(--font-ui)',
