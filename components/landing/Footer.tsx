@@ -10,7 +10,7 @@ export function Footer() {
       <div className="ryn-grid-footer">
         {/* Brand */}
         <div>
-          <Image src="/logo-white.png" alt="Rojo y Naranja" width={140} height={42} style={{ height: 40, width: 'auto' }} />
+          <Image src="/logo-white-b.png" alt="Rojo y Naranja" width={140} height={42} style={{ height: 40, width: 'auto' }} />
           <p style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', lineHeight: 1.7, marginTop: 14, maxWidth: 280 }}>
             Cuatro apartamentos boutique en el centro amurallado de Morella.
             Reserva directa, sin comisiones.
