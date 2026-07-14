@@ -100,6 +100,74 @@ export type Database = {
           },
         ]
       }
+      consultas: {
+        Row: {
+          apartamento_id: string | null
+          apellidos: string | null
+          confirmada_en: string | null
+          created_at: string | null
+          email: string
+          estado: string
+          fecha_checkin: string | null
+          fecha_checkout: string | null
+          gestionada_en: string | null
+          id: string
+          mensaje: string | null
+          nombre: string
+          telefono: string
+          tipo: string
+          token_confirmacion: string | null
+          token_expira_en: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          apartamento_id?: string | null
+          apellidos?: string | null
+          confirmada_en?: string | null
+          created_at?: string | null
+          email: string
+          estado?: string
+          fecha_checkin?: string | null
+          fecha_checkout?: string | null
+          gestionada_en?: string | null
+          id?: string
+          mensaje?: string | null
+          nombre: string
+          telefono: string
+          tipo: string
+          token_confirmacion?: string | null
+          token_expira_en?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          apartamento_id?: string | null
+          apellidos?: string | null
+          confirmada_en?: string | null
+          created_at?: string | null
+          email?: string
+          estado?: string
+          fecha_checkin?: string | null
+          fecha_checkout?: string | null
+          gestionada_en?: string | null
+          id?: string
+          mensaje?: string | null
+          nombre?: string
+          telefono?: string
+          tipo?: string
+          token_confirmacion?: string | null
+          token_expira_en?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "consultas_apartamento_id_fkey"
+            columns: ["apartamento_id"]
+            isOneToOne: false
+            referencedRelation: "apartamentos"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       conversaciones: {
         Row: {
           created_at: string | null
