@@ -1,3 +1,4 @@
+// TODO: este test depende del registro de invitados/Stripe, eliminado en el nuevo concepto sin registro — pendiente de decidir si se reescribe o se retira
 import { test, expect } from '@playwright/test'
 
 const TEST_EMAIL = `test_verify_${Date.now()}@mailinator.com`

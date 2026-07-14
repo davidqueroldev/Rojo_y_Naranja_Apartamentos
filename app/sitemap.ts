@@ -14,6 +14,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: APP_URL, changeFrequency: 'weekly', priority: 1 },
     ...paginasApartamentos,
     { url: `${APP_URL}/login`, changeFrequency: 'yearly', priority: 0.3 },
-    { url: `${APP_URL}/register`, changeFrequency: 'yearly', priority: 0.3 },
   ]
 }
