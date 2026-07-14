@@ -4,10 +4,9 @@ import { Hero } from '@/components/landing/Hero'
 import { ApartmentsSection } from '@/components/landing/ApartmentsSection'
 import { WhySection } from '@/components/landing/WhySection'
 import { ExperienciasSection } from '@/components/landing/ExperienciasSection'
-import { GallerySection } from '@/components/landing/GallerySection'
 import { ReviewsSection } from '@/components/landing/ReviewsSection'
 import { MapSection } from '@/components/landing/MapSection'
-import { CtaBanner } from '@/components/landing/CtaBanner'
+import { ConsultaSection } from '@/components/landing/ConsultaSection'
 import { Footer } from '@/components/landing/Footer'
 import { MobileCta } from '@/components/landing/MobileCta'
 import { SchemaOrg } from '@/components/landing/SchemaOrg'
@@ -35,11 +34,12 @@ export default function LandingPage() {
         <Hero />
         <ApartmentsSection />
         <WhySection />
-        <ExperienciasSection />
-        <GallerySection />
+        <div id="morella">
+          <ExperienciasSection />
+          <MapSection />
+        </div>
         <ReviewsSection />
-        <MapSection />
-        <CtaBanner />
+        <ConsultaSection />
       </main>
       <Footer />
       <MobileCta />
