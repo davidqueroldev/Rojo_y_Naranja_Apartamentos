@@ -3,6 +3,7 @@ export type ApartmentTone = 'rojo' | 'naranja' | 'plata' | 'oro'
 export interface Apartment {
   slug: string
   nombre: string
+  eyebrow: string  // etiqueta corta encima del nombre en la landing
   tone: ApartmentTone
   capacidadMax: number
   habitaciones: number
@@ -20,6 +21,7 @@ export const apartamentos: Apartment[] = [
   {
     slug: 'oro',
     nombre: 'Ático Oro',
+    eyebrow: 'Ático de lujo',
     tone: 'oro',
     capacidadMax: 2,
     habitaciones: 1,
@@ -49,6 +51,7 @@ export const apartamentos: Apartment[] = [
   {
     slug: 'plata',
     nombre: 'Apartamento Plata',
+    eyebrow: 'Jacuzzi y confort',
     tone: 'plata',
     capacidadMax: 2,
     habitaciones: 1,
@@ -73,6 +76,7 @@ export const apartamentos: Apartment[] = [
   {
     slug: 'rojo',
     nombre: 'Apartamento Rojo',
+    eyebrow: 'El más amplio',
     tone: 'rojo',
     capacidadMax: 4,
     habitaciones: 2,
@@ -99,6 +103,7 @@ export const apartamentos: Apartment[] = [
   {
     slug: 'naranja',
     nombre: 'Apartamento Naranja',
+    eyebrow: 'Encanto y luz',
     tone: 'naranja',
     capacidadMax: 4,
     habitaciones: 2,

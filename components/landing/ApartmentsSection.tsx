@@ -49,7 +49,7 @@ function ApartmentFeedItem({ apt, index }: { apt: Apartment; index: number }) {
         {/* Info */}
         <div style={{ flex: 1, minWidth: 0 }}>
           <div className="ryn-overline" style={{ color: accent }}>
-            {apt.tone === 'oro' ? 'Ático de lujo' : 'Apartamento'}
+            {apt.eyebrow}
           </div>
 
           <h2 style={{

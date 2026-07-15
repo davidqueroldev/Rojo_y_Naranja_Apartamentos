@@ -94,7 +94,7 @@ export function Navbar() {
       position: 'sticky',
       top: 0,
       zIndex: 50,
-      background: scrolled ? 'rgba(20,17,15,0.95)' : 'rgba(20,17,15,0.65)',
+      background: scrolled ? 'rgba(20,17,15,0.95)' : 'rgba(20,17,15,0.95)',
       backdropFilter: 'blur(10px)',
       WebkitBackdropFilter: 'blur(10px)',
       borderBottom: scrolled ? '1px solid var(--border-on-dark)' : '1px solid transparent',
