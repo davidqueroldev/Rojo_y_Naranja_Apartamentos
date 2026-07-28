@@ -413,20 +413,22 @@ online). El plan es de **código**, no de datos:
 
 ---
 
-## 11. Decisiones tomadas y preguntas abiertas
+## 11. Decisiones tomadas
 
 **Decididas (2026-07-28):**
 - **Fork:** repositorio **nuevo y separado en GitHub**; el original queda como archivo histórico.
-- **BD:** proyecto Supabase **nuevo ya creado**; se aplica `001_schema.sql` (F0).
+- **BD:** proyecto Supabase **nuevo ya creado y aplicado** (`001_schema.sql`, región `eu-north-1`).
 - **Precio dinámico:** ❌ **sin `precios_especiales` en v1** — el precio se negocia por email;
   precio base en `lib/data/apartments.ts`. Se añadirá si el negocio pide temporadas.
 - **Rol:** un solo rol con privilegios (`owner`); el enum `user_role` deja abierto `staff`.
-
-**Aún abiertas:**
-1. **Idiomas:** ¿solo español, o prever i18n (ES/EN/CA) desde ya? Afecta al routing.
-2. **Rate-limit infra:** ¿Upstash/Redis o tabla `rate_limits` en Postgres (sin infra extra)?
-3. **Notificaciones al propietario:** ¿basta con email, o también aviso en el dashboard / push?
+- **Idiomas:** 🇪🇸 **solo español** en v1. No se prepara i18n ni routing por idioma.
+- **Rate-limit / anti-spam (F5):** **tabla `rate_limits` en Postgres**, sin Upstash/Redis
+  (no se añade infraestructura externa).
+- **Notificaciones al propietario:** **email + aviso en el dashboard**. Cuando una solicitud
+  pasa a `pendiente_gestion` (cliente confirma su email), se envía un email al propietario
+  (`GMAIL_USER`/SMTP) **y** aparece en el contador/lista de "pendientes de gestión" del panel
+  (ya implementado en `/owner/dashboard`). Sin push por ahora.
 
 ---
 
-*Fin del RFC. Comentarios y correcciones bienvenidos antes de congelar el esquema de la BD.*
+*Fin del RFC. Esquema de BD congelado y aplicado; decisiones cerradas.*

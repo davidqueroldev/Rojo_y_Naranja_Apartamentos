@@ -113,23 +113,30 @@ Pasos:
 - Acción "aceptar solicitud" (F2): al aceptar una `reserva`, crear en **transacción** el
   `bloqueos_calendario` con `origen='solicitud'` y `solicitud_id`.
 - Panel `app/owner/calendario`: alta/baja de bloqueos manuales (`origen='manual'`).
+- **Notificación al propietario** (decisión tomada): en la confirmación por token
+  (`/solicitud/confirmar/[token]`, cuando la solicitud pasa a `pendiente_gestion`), enviar un
+  email al propietario (`GMAIL_USER`/SMTP, con un `emails/NuevaSolicitudOwnerEmail.tsx`). El
+  aviso en el dashboard ya existe (contador + lista de `pendiente_gestion` en `/owner/dashboard`).
 
 **Hecho cuando:** aceptar una solicitud bloquea las fechas y el datepicker público las
-deshabilita.
+deshabilita; al confirmar una solicitud, al propietario le llega el email y la ve en el panel.
 
 ---
 
 ## F5 — Anti-spam / RGPD  *(independiente)*
 
-- Validación con **Zod** en las rutas públicas (`lib/validation/`), honeypot en el formulario,
-  rate-limit por IP (tabla `rate_limits` en Postgres para no añadir infra, o Upstash si hay Redis).
+- Validación con **Zod** en las rutas públicas (`lib/validation/`), honeypot en el formulario.
+- **Rate-limit por IP con tabla `rate_limits` en Postgres** (decisión tomada; sin Upstash/Redis).
+  Nueva migración con la tabla + una función/consulta que cuente peticiones por IP y ventana de
+  tiempo; la ruta `POST /api/solicitudes` la consulta antes de insertar. La columna `ip_origen`
+  de `solicitudes` ya está prevista para auditoría.
 - Checkbox de política de privacidad + enlace en el formulario.
 - Cron de expiración: `update solicitudes set estado='expirada' where estado='pendiente_email'
   and token_expira_en < now()` (Supabase `pg_cron` o Cron Job de Vercel a una ruta protegida).
 - Retención: purgar `expiradas`/`rechazadas` a los N meses.
 
-**Hecho cuando:** una petición malformada o abusiva se rechaza; las solicitudes sin confirmar
-pasan a `expirada` automáticamente.
+**Hecho cuando:** una petición malformada o abusiva se rechaza (rate-limit por IP en Postgres);
+las solicitudes sin confirmar pasan a `expirada` automáticamente.
 
 ---
 
