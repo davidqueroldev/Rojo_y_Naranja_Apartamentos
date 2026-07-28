@@ -1,7 +1,7 @@
 # Plan de ejecución — new-concept (fork + BD limpia)
 
 > **Complementa a:** `docs/ARQUITECTURA_NEW_CONCEPT.md` (RFC de diseño).
-> **Esquema de la BD nueva:** `supabase/migrations-new/001_schema.sql`.
+> **Esquema de la BD nueva:** `supabase/migrations/001_schema.sql`.
 > **Decisiones tomadas:** fork = **repositorio nuevo separado en GitHub**; la BD Supabase
 > nueva **ya está creada** (claves en poder del propietario); el precio se negocia por
 > email (**sin `precios_especiales` en v1**); un solo rol con privilegios (`owner`).
@@ -32,7 +32,7 @@ dependencias y criterios de "hecho". Las fases se ejecutan en sesiones siguiente
 Pasos:
 1. El propietario entrega las claves del proyecto Supabase nuevo (o las coloca en `.env.local`):
    `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`.
-2. Aplicar `supabase/migrations-new/001_schema.sql` a la BD nueva (SQL Editor de Supabase, o
+2. Aplicar `supabase/migrations/001_schema.sql` a la BD nueva (SQL Editor de Supabase, o
    `psql`/CLI con la connection string). **No** aplicar las migraciones legacy 001–005.
 3. Crear el usuario propietario en Auth (email + contraseña) e insertar su fila en `profiles`
    con `rol='owner'` (el proyecto original no tiene trigger de auto-perfil en este esquema, se

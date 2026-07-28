@@ -409,7 +409,7 @@ online). El plan es de **código**, no de datos:
 
 > **Detalle operativo:** el plan por fases accionable (pasos, dependencias y criterios de
 > "hecho") está en **`docs/PLAN_EJECUCION_NEW_CONCEPT.md`**. El **esquema de la BD nueva**, ya
-> escrito y validado en seco, está en **`supabase/migrations-new/001_schema.sql`**.
+> escrito y validado en seco, está en **`supabase/migrations/001_schema.sql`**.
 
 ---
 
