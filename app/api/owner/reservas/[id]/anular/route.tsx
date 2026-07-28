@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { requireOwner } from '@/lib/utils/owner'
-import { stripe } from '@/lib/stripe/client'
 import { obtenerEmailUsuario } from '@/lib/utils/email'
 import { enviarEmail } from '@/lib/email/send'
 import { ReservaAnuladaEmail } from '@/emails/ReservaAnuladaEmail'
@@ -33,11 +32,24 @@ export async function POST(_request: Request, { params }: { params: { id: string
     .eq('estado', 'completado')
     .maybeSingle()
 
+  // Stripe está congelado en este proyecto: solo intentamos el reembolso
+  // automático si hay clave configurada. El import es dinámico para que la
+  // ausencia de STRIPE_SECRET_KEY no rompa la carga de esta ruta (el cliente
+  // de lib/stripe/client instancia Stripe con la clave al importarse).
   let reembolsado = false
   if (pago?.stripe_payment_intent_id) {
-    await stripe.refunds.create({ payment_intent: pago.stripe_payment_intent_id })
-    await supabase.from('pagos').update({ estado: 'reembolsado' }).eq('id', pago.id)
-    reembolsado = true
+    if (process.env.STRIPE_SECRET_KEY) {
+      try {
+        const { stripe } = await import('@/lib/stripe/client')
+        await stripe.refunds.create({ payment_intent: pago.stripe_payment_intent_id })
+        await supabase.from('pagos').update({ estado: 'reembolsado' }).eq('id', pago.id)
+        reembolsado = true
+      } catch (e) {
+        console.error('[anular] Error reembolsando en Stripe (se anula la reserva igualmente)', e)
+      }
+    } else {
+      console.warn('[anular] Stripe no configurado: se anula la reserva sin reembolso automático')
+    }
   }
 
   await supabase.from('reservas').update({ estado: 'anulada' }).eq('id', reserva.id)
