@@ -407,19 +407,25 @@ online). El plan es de **código**, no de datos:
 | F7 | SEO técnico + analytics + hardening anti-spam | ⬜ |
 | F8 | Suite de tests (Vitest + Playwright) verde + go-live | ⬜ |
 
+> **Detalle operativo:** el plan por fases accionable (pasos, dependencias y criterios de
+> "hecho") está en **`docs/PLAN_EJECUCION_NEW_CONCEPT.md`**. El **esquema de la BD nueva**, ya
+> escrito y validado en seco, está en **`supabase/migrations-new/001_schema.sql`**.
+
 ---
 
-## 11. Preguntas abiertas
+## 11. Decisiones tomadas y preguntas abiertas
 
-1. **Precio dinámico:** ¿se muestra precio por temporada en la web (→ `precios_especiales`) o
-   se negocia siempre por email (→ precio base en código)? *Recomendación: negociar por email en v1.*
-2. **Idiomas:** ¿solo español, o hay que prever i18n (ES/EN/CA) desde ya? Afecta al routing.
-3. **Rate-limit infra:** ¿añadimos Upstash/Redis o lo resolvemos con una tabla en Postgres
-   para no meter más servicios?
-4. **Personal adicional:** ¿entrará algún día un rol `staff` (limpieza/gestión)? El enum
-   `user_role` ya lo deja abierto.
-5. **Notificaciones al propietario:** ¿basta con email, o se quiere también un aviso en el
-   dashboard / push?
+**Decididas (2026-07-28):**
+- **Fork:** repositorio **nuevo y separado en GitHub**; el original queda como archivo histórico.
+- **BD:** proyecto Supabase **nuevo ya creado**; se aplica `001_schema.sql` (F0).
+- **Precio dinámico:** ❌ **sin `precios_especiales` en v1** — el precio se negocia por email;
+  precio base en `lib/data/apartments.ts`. Se añadirá si el negocio pide temporadas.
+- **Rol:** un solo rol con privilegios (`owner`); el enum `user_role` deja abierto `staff`.
+
+**Aún abiertas:**
+1. **Idiomas:** ¿solo español, o prever i18n (ES/EN/CA) desde ya? Afecta al routing.
+2. **Rate-limit infra:** ¿Upstash/Redis o tabla `rate_limits` en Postgres (sin infra extra)?
+3. **Notificaciones al propietario:** ¿basta con email, o también aviso en el dashboard / push?
 
 ---
 
