@@ -110,13 +110,38 @@ npm run lint       npm test            npm run test:e2e
 
 ## Estado del proyecto
 
-Implementado (F0–F3): BD nueva aplicada, landing, fichas, formulario de solicitud con doble
-opt-in, y panel del propietario (dashboard + bandeja con aceptar/rechazar). Verificado de
-extremo a extremo.
+Este repositorio es el **fork limpio** del proyecto original (una plataforma con Stripe, chat
+IA y registro de usuarios). Todo ese legacy se ha eliminado. `build`, `lint` y `tsc` en verde.
 
-Pendiente (ver el plan de ejecución): **F4** calendario de bloqueos + aviso por email al
-propietario · **F5** anti-spam (Zod + honeypot + rate-limit con tabla Postgres) + expiración +
-RGPD · **F6** SEO + analytics + tests + go-live.
+### ✅ Verificado y funcionando (QA de extremo a extremo)
 
-> Este repositorio es el **fork limpio** del proyecto original (una plataforma con Stripe, chat
-> IA y registro de usuarios). Todo ese legacy se ha eliminado.
+- **Landing** (escritorio y móvil): navbar con desplegable "Los apartamentos", anclas Morella /
+  Ubicación, scroll suave, drawer móvil.
+- **Fichas de apartamento** (`/apartamentos/[slug]`): galería con lightbox y CTA "Solicitar
+  esta reserva" que preselecciona el apartamento en el formulario.
+- **Formulario de solicitud**: selección de fechas, validación, `POST /api/solicitudes` →
+  fila `pendiente_email` + email de confirmación al visitante.
+- **Doble opt-in**: `/solicitud/confirmar/[token]` pasa la solicitud a `pendiente_gestion`;
+  enlace ya usado → mensaje idempotente; enlace inválido/caducado → mensaje de error.
+- **Panel del propietario** (`/owner`, protegido): dashboard con contador y lista de pendientes;
+  bandeja `/owner/solicitudes` con filtros y acciones **Aceptar** / **Rechazar**.
+- **Auth**: login solo del propietario; `/owner/*` sin sesión → `/login`; con sesión no-owner →
+  `/unauthorized`.
+
+### ⬜ Pendiente (fases siguientes — ver `docs/PLAN_EJECUCION_NEW_CONCEPT.md`)
+
+- **F4 — Calendario:** al aceptar una reserva, crear el `bloqueos_calendario` (en transacción)
+  que alimenta `/api/disponibilidad`; panel de bloqueos manuales; **email de aviso al
+  propietario** cuando una solicitud pasa a `pendiente_gestion` (el aviso en el dashboard ya
+  existe; el email **aún no**).
+- **F5 — Anti-spam / RGPD:** validación Zod + honeypot + **rate-limit por IP con tabla
+  `rate_limits` en Postgres**; cron de expiración de tokens; retención.
+- **F6 — SEO, analytics, tests (Vitest/Playwright) y go-live.**
+
+### Notas de arranque
+
+- Los 4 apartamentos son estáticos (`lib/data/apartments.ts`); no hay tabla `apartamentos`.
+- El formulario solo ofrece "solicitud de reserva". El esquema soporta también `tipo='generica'`
+  (el panel conserva su filtro) por si se reactiva la consulta genérica.
+- Idioma: **solo español** en v1.
+- El email transaccional va por **Gmail SMTP** (`GMAIL_USER` / `GMAIL_APP_PASSWORD`), no Resend.
