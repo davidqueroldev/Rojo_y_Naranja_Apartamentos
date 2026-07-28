@@ -2,6 +2,10 @@ import Link from 'next/link'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { info } from '@/lib/data/apartments'
 
+// La confirmación depende del estado actual de la solicitud en la BD y hace una
+// mutación (pendiente_email -> pendiente_gestion): nunca debe cachearse.
+export const dynamic = 'force-dynamic'
+
 function Shell({ children }: { children: React.ReactNode }) {
   return (
     <div
