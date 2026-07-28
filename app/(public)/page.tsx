@@ -6,7 +6,7 @@ import { WhySection } from '@/components/landing/WhySection'
 import { ExperienciasSection } from '@/components/landing/ExperienciasSection'
 import { ReviewsSection } from '@/components/landing/ReviewsSection'
 import { MapSection } from '@/components/landing/MapSection'
-import { ConsultaSection } from '@/components/landing/ConsultaSection'
+import { SolicitudSection } from '@/components/landing/SolicitudSection'
 import { Footer } from '@/components/landing/Footer'
 import { MobileCta } from '@/components/landing/MobileCta'
 import { SchemaOrg } from '@/components/landing/SchemaOrg'
@@ -37,7 +37,7 @@ export default function LandingPage() {
         <ExperienciasSection />
         <MapSection />
         <ReviewsSection />
-        <ConsultaSection />
+        <SolicitudSection />
       </main>
       <Footer />
       <MobileCta />

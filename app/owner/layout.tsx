@@ -10,7 +10,7 @@ export default async function OwnerLayout({ children }: { children: React.ReactN
 
   return (
     <>
-      <DashboardNav role="owner" nombre={profile?.nombre} />
+      <DashboardNav role="owner" nombre={profile?.nombre ?? undefined} />
       {children}
     </>
   )

@@ -14,414 +14,136 @@ export type Database = {
   }
   public: {
     Tables: {
-      apartamentos: {
+      profiles: {
         Row: {
-          acepta_ninos: boolean | null
-          activo: boolean | null
-          amenities: string[] | null
-          capacidad_max: number
-          capacidad_min: number
-          created_at: string | null
-          descripcion: string | null
-          fotos: string[] | null
           id: string
-          nombre: string
-          num_banos: number | null
-          num_habitaciones: number | null
-          precio_noche_base: number
-          slug: string
+          email: string
+          nombre: string | null
+          rol: Database["public"]["Enums"]["user_role"]
+          created_at: string
         }
         Insert: {
-          acepta_ninos?: boolean | null
-          activo?: boolean | null
-          amenities?: string[] | null
-          capacidad_max: number
-          capacidad_min?: number
-          created_at?: string | null
-          descripcion?: string | null
-          fotos?: string[] | null
-          id?: string
-          nombre: string
-          num_banos?: number | null
-          num_habitaciones?: number | null
-          precio_noche_base: number
-          slug: string
+          id: string
+          email: string
+          nombre?: string | null
+          rol?: Database["public"]["Enums"]["user_role"]
+          created_at?: string
         }
         Update: {
-          acepta_ninos?: boolean | null
-          activo?: boolean | null
-          amenities?: string[] | null
-          capacidad_max?: number
-          capacidad_min?: number
-          created_at?: string | null
-          descripcion?: string | null
-          fotos?: string[] | null
           id?: string
+          email?: string
+          nombre?: string | null
+          rol?: Database["public"]["Enums"]["user_role"]
+          created_at?: string
+        }
+        Relationships: []
+      }
+      solicitudes: {
+        Row: {
+          id: string
+          tipo: Database["public"]["Enums"]["solicitud_tipo"]
+          nombre: string
+          apellidos: string | null
+          telefono: string
+          email: string
+          apartamento_slug: string | null
+          fecha_checkin: string | null
+          fecha_checkout: string | null
+          num_huespedes: number | null
+          mensaje: string | null
+          estado: Database["public"]["Enums"]["solicitud_estado"]
+          token_confirmacion: string | null
+          token_expira_en: string | null
+          confirmada_en: string | null
+          gestionada_en: string | null
+          nota_interna: string | null
+          ip_origen: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          tipo: Database["public"]["Enums"]["solicitud_tipo"]
+          nombre: string
+          apellidos?: string | null
+          telefono: string
+          email: string
+          apartamento_slug?: string | null
+          fecha_checkin?: string | null
+          fecha_checkout?: string | null
+          num_huespedes?: number | null
+          mensaje?: string | null
+          estado?: Database["public"]["Enums"]["solicitud_estado"]
+          token_confirmacion?: string | null
+          token_expira_en?: string | null
+          confirmada_en?: string | null
+          gestionada_en?: string | null
+          nota_interna?: string | null
+          ip_origen?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          tipo?: Database["public"]["Enums"]["solicitud_tipo"]
           nombre?: string
-          num_banos?: number | null
-          num_habitaciones?: number | null
-          precio_noche_base?: number
-          slug?: string
+          apellidos?: string | null
+          telefono?: string
+          email?: string
+          apartamento_slug?: string | null
+          fecha_checkin?: string | null
+          fecha_checkout?: string | null
+          num_huespedes?: number | null
+          mensaje?: string | null
+          estado?: Database["public"]["Enums"]["solicitud_estado"]
+          token_confirmacion?: string | null
+          token_expira_en?: string | null
+          confirmada_en?: string | null
+          gestionada_en?: string | null
+          nota_interna?: string | null
+          ip_origen?: string | null
+          created_at?: string
+          updated_at?: string
         }
         Relationships: []
       }
       bloqueos_calendario: {
         Row: {
-          apartamento_id: string
-          created_at: string | null
-          fecha_fin: string
-          fecha_inicio: string
           id: string
+          apartamento_slug: string
+          fecha_inicio: string
+          fecha_fin: string
+          origen: Database["public"]["Enums"]["bloqueo_origen"]
+          solicitud_id: string | null
           motivo: string | null
+          created_at: string
         }
         Insert: {
-          apartamento_id: string
-          created_at?: string | null
-          fecha_fin: string
-          fecha_inicio: string
           id?: string
+          apartamento_slug: string
+          fecha_inicio: string
+          fecha_fin: string
+          origen?: Database["public"]["Enums"]["bloqueo_origen"]
+          solicitud_id?: string | null
           motivo?: string | null
+          created_at?: string
         }
         Update: {
-          apartamento_id?: string
-          created_at?: string | null
-          fecha_fin?: string
-          fecha_inicio?: string
           id?: string
+          apartamento_slug?: string
+          fecha_inicio?: string
+          fecha_fin?: string
+          origen?: Database["public"]["Enums"]["bloqueo_origen"]
+          solicitud_id?: string | null
           motivo?: string | null
+          created_at?: string
         }
         Relationships: [
           {
-            foreignKeyName: "bloqueos_calendario_apartamento_id_fkey"
-            columns: ["apartamento_id"]
+            foreignKeyName: "bloqueos_calendario_solicitud_id_fkey"
+            columns: ["solicitud_id"]
             isOneToOne: false
-            referencedRelation: "apartamentos"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      consultas: {
-        Row: {
-          apartamento_id: string | null
-          apellidos: string | null
-          confirmada_en: string | null
-          created_at: string | null
-          email: string
-          estado: string
-          fecha_checkin: string | null
-          fecha_checkout: string | null
-          gestionada_en: string | null
-          id: string
-          mensaje: string | null
-          nombre: string
-          telefono: string
-          tipo: string
-          token_confirmacion: string | null
-          token_expira_en: string | null
-          updated_at: string | null
-        }
-        Insert: {
-          apartamento_id?: string | null
-          apellidos?: string | null
-          confirmada_en?: string | null
-          created_at?: string | null
-          email: string
-          estado?: string
-          fecha_checkin?: string | null
-          fecha_checkout?: string | null
-          gestionada_en?: string | null
-          id?: string
-          mensaje?: string | null
-          nombre: string
-          telefono: string
-          tipo: string
-          token_confirmacion?: string | null
-          token_expira_en?: string | null
-          updated_at?: string | null
-        }
-        Update: {
-          apartamento_id?: string | null
-          apellidos?: string | null
-          confirmada_en?: string | null
-          created_at?: string | null
-          email?: string
-          estado?: string
-          fecha_checkin?: string | null
-          fecha_checkout?: string | null
-          gestionada_en?: string | null
-          id?: string
-          mensaje?: string | null
-          nombre?: string
-          telefono?: string
-          tipo?: string
-          token_confirmacion?: string | null
-          token_expira_en?: string | null
-          updated_at?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "consultas_apartamento_id_fkey"
-            columns: ["apartamento_id"]
-            isOneToOne: false
-            referencedRelation: "apartamentos"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      conversaciones: {
-        Row: {
-          created_at: string | null
-          ia_contexto: string | null
-          id: string
-          modo_ia: boolean | null
-          reserva_id: string | null
-          updated_at: string | null
-          user_id: string | null
-        }
-        Insert: {
-          created_at?: string | null
-          ia_contexto?: string | null
-          id?: string
-          modo_ia?: boolean | null
-          reserva_id?: string | null
-          updated_at?: string | null
-          user_id?: string | null
-        }
-        Update: {
-          created_at?: string | null
-          ia_contexto?: string | null
-          id?: string
-          modo_ia?: boolean | null
-          reserva_id?: string | null
-          updated_at?: string | null
-          user_id?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "conversaciones_reserva_id_fkey"
-            columns: ["reserva_id"]
-            isOneToOne: false
-            referencedRelation: "reservas"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "conversaciones_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      mensajes: {
-        Row: {
-          contenido: string
-          conversacion_id: string
-          created_at: string | null
-          id: string
-          leido: boolean | null
-          remitente: string
-        }
-        Insert: {
-          contenido: string
-          conversacion_id: string
-          created_at?: string | null
-          id?: string
-          leido?: boolean | null
-          remitente: string
-        }
-        Update: {
-          contenido?: string
-          conversacion_id?: string
-          created_at?: string | null
-          id?: string
-          leido?: boolean | null
-          remitente?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "mensajes_conversacion_id_fkey"
-            columns: ["conversacion_id"]
-            isOneToOne: false
-            referencedRelation: "conversaciones"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      pagos: {
-        Row: {
-          created_at: string | null
-          estado: string
-          id: string
-          importe: number
-          moneda: string | null
-          reserva_id: string | null
-          stripe_payment_intent_id: string | null
-          tipo: string | null
-        }
-        Insert: {
-          created_at?: string | null
-          estado: string
-          id?: string
-          importe: number
-          moneda?: string | null
-          reserva_id?: string | null
-          stripe_payment_intent_id?: string | null
-          tipo?: string | null
-        }
-        Update: {
-          created_at?: string | null
-          estado?: string
-          id?: string
-          importe?: number
-          moneda?: string | null
-          reserva_id?: string | null
-          stripe_payment_intent_id?: string | null
-          tipo?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "pagos_reserva_id_fkey"
-            columns: ["reserva_id"]
-            isOneToOne: false
-            referencedRelation: "reservas"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      precios_especiales: {
-        Row: {
-          apartamento_id: string
-          fecha_fin: string
-          fecha_inicio: string
-          id: string
-          nombre: string
-          notas: string | null
-          precio_noche: number
-        }
-        Insert: {
-          apartamento_id: string
-          fecha_fin: string
-          fecha_inicio: string
-          id?: string
-          nombre: string
-          notas?: string | null
-          precio_noche: number
-        }
-        Update: {
-          apartamento_id?: string
-          fecha_fin?: string
-          fecha_inicio?: string
-          id?: string
-          nombre?: string
-          notas?: string | null
-          precio_noche?: number
-        }
-        Relationships: [
-          {
-            foreignKeyName: "precios_especiales_apartamento_id_fkey"
-            columns: ["apartamento_id"]
-            isOneToOne: false
-            referencedRelation: "apartamentos"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      profiles: {
-        Row: {
-          apellidos: string | null
-          avatar_url: string | null
-          created_at: string | null
-          id: string
-          nombre: string
-          rol: string
-          telefono: string | null
-          updated_at: string | null
-        }
-        Insert: {
-          apellidos?: string | null
-          avatar_url?: string | null
-          created_at?: string | null
-          id: string
-          nombre: string
-          rol?: string
-          telefono?: string | null
-          updated_at?: string | null
-        }
-        Update: {
-          apellidos?: string | null
-          avatar_url?: string | null
-          created_at?: string | null
-          id?: string
-          nombre?: string
-          rol?: string
-          telefono?: string | null
-          updated_at?: string | null
-        }
-        Relationships: []
-      }
-      reservas: {
-        Row: {
-          apartamento_id: string | null
-          codigo: string
-          created_at: string | null
-          estado: string
-          fecha_checkin: string
-          fecha_checkout: string
-          id: string
-          notas_propietario: string | null
-          notas_usuario: string | null
-          num_huespedes: number
-          precio_total: number
-          stripe_session_id: string | null
-          updated_at: string | null
-          user_id: string | null
-        }
-        Insert: {
-          apartamento_id?: string | null
-          codigo: string
-          created_at?: string | null
-          estado?: string
-          fecha_checkin: string
-          fecha_checkout: string
-          id?: string
-          notas_propietario?: string | null
-          notas_usuario?: string | null
-          num_huespedes: number
-          precio_total: number
-          stripe_session_id?: string | null
-          updated_at?: string | null
-          user_id?: string | null
-        }
-        Update: {
-          apartamento_id?: string | null
-          codigo?: string
-          created_at?: string | null
-          estado?: string
-          fecha_checkin?: string
-          fecha_checkout?: string
-          id?: string
-          notas_propietario?: string | null
-          notas_usuario?: string | null
-          num_huespedes?: number
-          precio_total?: number
-          stripe_session_id?: string | null
-          updated_at?: string | null
-          user_id?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "reservas_apartamento_id_fkey"
-            columns: ["apartamento_id"]
-            isOneToOne: false
-            referencedRelation: "apartamentos"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "reservas_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
+            referencedRelation: "solicitudes"
             referencedColumns: ["id"]
           },
         ]
@@ -431,34 +153,28 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      calcular_precio_reserva: {
-        Args: {
-          p_apartamento_id: string
-          p_fecha_fin: string
-          p_fecha_inicio: string
-        }
-        Returns: number
-      }
-      check_disponibilidad: {
-        Args: {
-          p_apartamento_id: string
-          p_fecha_fin: string
-          p_fecha_inicio: string
-          p_reserva_id?: string
-        }
+      is_owner: {
+        Args: Record<PropertyKey, never>
         Returns: boolean
       }
-      is_owner: { Args: never; Returns: boolean }
     }
     Enums: {
-      [_ in never]: never
+      user_role: "owner"
+      solicitud_tipo: "generica" | "reserva"
+      solicitud_estado:
+        | "pendiente_email"
+        | "pendiente_gestion"
+        | "aceptada"
+        | "rechazada"
+        | "cancelada"
+        | "expirada"
+      bloqueo_origen: "manual" | "solicitud"
     }
     CompositeTypes: {
       [_ in never]: never
     }
   }
 }
-
 type DatabaseWithoutInternals = Omit<Database, "__InternalSupabase">
 
 type DefaultSchema = DatabaseWithoutInternals[Extract<keyof Database, "public">]
