@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server'
 import { randomBytes } from 'crypto'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { resolverApartamento } from '@/lib/utils/reservas'
+import { formatearFecha } from '@/lib/utils/fechas'
+import { apartamentos as apartamentosEstaticos } from '@/lib/data/apartments'
 import { enviarEmail } from '@/lib/email/send'
 import { ConsultaConfirmacionEmail } from '@/emails/ConsultaConfirmacionEmail'
 
@@ -91,14 +93,26 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: errorInsert.message }, { status: 500 })
   }
 
+  const apartamentoNombre = tipo === 'reserva'
+    ? apartamentosEstaticos.find((a) => a.slug === apartamento)?.nombre ?? apartamento
+    : undefined
+  const checkinFmt = tipo === 'reserva' && fecha_checkin ? formatearFecha(new Date(fecha_checkin)) : undefined
+  const checkoutFmt = tipo === 'reserva' && fecha_checkout ? formatearFecha(new Date(fecha_checkout)) : undefined
+
   try {
     await enviarEmail({
       to: email,
-      subject: 'Confirma tu consulta — Apartamentos Rojo y Naranja',
+      subject: tipo === 'reserva'
+        ? 'Confirma tu solicitud de reserva — Apartamentos Rojo y Naranja'
+        : 'Confirma tu consulta — Apartamentos Rojo y Naranja',
       react: (
         <ConsultaConfirmacionEmail
           nombre={nombre}
           confirmLink={`${process.env.NEXT_PUBLIC_APP_URL}/confirmar-consulta/${token}`}
+          tipo={tipo}
+          apartamento={apartamentoNombre}
+          checkin={checkinFmt}
+          checkout={checkoutFmt}
         />
       ),
     })
